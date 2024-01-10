@@ -1,9 +1,9 @@
-var cacheName = 'egui-template-pwa';
+var cacheName = 'log-viewer-pwa';
 var filesToCache = [
   './',
   './index.html',
-  './eframe_template.js',
-  './eframe_template_bg.wasm',
+  './log_viewer.js',
+  './log_viewer_bg.wasm',
 ];
 
 /* Start the service worker and cache all of the app's content */
