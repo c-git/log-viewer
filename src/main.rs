@@ -3,14 +3,9 @@
 
 // When compiling natively:
 #[cfg(not(target_arch = "wasm32"))]
-fn main() -> eframe::Result<()> {
+#[tokio::main]
+async fn main() -> eframe::Result<()> {
     env_logger::init(); // Log to stderr (if you run with `RUST_LOG=debug`).
-
-    let rt = tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()
-        .expect("Unable to create Runtime");
-    let _enter = rt.enter(); // This Guard must be held to call `tokio::spawn` anywhere in the program
 
     let native_options = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
