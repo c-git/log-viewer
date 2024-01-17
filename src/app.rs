@@ -1,11 +1,20 @@
+use egui_extras::{Size, StripBuilder};
+
+use self::{data::Data, loading::LoadingStatus};
+
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
-//
-// We derive Deserialize/Serialize so we can persist app state on shutdown.
-#[derive(serde::Deserialize, serde::Serialize, Debug, Default)]
+
+mod data;
+mod loading;
+#[derive(serde::Deserialize, serde::Serialize, Default, Debug)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
     selected_row: Option<usize>,
+    data: Option<Data>,
+
+    #[serde(skip)]
+    loading_status: LoadingStatus,
 }
 
 impl LogViewerApp {
@@ -41,10 +50,13 @@ impl LogViewerApp {
             .column(Column::remainder())
             .min_scrolled_height(0.0);
 
+        let num_rows = match &self.data {
+            Some(data) => data.rows().len(),
+            None => 0,
+        };
+
         // Make table clickable
         table = table.sense(egui::Sense::click());
-        let data: Vec<i32> = (1..=5).collect();
-        let num_rows = data.len();
 
         table
             .header(20.0, |mut header| {
@@ -67,17 +79,22 @@ impl LogViewerApp {
                     if let Some(selected_row) = self.selected_row {
                         row.set_selected(selected_row == row_index);
                     }
+                    let log_row = &self
+                        .data
+                        .as_ref()
+                        .expect("Should only run if there are rows")
+                        .rows()[row_index];
                     row.col(|ui| {
-                        ui.label(format!("{}", data[row_index]));
+                        ui.label(log_row.time());
                     });
                     row.col(|ui| {
-                        ui.label(format!("{}", data[row_index]));
+                        ui.label(log_row.request_id());
                     });
                     row.col(|ui| {
-                        ui.label(format!("{}", data[row_index]));
+                        ui.label(log_row.otel_name());
                     });
                     row.col(|ui| {
-                        ui.label(format!("{}", data[row_index]));
+                        ui.label(log_row.msg());
                     });
 
                     self.toggle_row_selection(row_index, &row.response());
@@ -99,6 +116,70 @@ impl LogViewerApp {
             }
         }
     }
+
+    fn ui_loading(&mut self, ui: &mut egui::Ui) {
+        match &self.loading_status {
+            LoadingStatus::NotInProgress => {
+                if ui.button("📂 Open log file...").clicked() {
+                    let ctx = ui.ctx().clone();
+                    let rx = self.initiate_loading(ctx);
+                    self.loading_status = LoadingStatus::InProgress(rx);
+                }
+                if ui.button("Clear Data").clicked() {
+                    self.data = None;
+                }
+            }
+            LoadingStatus::InProgress(_) => {
+                ui.spinner();
+            }
+            LoadingStatus::Failed(msg) => {
+                if ui
+                    .button(format!("Click to clear. Load Failed: {msg:?}"))
+                    .clicked()
+                {
+                    self.loading_status = LoadingStatus::NotInProgress;
+                };
+            }
+            LoadingStatus::Success(value) => match Data::try_from(&value[..]) {
+                Ok(new_data) => self.data = Some(new_data),
+                Err(e) => self.loading_status = LoadingStatus::Failed(e.to_string()),
+            },
+        }
+    }
+
+    fn initiate_loading(
+        &self,
+        ctx: egui::Context,
+    ) -> futures::channel::oneshot::Receiver<LoadingStatus> {
+        let (tx, rx) = futures::channel::oneshot::channel();
+        execute(async move {
+            match rfd::AsyncFileDialog::new().pick_file().await {
+                Some(file) => {
+                    let text = file.read().await;
+                    tx.send(LoadingStatus::Success(
+                        String::from_utf8_lossy(&text).to_string(),
+                    ))
+                    .expect("Failed to send result");
+                    ctx.request_repaint();
+                }
+                None => tx
+                    .send(LoadingStatus::NotInProgress)
+                    .expect("Failed to send result"),
+            }
+        });
+
+        rx
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn execute<F: futures::Future<Output = ()> + Send + 'static>(f: F) {
+    tokio::spawn(f);
+}
+
+#[cfg(target_arch = "wasm32")]
+fn execute<F: Future<Output = ()> + 'static>(f: F) {
+    wasm_bindgen_futures::spawn_local(f);
 }
 
 impl eframe::App for LogViewerApp {
@@ -133,8 +214,11 @@ impl eframe::App for LogViewerApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
-            ui.heading("Log Viewer");
-            use egui_extras::{Size, StripBuilder};
+            ui.horizontal(|ui| {
+                ui.heading("Log Viewer");
+                ui.separator();
+                self.ui_loading(ui);
+            });
             StripBuilder::new(ui)
                 .size(Size::remainder().at_least(100.0)) // for the table
                 .size(Size::exact(100.0)) // for the details
