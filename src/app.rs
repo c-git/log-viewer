@@ -1,21 +1,34 @@
 use egui_extras::{Size, StripBuilder};
-use std::future::Future;
+use std::fmt::Debug;
 
-use self::{data::Data, loading::LoadingStatus};
+use self::data::Data;
 
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
 
 mod data;
 mod loading;
-#[derive(serde::Deserialize, serde::Serialize, Default, Debug)]
+type LoadingType = Option<anyhow::Result<String>>;
+type LoadingPromise = poll_promise::Promise<LoadingType>;
+type LoadingPromiseOpt = Option<LoadingPromise>;
+#[derive(serde::Deserialize, serde::Serialize, Default)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
     selected_row: Option<usize>,
     data: Option<Data>,
 
     #[serde(skip)]
-    loading_status: LoadingStatus,
+    loading_status: LoadingPromiseOpt,
+}
+
+impl Debug for LogViewerApp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("LogViewerApp")
+            .field("selected_row", &self.selected_row)
+            .field("data", &self.data)
+            .field("loading_status.is_some", &self.loading_status.is_some())
+            .finish()
+    }
 }
 
 impl LogViewerApp {
@@ -119,63 +132,51 @@ impl LogViewerApp {
     }
 
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
-        match &self.loading_status {
-            LoadingStatus::NotInProgress => {
-                if ui.button("📂 Open log file...").clicked() {
-                    let ctx = ui.ctx().clone();
-                    let rx = self.initiate_loading(ctx);
-                    self.loading_status = LoadingStatus::InProgress(rx);
+        if let Some(promise) = &self.loading_status {
+            if let Some(result_opt) = promise.ready() {
+                match result_opt {
+                    Some(result) => match result {
+                        Ok(data) => {
+                            dbg!(data);
+                            self.loading_status = None;
+                        } // TODO: Load data
+                        Err(e) => {
+                            if ui
+                                .button(format!("Click to clear. Load Failed: {e:?}"))
+                                .clicked()
+                            {
+                                self.loading_status = None;
+                            }
+                        }
+                    },
+                    None => self.loading_status = None, // User aborted
                 }
-                if ui.button("Clear Data").clicked() {
-                    self.data = None;
-                }
-            }
-            LoadingStatus::InProgress(_) => {
+            } else {
                 ui.spinner();
             }
-            LoadingStatus::Failed(msg) => {
-                if ui
-                    .button(format!("Click to clear. Load Failed: {msg:?}"))
-                    .clicked()
-                {
-                    self.loading_status = LoadingStatus::NotInProgress;
-                };
+        } else {
+            if ui.button("📂 Open log file...").clicked() {
+                let ctx = ui.ctx().clone();
+                self.loading_status = self.initiate_loading(ctx);
             }
-            LoadingStatus::Success(value) => match Data::try_from(&value[..]) {
-                Ok(new_data) => self.data = Some(new_data),
-                Err(e) => self.loading_status = LoadingStatus::Failed(e.to_string()),
-            },
+            if ui.button("Clear Data").clicked() {
+                self.data = None;
+            }
         }
     }
 
-    fn initiate_loading(
-        &self,
-        ctx: egui::Context,
-    ) -> futures::channel::oneshot::Receiver<LoadingStatus> {
-        let (tx, rx) = futures::channel::oneshot::channel();
-        execute(async move {
-            match rfd::AsyncFileDialog::new().pick_file().await {
-                Some(file) => {
-                    let text = file.read().await;
-                    tx.send(LoadingStatus::Success(
-                        String::from_utf8_lossy(&text).to_string(),
-                    ))
-                    .expect("Failed to send result");
-                    ctx.request_repaint();
-                }
-                None => tx
-                    .send(LoadingStatus::NotInProgress)
-                    .expect("Failed to send result"),
-            }
-        });
-
-        rx
+    fn initiate_loading(&self, ctx: egui::Context) -> LoadingPromiseOpt {
+        Some(execute(async move {
+            let result = load_file().await;
+            ctx.request_repaint();
+            result
+        }))
     }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-fn execute<F: Future<Output = ()> + Send + 'static>(f: F) {
-    tokio::spawn(f);
+fn execute(f: impl std::future::Future<Output = LoadingType> + 'static + Send) -> LoadingPromise {
+    poll_promise::Promise::spawn_async(f)
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -235,4 +236,13 @@ impl eframe::App for LogViewerApp {
                 });
         });
     }
+}
+
+async fn load_file() -> LoadingType {
+    let file = rfd::AsyncFileDialog::new().pick_file().await?;
+    let text = file.read().await;
+    Some(match String::from_utf8(text) {
+        Ok(s) => Ok(s),
+        Err(e) => Err(e.into()),
+    })
 }
