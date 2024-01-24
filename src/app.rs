@@ -1,4 +1,5 @@
 use egui_extras::{Size, StripBuilder};
+use std::future::Future;
 
 use self::{data::Data, loading::LoadingStatus};
 
@@ -173,7 +174,7 @@ impl LogViewerApp {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-fn execute<F: futures::Future<Output = ()> + Send + 'static>(f: F) {
+fn execute<F: Future<Output = ()> + Send + 'static>(f: F) {
     tokio::spawn(f);
 }
 
