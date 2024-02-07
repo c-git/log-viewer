@@ -184,9 +184,8 @@ fn execute(
 }
 
 #[cfg(target_arch = "wasm32")]
-fn execute<F: Future<Output = ()> + 'static>(f: F) {
-    // TODO 1: Fix WASM version
-    wasm_bindgen_futures::spawn_local(f);
+fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static>(f: F) -> LoadingStatus {
+    LoadingStatus::InProgress(poll_promise::Promise::spawn_local(f))
 }
 
 impl eframe::App for LogViewerApp {
