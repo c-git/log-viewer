@@ -1,12 +1,11 @@
 use egui_extras::{Size, StripBuilder};
 
-use self::{data::Data, loading::LoadingStatus};
+use self::data::Data;
 
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
 
 mod data;
-mod loading;
 #[derive(serde::Deserialize, serde::Serialize, Default)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
@@ -15,6 +14,15 @@ pub struct LogViewerApp {
 
     #[serde(skip)]
     loading_status: LoadingStatus,
+}
+
+#[derive(Default)]
+pub enum LoadingStatus {
+    #[default]
+    NotInProgress,
+    InProgress(poll_promise::Promise<Box<LoadingStatus>>),
+    Failed(String),
+    Success(String),
 }
 
 impl LogViewerApp {
