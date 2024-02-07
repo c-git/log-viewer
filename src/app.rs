@@ -118,46 +118,61 @@ impl LogViewerApp {
     }
 
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
-        // if let Some(promise) = &self.loading_status {
-        //     if let Some(result_opt) = promise.ready() {
-        //         match result_opt {
-        //             Some(result) => match result {
-        //                 Ok(data) => {
-        //                     dbg!(data);
-        //                     self.loading_status = None;
-        //                 } // TODO: Load data
-        //                 Err(e) => {
-        //                     if ui
-        //                         .button(format!("Click to clear. Load Failed: {e:?}"))
-        //                         .clicked()
-        //                     {
-        //                         self.loading_status = None;
-        //                     }
-        //                 }
-        //             },
-        //             None => self.loading_status = None, // User aborted
-        //         }
-        //     } else {
-        //         ui.spinner();
-        //     }
-        // } else {
-        //     if ui.button("📂 Open log file...").clicked() {
-        //         let ctx = ui.ctx().clone();
-        //         self.loading_status = self.initiate_loading(ctx);
-        //     }
-        //     if ui.button("Clear Data").clicked() {
-        //         self.data = None;
-        //     }
-        // }
+        match &self.loading_status {
+            LoadingStatus::NotInProgress => {
+                if ui.button("📂 Open log file...").clicked() {
+                    let ctx = ui.ctx().clone();
+                    self.loading_status = self.initiate_loading(ctx);
+                }
+                if ui.button("Clear Data").clicked() {
+                    self.data = None;
+                }
+            }
+            LoadingStatus::InProgress(promise) => {
+                if promise.ready().is_some() {
+                    let mut temp = LoadingStatus::default();
+                    std::mem::swap(&mut temp, &mut self.loading_status);
+                    let LoadingStatus::InProgress(owned_promise) = temp else {
+                        unreachable!("we are sure of this because we just did a match on this")
+                    };
+                    self.loading_status = *owned_promise.block_and_take(); // We know the promise is ready at this point
+                } else {
+                    ui.spinner();
+                }
+            }
+            LoadingStatus::Failed(err_msg) => {
+                let msg = format!("Loading failed: {err_msg:?}");
+                if ui.button("Clear Error Status").clicked() {
+                    self.loading_status = LoadingStatus::NotInProgress;
+                }
+                ui.label(msg);
+            }
+            LoadingStatus::Success(data) => {
+                dbg!(data);
+                self.loading_status = LoadingStatus::NotInProgress;
+            }
+        }
     }
 
     fn initiate_loading(&self, ctx: egui::Context) -> LoadingStatus {
-        // Some(execute(async move {
-        //     let result = load_file().await;
-        //     ctx.request_repaint();
-        //     result
-        // }))
-        todo!()
+        execute(async move {
+            let Some(file) = rfd::AsyncFileDialog::new().pick_file().await else {
+                // user canceled loading
+                return Box::new(LoadingStatus::NotInProgress);
+            };
+            let text = file.read().await;
+
+            // Uncomment the following line to simulate taking long to load, only works on native
+            // tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
+
+            // If not present screen will not refresh until next paint (comment out to test, works better with the sleep above to demonstrate)
+            ctx.request_repaint();
+
+            Box::new(match String::from_utf8(text) {
+                Ok(val) => LoadingStatus::Success(val),
+                Err(e) => LoadingStatus::Failed(format!("{e}")),
+            })
+        })
     }
 }
 
@@ -170,6 +185,7 @@ fn execute(
 
 #[cfg(target_arch = "wasm32")]
 fn execute<F: Future<Output = ()> + 'static>(f: F) {
+    // TODO 1: Fix WASM version
     wasm_bindgen_futures::spawn_local(f);
 }
 
@@ -225,14 +241,4 @@ impl eframe::App for LogViewerApp {
                 });
         });
     }
-}
-
-async fn load_file() -> LoadingStatus {
-    // let file = rfd::AsyncFileDialog::new().pick_file().await?;
-    // let text = file.read().await;
-    // Some(match String::from_utf8(text) {
-    //     Ok(s) => Ok(s),
-    //     Err(e) => Err(e.into()),
-    // })
-    todo!()
 }
