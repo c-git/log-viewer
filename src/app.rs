@@ -1,16 +1,12 @@
 use egui_extras::{Size, StripBuilder};
-use std::fmt::Debug;
 
-use self::data::Data;
+use self::{data::Data, loading::LoadingStatus};
 
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
 
 mod data;
 mod loading;
-type LoadingType = Option<anyhow::Result<String>>;
-type LoadingPromise = poll_promise::Promise<LoadingType>;
-type LoadingPromiseOpt = Option<LoadingPromise>;
 #[derive(serde::Deserialize, serde::Serialize, Default)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
@@ -18,17 +14,7 @@ pub struct LogViewerApp {
     data: Option<Data>,
 
     #[serde(skip)]
-    loading_status: LoadingPromiseOpt,
-}
-
-impl Debug for LogViewerApp {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.debug_struct("LogViewerApp")
-            .field("selected_row", &self.selected_row)
-            .field("data", &self.data)
-            .field("loading_status.is_some", &self.loading_status.is_some())
-            .finish()
-    }
+    loading_status: LoadingStatus,
 }
 
 impl LogViewerApp {
@@ -132,51 +118,54 @@ impl LogViewerApp {
     }
 
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
-        if let Some(promise) = &self.loading_status {
-            if let Some(result_opt) = promise.ready() {
-                match result_opt {
-                    Some(result) => match result {
-                        Ok(data) => {
-                            dbg!(data);
-                            self.loading_status = None;
-                        } // TODO: Load data
-                        Err(e) => {
-                            if ui
-                                .button(format!("Click to clear. Load Failed: {e:?}"))
-                                .clicked()
-                            {
-                                self.loading_status = None;
-                            }
-                        }
-                    },
-                    None => self.loading_status = None, // User aborted
-                }
-            } else {
-                ui.spinner();
-            }
-        } else {
-            if ui.button("📂 Open log file...").clicked() {
-                let ctx = ui.ctx().clone();
-                self.loading_status = self.initiate_loading(ctx);
-            }
-            if ui.button("Clear Data").clicked() {
-                self.data = None;
-            }
-        }
+        // if let Some(promise) = &self.loading_status {
+        //     if let Some(result_opt) = promise.ready() {
+        //         match result_opt {
+        //             Some(result) => match result {
+        //                 Ok(data) => {
+        //                     dbg!(data);
+        //                     self.loading_status = None;
+        //                 } // TODO: Load data
+        //                 Err(e) => {
+        //                     if ui
+        //                         .button(format!("Click to clear. Load Failed: {e:?}"))
+        //                         .clicked()
+        //                     {
+        //                         self.loading_status = None;
+        //                     }
+        //                 }
+        //             },
+        //             None => self.loading_status = None, // User aborted
+        //         }
+        //     } else {
+        //         ui.spinner();
+        //     }
+        // } else {
+        //     if ui.button("📂 Open log file...").clicked() {
+        //         let ctx = ui.ctx().clone();
+        //         self.loading_status = self.initiate_loading(ctx);
+        //     }
+        //     if ui.button("Clear Data").clicked() {
+        //         self.data = None;
+        //     }
+        // }
     }
 
-    fn initiate_loading(&self, ctx: egui::Context) -> LoadingPromiseOpt {
-        Some(execute(async move {
-            let result = load_file().await;
-            ctx.request_repaint();
-            result
-        }))
+    fn initiate_loading(&self, ctx: egui::Context) -> LoadingStatus {
+        // Some(execute(async move {
+        //     let result = load_file().await;
+        //     ctx.request_repaint();
+        //     result
+        // }))
+        todo!()
     }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-fn execute(f: impl std::future::Future<Output = LoadingType> + 'static + Send) -> LoadingPromise {
-    poll_promise::Promise::spawn_async(f)
+fn execute(
+    f: impl std::future::Future<Output = Box<LoadingStatus>> + 'static + Send,
+) -> LoadingStatus {
+    LoadingStatus::InProgress(poll_promise::Promise::spawn_async(f))
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -238,11 +227,12 @@ impl eframe::App for LogViewerApp {
     }
 }
 
-async fn load_file() -> LoadingType {
-    let file = rfd::AsyncFileDialog::new().pick_file().await?;
-    let text = file.read().await;
-    Some(match String::from_utf8(text) {
-        Ok(s) => Ok(s),
-        Err(e) => Err(e.into()),
-    })
+async fn load_file() -> LoadingStatus {
+    // let file = rfd::AsyncFileDialog::new().pick_file().await?;
+    // let text = file.read().await;
+    // Some(match String::from_utf8(text) {
+    //     Ok(s) => Ok(s),
+    //     Err(e) => Err(e.into()),
+    // })
+    todo!()
 }

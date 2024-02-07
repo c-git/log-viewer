@@ -1,8 +1,8 @@
-#[derive(Default, Debug)]
+#[derive(Default)]
 pub enum LoadingStatus {
     #[default]
     NotInProgress,
-    InProgress(),
+    InProgress(poll_promise::Promise<Box<LoadingStatus>>),
     Failed(String),
     Success(String),
 }
