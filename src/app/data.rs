@@ -15,7 +15,8 @@ pub struct LogRow {
 }
 
 impl LogRow {
-    const EMPTY_TEXT: &'static str = "[-]";
+    const EMPTY_TEXT: &'static str = "[ --- ]";
+
     pub(crate) fn time(&self) -> &str {
         if let Some(val) = &self.time {
             val
@@ -24,27 +25,27 @@ impl LogRow {
         }
     }
 
-    pub(crate) fn request_id(&self) -> String {
+    pub(crate) fn request_id(&self) -> &str {
         if let Some(val) = &self.request_id {
-            val.clone()
+            val
         } else {
-            Self::EMPTY_TEXT.to_string()
+            Self::EMPTY_TEXT
         }
     }
 
-    pub(crate) fn otel_name(&self) -> String {
+    pub(crate) fn otel_name(&self) -> &str {
         if let Some(val) = &self.otel_name {
-            val.clone()
+            val
         } else {
-            Self::EMPTY_TEXT.to_string()
+            Self::EMPTY_TEXT
         }
     }
 
-    pub(crate) fn msg(&self) -> String {
+    pub(crate) fn msg(&self) -> &str {
         if let Some(val) = &self.msg {
-            val.clone()
+            val
         } else {
-            Self::EMPTY_TEXT.to_string()
+            Self::EMPTY_TEXT
         }
     }
 }
