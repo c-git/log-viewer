@@ -11,14 +11,14 @@ pub struct LogRow {
     msg: Option<String>,
     // TODO 2: Capture other info
 }
+
 impl LogRow {
     const EMPTY_TEXT: &'static str = "[-]";
-    pub(crate) fn time(&self) -> String {
-        // TODO 4: Try to not allocate a new string
+    pub(crate) fn time(&self) -> &str {
         if let Some(val) = &self.time {
-            val.clone()
+            val
         } else {
-            Self::EMPTY_TEXT.to_string()
+            Self::EMPTY_TEXT
         }
     }
 
