@@ -1,3 +1,5 @@
+use anyhow::Context;
+
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug)]
 pub struct Data {
     rows: Vec<LogRow>,
@@ -57,7 +59,13 @@ impl TryFrom<&str> for Data {
     type Error = anyhow::Error;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
-        dbg!(value);
-        todo!()
+        let mut result = Data::default();
+        for (i, line) in value.lines().enumerate() {
+            result.rows.push(
+                serde_json::from_str(line)
+                    .with_context(|| format!("failed to parse line {}", i + 1))?,
+            );
+        }
+        Ok(result)
     }
 }

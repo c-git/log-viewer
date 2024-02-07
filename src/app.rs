@@ -128,13 +128,15 @@ impl LogViewerApp {
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
         match &self.loading_status {
             LoadingStatus::NotInProgress => {
-                if ui.button("📂 Open log file...").clicked() {
-                    let ctx = ui.ctx().clone();
-                    self.loading_status = self.initiate_loading(ctx);
-                }
-                if ui.button("Clear Data").clicked() {
-                    self.data = None;
-                }
+                ui.horizontal(|ui| {
+                    if ui.button("📂 Open log file...").clicked() {
+                        let ctx = ui.ctx().clone();
+                        self.loading_status = self.initiate_loading(ctx);
+                    }
+                    if ui.button("Clear Data").clicked() {
+                        self.data = None;
+                    }
+                });
             }
             LoadingStatus::InProgress(promise) => {
                 if promise.ready().is_some() {
@@ -149,15 +151,22 @@ impl LogViewerApp {
                 }
             }
             LoadingStatus::Failed(err_msg) => {
-                let msg = format!("Loading failed: {err_msg:?}");
+                let msg = format!("Loading failed: {err_msg}");
+                let msg = msg.replace(r"\n", "\n");
+                let msg = msg.replace(r#"\""#, "\"");
                 if ui.button("Clear Error Status").clicked() {
                     self.loading_status = LoadingStatus::NotInProgress;
                 }
                 ui.label(msg);
             }
             LoadingStatus::Success(data) => {
-                dbg!(data);
-                self.loading_status = LoadingStatus::NotInProgress;
+                self.loading_status = match Data::try_from(&data[..]) {
+                    Ok(data) => {
+                        self.data = Some(data);
+                        LoadingStatus::NotInProgress
+                    }
+                    Err(e) => LoadingStatus::Failed(format!("{e:?}")),
+                }
             }
         }
     }
@@ -228,11 +237,11 @@ impl eframe::App for LogViewerApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
-            ui.horizontal(|ui| {
-                ui.heading("Log Viewer");
-                ui.separator();
-                self.ui_loading(ui);
-            });
+            ui.heading("Log Viewer");
+            ui.separator();
+            self.ui_loading(ui);
+            ui.separator();
+
             StripBuilder::new(ui)
                 .size(Size::remainder().at_least(100.0)) // for the table
                 .size(Size::exact(100.0)) // for the details
