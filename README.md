@@ -6,6 +6,17 @@ Works in both Web (WASM) and on native.
 
 You can use the deployed version without install at <https://c-git.github.io/log-viewer/>
 
+# Description of expected log file format
+
+It is expected that the file will contain multiple json objects separated by new lines.
+A toy example would be:
+
+```
+{"v":0,"name":"my_server","msg":"Server address is: 127.0.0.1:8000","level":30,"hostname":"my_computer","pid":42127,"time":"2024-02-10T03:10:25.952130465Z","target":"my_server::startup","line":34,"file":"crates/wic-server/src/startup.rs"}
+{"v":0,"name":"my_server","msg":"starting 8 workers","level":30,"hostname":"my_computer","pid":42127,"time":"2024-02-10T03:10:25.952653399Z","target":"actix_server::builder","line":240,"file":"/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs"}
+{"v":0,"name":"my_server","msg":"Tokio runtime found; starting in existing Tokio runtime","level":30,"hostname":"my_computer","pid":42127,"time":"2024-02-10T03:10:25.952767514Z","target":"actix_server::server","line":197,"file":"/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/server.rs"}
+```
+
 # How to run
 
 Make sure you are using the latest version of stable rust by running `rustup update`.
@@ -27,6 +38,7 @@ On Fedora Rawhide you need to run:
 You can compile your app to [WASM](https://en.wikipedia.org/wiki/WebAssembly) and publish it as a web page.
 
 We use [Trunk](https://trunkrs.dev/) to build for web target.
+
 1. Install the required target with `rustup target add wasm32-unknown-unknown`.
 2. Install Trunk with `cargo install --locked trunk`.
 3. Run `trunk serve` to build and serve on `http://127.0.0.1:8080`. Trunk will rebuild automatically if you edit the project.
@@ -36,10 +48,12 @@ We use [Trunk](https://trunkrs.dev/) to build for web target.
 > appending `#dev` to `index.html` will skip this caching, allowing us to load the latest builds during development.
 
 ## Web Deploy
+
 1. Just run `trunk build --release`.
 2. It will generate a `dist` directory as a "static html" website
 3. Upload the `dist` directory to any of the numerous free hosting websites including [GitHub Pages](https://docs.github.com/en/free-pro-team@latest/github/working-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 4. we already provide a workflow that auto-deploys our app to GitHub pages if you enable it.
+
 > To enable Github Pages, you need to go to Repository -> Settings -> Pages -> Source -> set to `gh-pages` branch and `/` (root).
 >
 > If `gh-pages` is not available in `Source`, just create and push a branch called `gh-pages` and it should be available.
