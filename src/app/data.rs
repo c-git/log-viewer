@@ -15,13 +15,13 @@ pub struct LogRow {
 }
 
 impl LogRow {
-    const EMPTY_TEXT: &'static str = "[ --- ]";
+    const TEXT_FOR_EMPTY: &'static str = "[ --- ]";
 
     pub(crate) fn time(&self) -> &str {
         if let Some(val) = &self.time {
             val
         } else {
-            Self::EMPTY_TEXT
+            Self::TEXT_FOR_EMPTY
         }
     }
 
@@ -29,7 +29,7 @@ impl LogRow {
         if let Some(val) = &self.request_id {
             val
         } else {
-            Self::EMPTY_TEXT
+            Self::TEXT_FOR_EMPTY
         }
     }
 
@@ -37,7 +37,7 @@ impl LogRow {
         if let Some(val) = &self.otel_name {
             val
         } else {
-            Self::EMPTY_TEXT
+            Self::TEXT_FOR_EMPTY
         }
     }
 
@@ -45,7 +45,7 @@ impl LogRow {
         if let Some(val) = &self.msg {
             val
         } else {
-            Self::EMPTY_TEXT
+            Self::TEXT_FOR_EMPTY
         }
     }
 }
