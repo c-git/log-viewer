@@ -10,6 +10,7 @@ pub struct Data {
 pub struct LogRow {
     time: Option<String>,
     request_id: Option<String>,
+    #[serde(rename = "otel.name")]
     otel_name: Option<String>,
     msg: Option<String>,
     // TODO 2: Capture other info
