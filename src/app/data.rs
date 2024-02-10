@@ -2,6 +2,7 @@ use anyhow::Context;
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug)]
 pub struct Data {
+    pub selected_row: Option<usize>,
     rows: Vec<LogRow>,
 }
 

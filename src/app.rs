@@ -9,7 +9,6 @@ mod data;
 #[derive(serde::Deserialize, serde::Serialize, Default)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
-    selected_row: Option<usize>,
     data: Option<Data>,
 
     #[serde(skip)]
@@ -76,11 +75,11 @@ impl LogViewerApp {
             });
         });
 
-        if let Some(data) = &self.data {
+        if let Some(data) = &mut self.data {
             table.body(|body| {
                 body.rows(text_height, data.rows().len(), |mut row| {
                     let row_index = row.index();
-                    if let Some(selected_row) = self.selected_row {
+                    if let Some(selected_row) = data.selected_row {
                         row.set_selected(selected_row == row_index);
                     }
                     let log_row = &data.rows()[row_index];
@@ -99,10 +98,10 @@ impl LogViewerApp {
 
                     // Check for click of a row
                     if row.response().clicked() {
-                        if Some(row_index) == self.selected_row {
-                            self.selected_row = None;
+                        if Some(row_index) == data.selected_row {
+                            data.selected_row = None;
                         } else {
-                            self.selected_row = Some(row_index);
+                            data.selected_row = Some(row_index);
                         }
                     }
                 });
