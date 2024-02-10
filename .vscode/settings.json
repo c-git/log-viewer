@@ -1,9 +1,10 @@
 {
-    "cSpell.words": [
-        "devel",
-        "fontconfig",
-        "libxcb",
-        "libxkbcommon",
-        "xfixes"
-    ]
+  "cSpell.words": [
+    "devel",
+    "fontconfig",
+    "hline",
+    "libxcb",
+    "libxkbcommon",
+    "xfixes"
+  ]
 }

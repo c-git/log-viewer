@@ -6,13 +6,26 @@ use self::data::{Data, LogRow};
 // TODO 3: Add filter by and let user pick like ID or date or something like that
 
 mod data;
-#[derive(serde::Deserialize, serde::Serialize, Default)]
+
+const SPACE_BETWEEN_TABLES: f32 = 10.;
+#[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
     data: Option<Data>,
+    details_size: f32,
 
     #[serde(skip)]
     loading_status: LoadingStatus,
+}
+
+impl Default for LogViewerApp {
+    fn default() -> Self {
+        Self {
+            data: Default::default(),
+            details_size: 100.,
+            loading_status: Default::default(),
+        }
+    }
 }
 
 #[derive(Default)]
@@ -252,6 +265,19 @@ impl LogViewerApp {
         let selected_row_index = data.selected_row?;
         Some(&data.rows()[selected_row_index])
     }
+
+    fn ui_options(&mut self, ui: &mut egui::Ui) {
+        ui.collapsing("Options", |ui| {
+            ui.horizontal(|ui| {
+                ui.add(
+                    egui::DragValue::new(&mut self.details_size)
+                        .speed(0.5)
+                        .clamp_range(2. * SPACE_BETWEEN_TABLES..=f32::INFINITY)
+                        .prefix("Detail Area Size "),
+                );
+            });
+        });
+    }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -302,11 +328,13 @@ impl eframe::App for LogViewerApp {
             ui.separator();
             self.ui_loading(ui);
             ui.separator();
+            self.ui_options(ui);
+            ui.separator();
 
-            // TODO 2: Allow bottom gride size to be adjustable
             StripBuilder::new(ui)
-                .size(Size::remainder().at_least(100.0)) // for the log lines
-                .size(Size::exact(100.0)) // for the details area
+                .size(Size::remainder().at_least(self.details_size + SPACE_BETWEEN_TABLES)) // for the log lines
+                .size(Size::exact(SPACE_BETWEEN_TABLES)) // for the log lines
+                .size(Size::exact(self.details_size)) // for the details area
                 .vertical(|mut strip| {
                     strip.cell(|ui| {
                         egui::ScrollArea::horizontal()
@@ -314,6 +342,9 @@ impl eframe::App for LogViewerApp {
                             .show(ui, |ui| {
                                 ui.push_id("table log lines", |ui| self.show_log_lines(ui));
                             });
+                    });
+                    strip.cell(|ui| {
+                        expanding_content(ui);
                     });
                     strip.cell(|ui| {
                         egui::ScrollArea::horizontal()
@@ -325,4 +356,16 @@ impl eframe::App for LogViewerApp {
                 });
         });
     }
+}
+
+fn expanding_content(ui: &mut egui::Ui) {
+    // Taken from https://github.com/emilk/egui/blob/15370bbea0b468cf719a75cc6d1e39eb00c420d8/crates/egui_demo_lib/src/demo/table_demo.rs#L276
+    let width = ui.available_width();
+    let height = ui.available_height();
+    let (rect, _response) = ui.allocate_exact_size(egui::vec2(width, height), egui::Sense::hover());
+    ui.painter().hline(
+        rect.x_range(),
+        rect.center().y,
+        (1.0, ui.visuals().text_color()),
+    );
 }
