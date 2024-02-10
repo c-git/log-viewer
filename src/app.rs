@@ -271,7 +271,7 @@ impl LogViewerApp {
             ui.horizontal(|ui| {
                 ui.add(
                     egui::DragValue::new(&mut self.details_size)
-                        .speed(0.5)
+                        .speed(1.)
                         .clamp_range(2. * SPACE_BETWEEN_TABLES..=f32::INFINITY)
                         .prefix("Detail Area Size "),
                 );
@@ -331,28 +331,33 @@ impl eframe::App for LogViewerApp {
             self.ui_options(ui);
             ui.separator();
 
-            StripBuilder::new(ui)
-                .size(Size::remainder().at_least(self.details_size + SPACE_BETWEEN_TABLES)) // for the log lines
-                .size(Size::exact(SPACE_BETWEEN_TABLES)) // for the log lines
-                .size(Size::exact(self.details_size)) // for the details area
-                .vertical(|mut strip| {
-                    strip.cell(|ui| {
-                        egui::ScrollArea::horizontal()
-                            .id_source("log lines")
-                            .show(ui, |ui| {
-                                ui.push_id("table log lines", |ui| self.show_log_lines(ui));
+            egui::ScrollArea::vertical()
+                .id_source("scroll for overflow")
+                .show(ui, |ui| {
+                    StripBuilder::new(ui)
+                        .size(Size::remainder().at_least(self.details_size + SPACE_BETWEEN_TABLES)) // for the log lines
+                        .size(Size::exact(SPACE_BETWEEN_TABLES)) // for the log lines
+                        .size(Size::exact(self.details_size)) // for the details area
+                        .vertical(|mut strip| {
+                            strip.cell(|ui| {
+                                egui::ScrollArea::horizontal().id_source("log lines").show(
+                                    ui,
+                                    |ui| {
+                                        ui.push_id("table log lines", |ui| self.show_log_lines(ui));
+                                    },
+                                );
                             });
-                    });
-                    strip.cell(|ui| {
-                        expanding_content(ui);
-                    });
-                    strip.cell(|ui| {
-                        egui::ScrollArea::horizontal()
-                            .id_source("details area")
-                            .show(ui, |ui| {
-                                ui.push_id("table details", |ui| self.show_log_details(ui));
+                            strip.cell(|ui| {
+                                expanding_content(ui);
                             });
-                    });
+                            strip.cell(|ui| {
+                                egui::ScrollArea::horizontal()
+                                    .id_source("details area")
+                                    .show(ui, |ui| {
+                                        ui.push_id("table details", |ui| self.show_log_details(ui));
+                                    });
+                            });
+                        });
                 });
         });
     }
