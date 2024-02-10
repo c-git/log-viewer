@@ -385,6 +385,6 @@ fn expanding_content(ui: &mut egui::Ui) {
     ui.painter().hline(
         rect.x_range(),
         rect.center().y,
-        (1.0, ui.visuals().text_color()),
+        (2.0, ui.visuals().text_color()),
     );
 }
