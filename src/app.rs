@@ -1,4 +1,5 @@
 use egui_extras::{Column, Size, StripBuilder, TableBuilder};
+use log::info;
 
 use self::data::{Data, LogRow};
 
@@ -50,7 +51,11 @@ impl LogViewerApp {
         // Load previous app state (if any).
         // Note that you must enable the `persistence` feature for this to work.
         if let Some(storage) = cc.storage {
-            return eframe::get_value(storage, eframe::APP_KEY).unwrap_or_default();
+            info!("Storage found");
+            return eframe::get_value(storage, eframe::APP_KEY).unwrap_or_else(|| {
+                info!("failed to load data");
+                Default::default()
+            });
         }
 
         Default::default()
@@ -318,6 +323,7 @@ fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static>(f: F) 
 impl eframe::App for LogViewerApp {
     /// Called by the frame work to save state before shutdown.
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
+        info!("Saving data");
         eframe::set_value(storage, eframe::APP_KEY, self);
     }
 
