@@ -1,6 +1,6 @@
-use egui_extras::{Size, StripBuilder};
+use egui_extras::{Column, Size, StripBuilder, TableBuilder};
 
-use self::data::Data;
+use self::data::{Data, LogRow};
 
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
@@ -40,8 +40,6 @@ impl LogViewerApp {
     }
 
     fn show_log_lines(&mut self, ui: &mut egui::Ui) {
-        use egui_extras::{Column, TableBuilder};
-
         let text_height = egui::TextStyle::Body
             .resolve(ui.style())
             .size
@@ -76,6 +74,7 @@ impl LogViewerApp {
         });
 
         if let Some(data) = &mut self.data {
+            // TODO 2: If there is a selected row and it has the same request ID make text bold
             table.body(|body| {
                 body.rows(text_height, data.rows().len(), |mut row| {
                     let row_index = row.index();
@@ -113,8 +112,72 @@ impl LogViewerApp {
     }
 
     fn show_log_details(&self, ui: &mut egui::Ui) {
-        // TODO 1: Log Details
-        ui.label("Hi");
+        let Some(selected_log_row) = self.selected_row_data() else {
+            ui.label("No row Selected");
+            return;
+        };
+        let text_height = egui::TextStyle::Body
+            .resolve(ui.style())
+            .size
+            .max(ui.spacing().interact_size.y);
+
+        let table_builder = TableBuilder::new(ui)
+            .striped(true)
+            .resizable(true)
+            .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT))
+            .column(Column::auto())
+            .column(Column::remainder())
+            .min_scrolled_height(0.0);
+
+        let table = table_builder.header(20.0, |mut header| {
+            header.col(|ui| {
+                ui.strong("Field Name");
+            });
+            header.col(|ui| {
+                ui.strong("Field Value");
+            });
+        });
+
+        table.body(|body| {
+            body.rows(text_height, 4, |mut row| {
+                let row_index = row.index();
+                match row_index {
+                    0 => {
+                        row.col(|ui| {
+                            ui.label("Time");
+                        });
+                        row.col(|ui| {
+                            ui.label(selected_log_row.time());
+                        });
+                    }
+                    1 => {
+                        row.col(|ui| {
+                            ui.label("request_id");
+                        });
+                        row.col(|ui| {
+                            ui.label(selected_log_row.request_id());
+                        });
+                    }
+                    2 => {
+                        row.col(|ui| {
+                            ui.label("otel.name");
+                        });
+                        row.col(|ui| {
+                            ui.label(selected_log_row.otel_name());
+                        });
+                    }
+                    3 => {
+                        row.col(|ui| {
+                            ui.label("msg");
+                        });
+                        row.col(|ui| {
+                            ui.label(selected_log_row.msg());
+                        });
+                    }
+                    _ => todo!("Show all other fields"),
+                }
+            });
+        });
     }
 
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
@@ -183,6 +246,12 @@ impl LogViewerApp {
             })
         })
     }
+
+    fn selected_row_data(&self) -> Option<&LogRow> {
+        let data = self.data.as_ref()?;
+        let selected_row_index = data.selected_row?;
+        Some(&data.rows()[selected_row_index])
+    }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -234,6 +303,7 @@ impl eframe::App for LogViewerApp {
             self.ui_loading(ui);
             ui.separator();
 
+            // TODO 2: Allow bottom gride size to be adjustable
             StripBuilder::new(ui)
                 .size(Size::remainder().at_least(100.0)) // for the table
                 .size(Size::exact(100.0)) // for the details
