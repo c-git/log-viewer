@@ -48,7 +48,7 @@ impl LogViewerApp {
             .size
             .max(ui.spacing().interact_size.y);
 
-        let mut table = TableBuilder::new(ui)
+        let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
             .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT))
@@ -58,40 +58,32 @@ impl LogViewerApp {
             .column(Column::remainder())
             .min_scrolled_height(0.0);
 
-        let num_rows = match &self.data {
-            Some(data) => data.rows().len(),
-            None => 0,
-        };
-
         // Make table clickable
-        table = table.sense(egui::Sense::click());
+        table_builder = table_builder.sense(egui::Sense::click());
 
-        table
-            .header(20.0, |mut header| {
-                header.col(|ui| {
-                    ui.strong("Time");
-                });
-                header.col(|ui| {
-                    ui.strong("request_id");
-                });
-                header.col(|ui| {
-                    ui.strong("otel.name");
-                });
-                header.col(|ui| {
-                    ui.strong("msg");
-                });
-            })
-            .body(|body| {
-                body.rows(text_height, num_rows, |mut row| {
+        let table = table_builder.header(20.0, |mut header| {
+            header.col(|ui| {
+                ui.strong("Time");
+            });
+            header.col(|ui| {
+                ui.strong("request_id");
+            });
+            header.col(|ui| {
+                ui.strong("otel.name");
+            });
+            header.col(|ui| {
+                ui.strong("msg");
+            });
+        });
+
+        if let Some(data) = &self.data {
+            table.body(|body| {
+                body.rows(text_height, data.rows().len(), |mut row| {
                     let row_index = row.index();
                     if let Some(selected_row) = self.selected_row {
                         row.set_selected(selected_row == row_index);
                     }
-                    let log_row = &self
-                        .data
-                        .as_ref()
-                        .expect("Should only run if there are rows")
-                        .rows()[row_index];
+                    let log_row = &data.rows()[row_index];
                     row.col(|ui| {
                         ui.label(log_row.time());
                     });
@@ -105,24 +97,25 @@ impl LogViewerApp {
                         ui.label(log_row.msg());
                     });
 
-                    self.toggle_row_selection(row_index, &row.response());
+                    // Check for click of a row
+                    if row.response().clicked() {
+                        if Some(row_index) == self.selected_row {
+                            self.selected_row = None;
+                        } else {
+                            self.selected_row = Some(row_index);
+                        }
+                    }
                 });
             });
+        } else {
+            // No data so empty body
+            table.body(|_| {});
+        }
     }
 
     fn show_log_details(&self, ui: &mut egui::Ui) {
         // TODO 1: Log Details
         ui.label("Hi");
-    }
-
-    fn toggle_row_selection(&mut self, row_index: usize, row_response: &egui::Response) {
-        if row_response.clicked() {
-            if Some(row_index) == self.selected_row {
-                self.selected_row = None;
-            } else {
-                self.selected_row = Some(row_index);
-            }
-        }
     }
 
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
