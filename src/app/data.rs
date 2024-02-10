@@ -76,3 +76,32 @@ impl TryFrom<&str> for Data {
         Ok(result)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use insta::glob;
+    use rstest::{fixture, rstest};
+
+    use super::*;
+
+    const PATH_PROJECT_ROOT: &str = "../../";
+    const PATH_TEST_SAMPLES: &str = "tests/sample_logs/*.*";
+
+    #[fixture]
+    pub(crate) fn insta_settings() -> insta::Settings {
+        let mut result = insta::Settings::clone_current();
+        let cwd = std::env::current_dir().expect("failed to get cwd");
+        let path = cwd.join("tests").join("snapshots");
+        result.set_snapshot_path(path);
+        result
+    }
+
+    #[rstest]
+    fn deserialize_rows_from_string(insta_settings: insta::Settings) {
+        glob!(PATH_PROJECT_ROOT, PATH_TEST_SAMPLES, |path| {
+            let input = std::fs::read_to_string(path).unwrap();
+            let data = Data::try_from(&input[..]).unwrap();
+            insta_settings.bind(|| insta::assert_ron_snapshot!(data));
+        });
+    }
+}
