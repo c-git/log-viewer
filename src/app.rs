@@ -305,16 +305,22 @@ impl eframe::App for LogViewerApp {
 
             // TODO 2: Allow bottom gride size to be adjustable
             StripBuilder::new(ui)
-                .size(Size::remainder().at_least(100.0)) // for the table
-                .size(Size::exact(100.0)) // for the details
+                .size(Size::remainder().at_least(100.0)) // for the log lines
+                .size(Size::exact(100.0)) // for the details area
                 .vertical(|mut strip| {
                     strip.cell(|ui| {
-                        egui::ScrollArea::horizontal().show(ui, |ui| {
-                            self.show_log_lines(ui);
-                        });
+                        egui::ScrollArea::horizontal()
+                            .id_source("log lines")
+                            .show(ui, |ui| {
+                                ui.push_id("table log lines", |ui| self.show_log_lines(ui));
+                            });
                     });
                     strip.cell(|ui| {
-                        self.show_log_details(ui);
+                        egui::ScrollArea::horizontal()
+                            .id_source("details area")
+                            .show(ui, |ui| {
+                                ui.push_id("table details", |ui| self.show_log_details(ui));
+                            });
                     });
                 });
         });
