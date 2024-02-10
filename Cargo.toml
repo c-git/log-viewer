@@ -48,6 +48,8 @@ opt-level = 2
 
 [dev-dependencies]
 insta = { version = "1.34.0", features = ["ron", "glob", "yaml"] }
+pretty_assertions = "1.4.0"
+ron = "0.8.1"
 rstest = "0.18.2"
 
 # If you want to use the bleeding edge version of egui and eframe:

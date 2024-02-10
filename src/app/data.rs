@@ -2,13 +2,13 @@ use std::collections::BTreeMap;
 
 use anyhow::Context;
 
-#[derive(serde::Deserialize, serde::Serialize, Default, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 pub struct Data {
     pub selected_row: Option<usize>,
     rows: Vec<LogRow>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Default, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 pub struct LogRow {
     time: Option<String>,
     request_id: Option<String>,
@@ -80,6 +80,7 @@ impl TryFrom<&str> for Data {
 #[cfg(test)]
 mod tests {
     use insta::glob;
+    use pretty_assertions::assert_eq;
     use rstest::{fixture, rstest};
 
     use super::*;
@@ -102,6 +103,26 @@ mod tests {
             let input = std::fs::read_to_string(path).unwrap();
             let data = Data::try_from(&input[..]).unwrap();
             insta_settings.bind(|| insta::assert_ron_snapshot!(data));
+        });
+    }
+
+    #[rstest]
+    fn round_trip() {
+        glob!(PATH_PROJECT_ROOT, PATH_TEST_SAMPLES, |path| {
+            let input = std::fs::read_to_string(path).unwrap();
+            let rows_before = Data::try_from(&input[..]).unwrap();
+
+            // Test single row
+            for row_before in rows_before.rows() {
+                let as_ron = ron::to_string(&row_before).unwrap();
+                let row_after: LogRow = ron::from_str(&dbg!(as_ron)).unwrap();
+                assert_eq!(&row_after, row_before);
+            }
+
+            // Test all rows
+            let as_ron = ron::to_string(&rows_before).unwrap();
+            let rows_after: Data = ron::from_str(&dbg!(as_ron)).unwrap();
+            assert_eq!(rows_after, rows_before);
         });
     }
 }

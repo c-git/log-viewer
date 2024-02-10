@@ -14,7 +14,7 @@ const SPACE_BETWEEN_TABLES: f32 = 10.;
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
     #[serde(skip)]
-    // TODO 1 Fix issue where if data is included in the save load fails? (Need to check if it is failing and check if we can do a round trip on deserialize then serialize then deserialize)
+    // TODO 1 Fix issue where if data is included in the load fails
     // TODO 2 after fixing issue with serializing and deserializing then change to only a map so access pattern can be consistent
     data: Option<Data>,
     details_size: f32,
