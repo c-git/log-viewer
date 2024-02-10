@@ -1,0 +1,2 @@
+{"v":0,"name":"my_server","msg":"Server address is: 127.0.0.1:8000","level":30,"hostname":"my_pc","pid":50401,"time":"2024-02-10T03:13:04.191299188Z","target":"my_server::startup","line":34,"file":"crates/server/src/startup.rs"}
+{"v":0,"name":"my_server","msg":"starting 8 workers","level":30,"hostname":"my_pc","pid":50401,"time":"2024-02-10T03:13:04.191610465Z","target":"actix_server::builder","line":240,"file":"/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs"}

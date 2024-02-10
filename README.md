@@ -9,6 +9,7 @@ You can use the deployed version without install at <https://c-git.github.io/log
 # Description of expected log file format
 
 It is expected that the file will contain multiple json objects separated by new lines.
+See [samples](tests/sample_logs/).
 A toy example would be:
 
 ```
