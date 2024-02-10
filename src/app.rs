@@ -381,7 +381,8 @@ fn expanding_content(ui: &mut egui::Ui) {
     // Taken from https://github.com/emilk/egui/blob/15370bbea0b468cf719a75cc6d1e39eb00c420d8/crates/egui_demo_lib/src/demo/table_demo.rs#L276
     let width = ui.available_width();
     let height = ui.available_height();
-    let (rect, _response) = ui.allocate_exact_size(egui::vec2(width, height), egui::Sense::hover());
+    let (rect, response) = ui.allocate_exact_size(egui::vec2(width, height), egui::Sense::hover());
+    response.on_hover_text("See options to change size");
     ui.painter().hline(
         rect.x_range(),
         rect.center().y,
