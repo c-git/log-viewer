@@ -1,3 +1,5 @@
+use std::collections::BTreeMap;
+
 use anyhow::Context;
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug)]
@@ -13,7 +15,9 @@ pub struct LogRow {
     #[serde(rename = "otel.name")]
     otel_name: Option<String>,
     msg: Option<String>,
-    // TODO 2: Capture other info
+
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 impl LogRow {

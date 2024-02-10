@@ -11,6 +11,8 @@ const SPACE_BETWEEN_TABLES: f32 = 10.;
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
+    #[serde(skip)]
+    // TODO Fix issue where if data is included in the save load fails? (Need to check if it is failing and check if we can do a round trip on deserialize then serialize then deserialize)
     data: Option<Data>,
     details_size: f32,
 
@@ -151,8 +153,10 @@ impl LogViewerApp {
             });
         });
 
+        let mut iter_extra = selected_log_row.extra.iter();
+
         table.body(|body| {
-            body.rows(text_height, 4, |mut row| {
+            body.rows(text_height, 4 + selected_log_row.extra.len(), |mut row| {
                 let row_index = row.index();
                 match row_index {
                     0 => {
@@ -187,7 +191,17 @@ impl LogViewerApp {
                             ui.label(selected_log_row.msg());
                         });
                     }
-                    _ => todo!("Show all other fields"),
+                    _ => {
+                        let (key, value) = iter_extra
+                            .next()
+                            .expect("should not run out and still get called");
+                        row.col(|ui| {
+                            ui.label(key);
+                        });
+                        row.col(|ui| {
+                            ui.label(value.to_string());
+                        });
+                    }
                 }
             });
         });
