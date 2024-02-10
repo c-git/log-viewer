@@ -4,6 +4,7 @@ use self::data::{Data, LogRow};
 
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
+// TODO 3: Add checkbox to filter by current request id
 
 mod data;
 
@@ -12,7 +13,8 @@ const SPACE_BETWEEN_TABLES: f32 = 10.;
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
     #[serde(skip)]
-    // TODO Fix issue where if data is included in the save load fails? (Need to check if it is failing and check if we can do a round trip on deserialize then serialize then deserialize)
+    // TODO 1 Fix issue where if data is included in the save load fails? (Need to check if it is failing and check if we can do a round trip on deserialize then serialize then deserialize)
+    // TODO 2 after fixing issue with serializing and deserializing then change to only a map so access pattern can be consistent
     data: Option<Data>,
     details_size: f32,
 
@@ -89,19 +91,26 @@ impl LogViewerApp {
         });
 
         if let Some(data) = &mut self.data {
-            // TODO 2: If there is a selected row and it has the same request ID make text bold
             table.body(|body| {
                 body.rows(text_height, data.rows().len(), |mut row| {
                     let row_index = row.index();
-                    if let Some(selected_row) = data.selected_row {
-                        row.set_selected(selected_row == row_index);
-                    }
                     let log_row = &data.rows()[row_index];
+                    let is_same_request_id = if let Some(selected_row) = data.selected_row {
+                        row.set_selected(selected_row == row_index);
+                        data.rows()[selected_row].request_id() == log_row.request_id()
+                    } else {
+                        false
+                    };
                     row.col(|ui| {
                         ui.label(log_row.time());
                     });
                     row.col(|ui| {
-                        ui.label(log_row.request_id());
+                        let this_request_id = log_row.request_id();
+                        if is_same_request_id {
+                            ui.strong(this_request_id);
+                        } else {
+                            ui.label(this_request_id);
+                        }
                     });
                     row.col(|ui| {
                         ui.label(log_row.otel_name());
