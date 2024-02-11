@@ -102,7 +102,13 @@ mod tests {
         glob!(PATH_PROJECT_ROOT, PATH_TEST_SAMPLES, |path| {
             let input = std::fs::read_to_string(path).unwrap();
             let data = Data::try_from(&input[..]).unwrap();
-            insta_settings.bind(|| insta::assert_ron_snapshot!(data));
+            let log_filename = path.file_name().unwrap().to_string_lossy().to_string();
+            insta_settings
+                .bind(|| insta::assert_ron_snapshot!(format!("{log_filename}_ron"), data));
+            insta_settings
+                .bind(|| insta::assert_yaml_snapshot!(format!("{log_filename}_yaml"), data));
+            insta_settings
+                .bind(|| insta::assert_debug_snapshot!(format!("{log_filename}_debug"), data));
         });
     }
 
