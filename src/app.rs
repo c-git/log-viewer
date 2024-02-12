@@ -1,23 +1,26 @@
 use egui_extras::{Column, Size, StripBuilder, TableBuilder};
 use log::info;
 
-use self::data::{Data, LogRow};
+use self::{
+    data::{Data, LogRow},
+    data_display_options::DataDisplayOptions,
+};
 
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
 // TODO 3: Add checkbox to filter by current request id
+// TODO 3: Add support for arrow keys like up and down
 
 mod data;
+mod data_display_options;
 
 const SPACE_BETWEEN_TABLES: f32 = 10.;
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
-    #[serde(skip)]
-    // TODO 1 Fix issue where if data is included in the load fails
-    // TODO 2 after fixing issue with serializing and deserializing then change to only a map so access pattern can be consistent
     data: Option<Data>,
     details_size: f32,
+    data_display_options: DataDisplayOptions,
 
     #[serde(skip)]
     loading_status: LoadingStatus,
@@ -28,6 +31,7 @@ impl Default for LogViewerApp {
         Self {
             data: Default::default(),
             details_size: 100.,
+            data_display_options: Default::default(),
             loading_status: Default::default(),
         }
     }
@@ -81,18 +85,11 @@ impl LogViewerApp {
         table_builder = table_builder.sense(egui::Sense::click());
 
         let table = table_builder.header(20.0, |mut header| {
-            header.col(|ui| {
-                ui.strong("Time");
-            });
-            header.col(|ui| {
-                ui.strong("request_id");
-            });
-            header.col(|ui| {
-                ui.strong("otel.name");
-            });
-            header.col(|ui| {
-                ui.strong("msg");
-            });
+            for field_name in self.data_display_options.main_list_fields() {
+                header.col(|ui| {
+                    ui.strong(field_name);
+                });
+            }
         });
 
         if let Some(data) = &mut self.data {
@@ -100,29 +97,44 @@ impl LogViewerApp {
                 body.rows(text_height, data.rows().len(), |mut row| {
                     let row_index = row.index();
                     let log_row = &data.rows()[row_index];
-                    let is_same_request_id = if let Some(selected_row) = data.selected_row {
+
+                    let emphasis_info = if let Some(selected_row) = data.selected_row {
                         row.set_selected(selected_row == row_index);
-                        data.rows()[selected_row].request_id() == log_row.request_id()
-                    } else {
-                        false
-                    };
-                    row.col(|ui| {
-                        ui.label(log_row.time());
-                    });
-                    row.col(|ui| {
-                        let this_request_id = log_row.request_id();
-                        if is_same_request_id {
-                            ui.strong(this_request_id);
+                        if let Some(emphasis_field_idx) =
+                            *self.data_display_options.emphasize_if_matching_field_idx()
+                        {
+                            let field_name =
+                                &self.data_display_options.main_list_fields()[emphasis_field_idx];
+                            Some((
+                                emphasis_field_idx,
+                                data.rows()[selected_row].field_value(field_name),
+                            ))
                         } else {
-                            ui.label(this_request_id);
+                            None
                         }
-                    });
-                    row.col(|ui| {
-                        ui.label(log_row.otel_name());
-                    });
-                    row.col(|ui| {
-                        ui.label(log_row.msg());
-                    });
+                    } else {
+                        None
+                    };
+
+                    for (field_idx, field_name) in self
+                        .data_display_options
+                        .main_list_fields()
+                        .iter()
+                        .enumerate()
+                    {
+                        let field_value = log_row.field_value(field_name);
+
+                        let should_emphasize_field =
+                            Some((field_idx, field_value)) == emphasis_info;
+
+                        row.col(|ui| {
+                            if should_emphasize_field {
+                                ui.strong(field_value.display());
+                            } else {
+                                ui.label(field_value.display());
+                            }
+                        });
+                    }
 
                     // Check for click of a row
                     if row.response().clicked() {
@@ -167,58 +179,60 @@ impl LogViewerApp {
             });
         });
 
-        let mut iter_extra = selected_log_row.extra.iter();
+        table.body(|_| {}); // TODO 1: Implement details section
 
-        table.body(|body| {
-            body.rows(text_height, 4 + selected_log_row.extra.len(), |mut row| {
-                let row_index = row.index();
-                match row_index {
-                    0 => {
-                        row.col(|ui| {
-                            ui.label("Time");
-                        });
-                        row.col(|ui| {
-                            ui.label(selected_log_row.time());
-                        });
-                    }
-                    1 => {
-                        row.col(|ui| {
-                            ui.label("request_id");
-                        });
-                        row.col(|ui| {
-                            ui.label(selected_log_row.request_id());
-                        });
-                    }
-                    2 => {
-                        row.col(|ui| {
-                            ui.label("otel.name");
-                        });
-                        row.col(|ui| {
-                            ui.label(selected_log_row.otel_name());
-                        });
-                    }
-                    3 => {
-                        row.col(|ui| {
-                            ui.label("msg");
-                        });
-                        row.col(|ui| {
-                            ui.label(selected_log_row.msg());
-                        });
-                    }
-                    _ => {
-                        let (key, value) = iter_extra
-                            .next()
-                            .expect("should not run out and still get called");
-                        row.col(|ui| {
-                            ui.label(key);
-                        });
-                        row.col(|ui| {
-                            ui.label(value.to_string());
-                        });
-                    }
-                }
-            });
-        });
+        // let mut iter_extra = selected_log_row.extra.iter();
+
+        // table.body(|body| {
+        //     body.rows(text_height, 4 + selected_log_row.extra.len(), |mut row| {
+        //         let row_index = row.index();
+        //         match row_index {
+        //             0 => {
+        //                 row.col(|ui| {
+        //                     ui.label("Time");
+        //                 });
+        //                 row.col(|ui| {
+        //                     ui.label(selected_log_row.time());
+        //                 });
+        //             }
+        //             1 => {
+        //                 row.col(|ui| {
+        //                     ui.label("request_id");
+        //                 });
+        //                 row.col(|ui| {
+        //                     ui.label(selected_log_row.request_id());
+        //                 });
+        //             }
+        //             2 => {
+        //                 row.col(|ui| {
+        //                     ui.label("otel.name");
+        //                 });
+        //                 row.col(|ui| {
+        //                     ui.label(selected_log_row.otel_name());
+        //                 });
+        //             }
+        //             3 => {
+        //                 row.col(|ui| {
+        //                     ui.label("msg");
+        //                 });
+        //                 row.col(|ui| {
+        //                     ui.label(selected_log_row.msg());
+        //                 });
+        //             }
+        //             _ => {
+        //                 let (key, value) = iter_extra
+        //                     .next()
+        //                     .expect("should not run out and still get called");
+        //                 row.col(|ui| {
+        //                     ui.label(key);
+        //                 });
+        //                 row.col(|ui| {
+        //                     ui.label(value.to_string());
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
     }
 
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
