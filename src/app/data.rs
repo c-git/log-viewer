@@ -2,6 +2,9 @@ use std::collections::BTreeMap;
 
 use anyhow::Context;
 
+// TODO 1: Create access method that returns enum indicating value or not
+// TODO 2: Create an iterator that allows for selection of first fields to show if present
+
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 pub struct Data {
     pub selected_row: Option<usize>,
@@ -10,48 +13,32 @@ pub struct Data {
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 pub struct LogRow {
-    time: Option<String>,
-    request_id: Option<String>,
-    #[serde(rename = "otel.name")]
-    otel_name: Option<String>,
-    msg: Option<String>,
+    data: BTreeMap<String, serde_json::Value>,
+}
 
-    #[serde(flatten)]
-    pub extra: BTreeMap<String, serde_json::Value>,
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+pub enum FieldContent<'a> {
+    Present(&'a serde_json::Value),
+    Missing,
+}
+
+impl<'a> FieldContent<'a> {
+    const TEXT_FOR_EMPTY: &'static str = "[ --- ]";
+
+    pub fn display(&self) -> String {
+        // TODO 4: Revisit implementation to see if a more efficient way can be found (should be benchmarked to see if it's worth it)
+        match self {
+            FieldContent::Present(val) => val.to_string(),
+            FieldContent::Missing => Self::TEXT_FOR_EMPTY.to_string(),
+        }
+    }
 }
 
 impl LogRow {
-    const TEXT_FOR_EMPTY: &'static str = "[ --- ]";
-
-    pub(crate) fn time(&self) -> &str {
-        if let Some(val) = &self.time {
-            val
-        } else {
-            Self::TEXT_FOR_EMPTY
-        }
-    }
-
-    pub(crate) fn request_id(&self) -> &str {
-        if let Some(val) = &self.request_id {
-            val
-        } else {
-            Self::TEXT_FOR_EMPTY
-        }
-    }
-
-    pub(crate) fn otel_name(&self) -> &str {
-        if let Some(val) = &self.otel_name {
-            val
-        } else {
-            Self::TEXT_FOR_EMPTY
-        }
-    }
-
-    pub(crate) fn msg(&self) -> &str {
-        if let Some(val) = &self.msg {
-            val
-        } else {
-            Self::TEXT_FOR_EMPTY
+    pub(crate) fn field_value(&self, field_name: &str) -> FieldContent<'_> {
+        match self.data.get(field_name) {
+            Some(value) => FieldContent::Present(value),
+            None => FieldContent::Missing,
         }
     }
 }
@@ -62,6 +49,16 @@ impl Data {
     }
 }
 
+impl TryFrom<&str> for LogRow {
+    type Error = anyhow::Error;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        Ok(Self {
+            data: serde_json::from_str(value)?,
+        })
+    }
+}
+
 impl TryFrom<&str> for Data {
     type Error = anyhow::Error;
 
@@ -69,7 +66,7 @@ impl TryFrom<&str> for Data {
         let mut result = Data::default();
         for (i, line) in value.lines().enumerate() {
             result.rows.push(
-                serde_json::from_str(line)
+                LogRow::try_from(line)
                     .with_context(|| format!("failed to parse line {}", i + 1))?,
             );
         }
@@ -169,24 +166,17 @@ mod tests {
     }
 
     fn create_log_row_no_extra() -> LogRow {
-        LogRow {
-            time: Some("time value".to_string()),
-            request_id: None,
-            otel_name: Some("otel value".to_string()),
-            msg: None,
-            extra: BTreeMap::new(),
-        }
+        let mut result = LogRow::default();
+        result.data.insert("time".into(), "time value".into());
+        result
+            .data
+            .insert("otel.name".into(), "HTTP GET /status".into());
+        result
     }
 
     fn create_log_row_with_extra() -> LogRow {
-        let mut result = LogRow {
-            time: Some("time value".to_string()),
-            request_id: None,
-            otel_name: Some("otel value".to_string()),
-            msg: None,
-            extra: BTreeMap::new(),
-        };
-        result.extra.insert("key".into(), "value".into());
+        let mut result = create_log_row_no_extra();
+        result.data.insert("http.status_code".into(), 200.into());
         result
     }
 
