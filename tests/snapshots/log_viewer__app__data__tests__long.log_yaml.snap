@@ -4,1676 +4,1729 @@ expression: data
 ---
 selected_row: ~
 rows:
-  - time: "2024-02-10T06:02:11.961915483Z"
-    request_id: ~
-    otel.name: ~
-    msg: "Server address is: 127.0.0.1:8000"
-    file: crates/server/src/startup.rs
-    hostname: my_pc
-    level: 30
-    line: 34
-    name: my_server
-    pid: 201399
-    target: "my_server::startup"
-    v: 0
-  - time: "2024-02-10T06:02:11.962339028Z"
-    request_id: ~
-    otel.name: ~
-    msg: starting 8 workers
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs
-    hostname: my_pc
-    level: 30
-    line: 240
-    name: my_server
-    pid: 201399
-    target: "actix_server::builder"
-    v: 0
-  - time: "2024-02-10T06:02:11.962427666Z"
-    request_id: ~
-    otel.name: ~
-    msg: Tokio runtime found; starting in existing Tokio runtime
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/server.rs
-    hostname: my_pc
-    level: 30
-    line: 197
-    name: my_server
-    pid: 201399
-    target: "actix_server::server"
-    v: 0
-  - time: "2024-02-10T06:02:21.163518462Z"
-    request_id: 4dd8dcd4-c5a6-400d-b6ba-b29658abe7e4
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:21.170432285Z"
-    request_id: 4dd8dcd4-c5a6-400d-b6ba-b29658abe7e4
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 6
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:21.224469025Z"
-    request_id: 2f3521ae-a8ea-43b6-9c6b-1a44d36845f0
-    otel.name: "HTTP GET "
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: ""
-    http.scheme: http
-    http.target: /favicon.ico
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:21.224813634Z"
-    request_id: 2f3521ae-a8ea-43b6-9c6b-1a44d36845f0
-    otel.name: "HTTP GET "
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 0
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: ""
-    http.scheme: http
-    http.status_code: 200
-    http.target: /favicon.ico
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:27.735320535Z"
-    request_id: 51bb624d-8933-46b0-b5f3-13749cdcfb65
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:27.73652712Z"
-    request_id: 51bb624d-8933-46b0-b5f3-13749cdcfb65
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:28.778516388Z"
-    request_id: 96758627-0b02-494b-9b5a-201886e1f811
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:28.780296567Z"
-    request_id: 96758627-0b02-494b-9b5a-201886e1f811
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:29.752816316Z"
-    request_id: 86fb5ce6-8f6b-49cb-b834-0cfaf9ad9ed6
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:29.754506839Z"
-    request_id: 86fb5ce6-8f6b-49cb-b834-0cfaf9ad9ed6
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:30.528781299Z"
-    request_id: da6a2caf-621b-4cd2-90fd-c67b0fe951b7
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:30.530387153Z"
-    request_id: da6a2caf-621b-4cd2-90fd-c67b0fe951b7
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:31.01154897Z"
-    request_id: c12cd3d3-b232-4327-9ee3-ad680ff493e2
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:31.013404537Z"
-    request_id: c12cd3d3-b232-4327-9ee3-ad680ff493e2
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:31.476792941Z"
-    request_id: dfb6d617-b933-4fca-8c0d-1da09d19afed
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:31.478740965Z"
-    request_id: dfb6d617-b933-4fca-8c0d-1da09d19afed
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:31.909142641Z"
-    request_id: 2b96d8ce-db51-406a-9280-095e751d1ac8
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:31.911001241Z"
-    request_id: 2b96d8ce-db51-406a-9280-095e751d1ac8
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:32.398038641Z"
-    request_id: 952e04e8-1c0d-4b69-9ee1-63ddd390cb61
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:32.398942635Z"
-    request_id: 952e04e8-1c0d-4b69-9ee1-63ddd390cb61
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 0
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:32.753169442Z"
-    request_id: 8de12498-a0f2-42cf-b989-e8fd2b8728bf
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:32.753910825Z"
-    request_id: 8de12498-a0f2-42cf-b989-e8fd2b8728bf
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 0
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:33.189998435Z"
-    request_id: f84020d7-1137-494b-88d5-0fae03fbd53b
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:33.190858115Z"
-    request_id: f84020d7-1137-494b-88d5-0fae03fbd53b
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 0
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:33.581415707Z"
-    request_id: 862b4783-d633-40d3-8ed6-0d6fbd51b590
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:33.58330603Z"
-    request_id: 862b4783-d633-40d3-8ed6-0d6fbd51b590
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:33.995029867Z"
-    request_id: 74a2f98c-a9dc-479b-b0f8-863e7ff34d3a
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:33.995775333Z"
-    request_id: 74a2f98c-a9dc-479b-b0f8-863e7ff34d3a
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 0
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:34.49601321Z"
-    request_id: 198ad2b0-9b55-420a-8912-e3122170b760
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:34.498318841Z"
-    request_id: 198ad2b0-9b55-420a-8912-e3122170b760
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 2
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:34.933587244Z"
-    request_id: 9d866454-2d22-414b-aab3-e7a32d73035b
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:34.935651543Z"
-    request_id: 9d866454-2d22-414b-aab3-e7a32d73035b
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:35.404631082Z"
-    request_id: 25b1c7b3-75d7-4f85-bab6-920b1b3f4435
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:35.406396297Z"
-    request_id: 25b1c7b3-75d7-4f85-bab6-920b1b3f4435
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:35.908410809Z"
-    request_id: bd28760e-f8be-4285-b3fa-b935de5e3cce
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:35.909930198Z"
-    request_id: bd28760e-f8be-4285-b3fa-b935de5e3cce
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:36.406646686Z"
-    request_id: d7410116-e47f-44db-8e95-65ae6d731aa3
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:36.408148172Z"
-    request_id: d7410116-e47f-44db-8e95-65ae6d731aa3
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:36.883330358Z"
-    request_id: 1718b374-a08d-491c-8802-6054905141ea
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:36.884516393Z"
-    request_id: 1718b374-a08d-491c-8802-6054905141ea
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:37.414535794Z"
-    request_id: 52288c2d-ea91-48c5-9db9-1b7e134a3915
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:37.416158356Z"
-    request_id: 52288c2d-ea91-48c5-9db9-1b7e134a3915
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:37.988422018Z"
-    request_id: b362e638-1e2a-4184-84d9-fb39c3cfa5c9
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:37.990135478Z"
-    request_id: b362e638-1e2a-4184-84d9-fb39c3cfa5c9
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:38.516440225Z"
-    request_id: fe545736-0993-4bbd-8395-b5be9fe6ccd4
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:38.518258022Z"
-    request_id: fe545736-0993-4bbd-8395-b5be9fe6ccd4
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:39.063656597Z"
-    request_id: 63d31d2b-bbfc-4f01-90b3-80e53d407abe
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:39.065560988Z"
-    request_id: 63d31d2b-bbfc-4f01-90b3-80e53d407abe
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:39.677814726Z"
-    request_id: ea4e5992-7566-4b3e-bd3e-39e4a6fe9db6
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:39.678891214Z"
-    request_id: ea4e5992-7566-4b3e-bd3e-39e4a6fe9db6
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:40.233335145Z"
-    request_id: 4639d2b0-dfbc-404a-b51a-82aa4743972a
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:40.235457041Z"
-    request_id: 4639d2b0-dfbc-404a-b51a-82aa4743972a
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 2
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:40.809624727Z"
-    request_id: 521e581e-8fbc-4876-bcb6-0754c97423ef
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:02:40.811254162Z"
-    request_id: 521e581e-8fbc-4876-bcb6-0754c97423ef
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 1
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:06.191856068Z"
-    request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:06.192024502Z"
-    request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - EVENT] ping on idle connection returned error: error communicating with database: connection aborted"
-    file: ~
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: ~
-    log.file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlx-core-0.6.3/src/pool/inner.rs
-    log.line: 432
-    log.module_path: "sqlx_core::pool::inner"
-    log.target: "sqlx_core::pool::inner"
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: log
-    v: 0
-  - time: "2024-02-10T06:03:06.797748362Z"
-    request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:07.444854732Z"
-    request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:08.193165123Z"
-    request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
-    file: crates/server/src/routes/status.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 50
-    line: 60
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "my_server::routes::status"
-    v: 0
-  - time: "2024-02-10T06:03:08.19338919Z"
-    request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 2001
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:08.799070853Z"
-    request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
-    file: crates/server/src/routes/status.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 50
-    line: 60
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "my_server::routes::status"
-    v: 0
-  - time: "2024-02-10T06:03:08.799252303Z"
-    request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 2001
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:09.446331651Z"
-    request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
-    file: crates/server/src/routes/status.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 50
-    line: 60
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "my_server::routes::status"
-    v: 0
-  - time: "2024-02-10T06:03:09.446655074Z"
-    request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 2001
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:13.082901829Z"
-    request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - START]"
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:15.084438959Z"
-    request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
-    file: crates/server/src/routes/status.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 50
-    line: 60
-    name: my_server
-    otel.kind: server
-    pid: 201399
-    target: "my_server::routes::status"
-    v: 0
-  - time: "2024-02-10T06:03:15.084681044Z"
-    request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
-    otel.name: HTTP GET /status
-    msg: "[HTTP REQUEST - END]"
-    elapsed_milliseconds: 2001
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
-    hostname: my_pc
-    http.client_ip: 127.0.0.1
-    http.flavor: "1.1"
-    http.host: "127.0.0.1:8000"
-    http.method: GET
-    http.route: /status
-    http.scheme: http
-    http.status_code: 200
-    http.target: /status
-    http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
-    level: 30
-    line: 40
-    name: my_server
-    otel.kind: server
-    otel.status_code: OK
-    pid: 201399
-    target: "tracing_actix_web::root_span_builder"
-    v: 0
-  - time: "2024-02-10T06:03:26.993587646Z"
-    request_id: ~
-    otel.name: ~
-    msg: SIGINT received; starting forced shutdown
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/server.rs
-    hostname: my_pc
-    level: 30
-    line: 319
-    name: my_server
-    pid: 201399
-    target: "actix_server::server"
-    v: 0
-  - time: "2024-02-10T06:03:26.993775955Z"
-    request_id: ~
-    otel.name: ~
-    msg: accept thread stopped
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/accept.rs
-    hostname: my_pc
-    level: 30
-    line: 143
-    name: my_server
-    pid: 201399
-    target: "actix_server::accept"
-    v: 0
-  - time: "2024-02-10T06:03:26.993775787Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:26.993775779Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:26.993775827Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:26.993783793Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:26.993808637Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:26.994068372Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:26.994080138Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:26.994147513Z"
-    request_id: ~
-    otel.name: ~
-    msg: shutting down idle worker
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
-    hostname: my_pc
-    level: 30
-    line: 595
-    name: my_server
-    pid: 201399
-    target: "actix_server::worker"
-    v: 0
-  - time: "2024-02-10T06:03:27.295589706Z"
-    request_id: ~
-    otel.name: ~
-    msg: API has exited
-    file: crates/server/src/main.rs
-    hostname: my_pc
-    level: 30
-    line: 31
-    name: my_server
-    pid: 201399
-    target: my_server
-    v: 0
+  - data:
+      file: crates/server/src/startup.rs
+      hostname: my_pc
+      level: 30
+      line: 34
+      msg: "Server address is: 127.0.0.1:8000"
+      name: my_server
+      pid: 201399
+      target: "my_server::startup"
+      time: "2024-02-10T06:02:11.961915483Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs
+      hostname: my_pc
+      level: 30
+      line: 240
+      msg: starting 8 workers
+      name: my_server
+      pid: 201399
+      target: "actix_server::builder"
+      time: "2024-02-10T06:02:11.962339028Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/server.rs
+      hostname: my_pc
+      level: 30
+      line: 197
+      msg: Tokio runtime found; starting in existing Tokio runtime
+      name: my_server
+      pid: 201399
+      target: "actix_server::server"
+      time: "2024-02-10T06:02:11.962427666Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 4dd8dcd4-c5a6-400d-b6ba-b29658abe7e4
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:21.163518462Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 6
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 4dd8dcd4-c5a6-400d-b6ba-b29658abe7e4
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:21.170432285Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: ""
+      http.scheme: http
+      http.target: /favicon.ico
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: "HTTP GET "
+      pid: 201399
+      request_id: 2f3521ae-a8ea-43b6-9c6b-1a44d36845f0
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:21.224469025Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 0
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: ""
+      http.scheme: http
+      http.status_code: 200
+      http.target: /favicon.ico
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: "HTTP GET "
+      otel.status_code: OK
+      pid: 201399
+      request_id: 2f3521ae-a8ea-43b6-9c6b-1a44d36845f0
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:21.224813634Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 51bb624d-8933-46b0-b5f3-13749cdcfb65
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:27.735320535Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 51bb624d-8933-46b0-b5f3-13749cdcfb65
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:27.73652712Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 96758627-0b02-494b-9b5a-201886e1f811
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:28.778516388Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 96758627-0b02-494b-9b5a-201886e1f811
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:28.780296567Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 86fb5ce6-8f6b-49cb-b834-0cfaf9ad9ed6
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:29.752816316Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 86fb5ce6-8f6b-49cb-b834-0cfaf9ad9ed6
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:29.754506839Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: da6a2caf-621b-4cd2-90fd-c67b0fe951b7
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:30.528781299Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: da6a2caf-621b-4cd2-90fd-c67b0fe951b7
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:30.530387153Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: c12cd3d3-b232-4327-9ee3-ad680ff493e2
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:31.01154897Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: c12cd3d3-b232-4327-9ee3-ad680ff493e2
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:31.013404537Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: dfb6d617-b933-4fca-8c0d-1da09d19afed
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:31.476792941Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: dfb6d617-b933-4fca-8c0d-1da09d19afed
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:31.478740965Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 2b96d8ce-db51-406a-9280-095e751d1ac8
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:31.909142641Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 2b96d8ce-db51-406a-9280-095e751d1ac8
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:31.911001241Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 952e04e8-1c0d-4b69-9ee1-63ddd390cb61
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:32.398038641Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 0
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 952e04e8-1c0d-4b69-9ee1-63ddd390cb61
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:32.398942635Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 8de12498-a0f2-42cf-b989-e8fd2b8728bf
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:32.753169442Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 0
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 8de12498-a0f2-42cf-b989-e8fd2b8728bf
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:32.753910825Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: f84020d7-1137-494b-88d5-0fae03fbd53b
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:33.189998435Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 0
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: f84020d7-1137-494b-88d5-0fae03fbd53b
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:33.190858115Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 862b4783-d633-40d3-8ed6-0d6fbd51b590
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:33.581415707Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 862b4783-d633-40d3-8ed6-0d6fbd51b590
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:33.58330603Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 74a2f98c-a9dc-479b-b0f8-863e7ff34d3a
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:33.995029867Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 0
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 74a2f98c-a9dc-479b-b0f8-863e7ff34d3a
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:33.995775333Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 198ad2b0-9b55-420a-8912-e3122170b760
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:34.49601321Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 2
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 198ad2b0-9b55-420a-8912-e3122170b760
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:34.498318841Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 9d866454-2d22-414b-aab3-e7a32d73035b
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:34.933587244Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 9d866454-2d22-414b-aab3-e7a32d73035b
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:34.935651543Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 25b1c7b3-75d7-4f85-bab6-920b1b3f4435
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:35.404631082Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 25b1c7b3-75d7-4f85-bab6-920b1b3f4435
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:35.406396297Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: bd28760e-f8be-4285-b3fa-b935de5e3cce
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:35.908410809Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: bd28760e-f8be-4285-b3fa-b935de5e3cce
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:35.909930198Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: d7410116-e47f-44db-8e95-65ae6d731aa3
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:36.406646686Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: d7410116-e47f-44db-8e95-65ae6d731aa3
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:36.408148172Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 1718b374-a08d-491c-8802-6054905141ea
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:36.883330358Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 1718b374-a08d-491c-8802-6054905141ea
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:36.884516393Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 52288c2d-ea91-48c5-9db9-1b7e134a3915
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:37.414535794Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 52288c2d-ea91-48c5-9db9-1b7e134a3915
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:37.416158356Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: b362e638-1e2a-4184-84d9-fb39c3cfa5c9
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:37.988422018Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: b362e638-1e2a-4184-84d9-fb39c3cfa5c9
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:37.990135478Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: fe545736-0993-4bbd-8395-b5be9fe6ccd4
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:38.516440225Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: fe545736-0993-4bbd-8395-b5be9fe6ccd4
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:38.518258022Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 63d31d2b-bbfc-4f01-90b3-80e53d407abe
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:39.063656597Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 63d31d2b-bbfc-4f01-90b3-80e53d407abe
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:39.065560988Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: ea4e5992-7566-4b3e-bd3e-39e4a6fe9db6
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:39.677814726Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: ea4e5992-7566-4b3e-bd3e-39e4a6fe9db6
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:39.678891214Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 4639d2b0-dfbc-404a-b51a-82aa4743972a
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:40.233335145Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 2
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 4639d2b0-dfbc-404a-b51a-82aa4743972a
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:40.235457041Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 521e581e-8fbc-4876-bcb6-0754c97423ef
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:40.809624727Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 1
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 521e581e-8fbc-4876-bcb6-0754c97423ef
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:02:40.811254162Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:06.191856068Z"
+      v: 0
+  - data:
+      file: ~
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: ~
+      log.file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlx-core-0.6.3/src/pool/inner.rs
+      log.line: 432
+      log.module_path: "sqlx_core::pool::inner"
+      log.target: "sqlx_core::pool::inner"
+      msg: "[HTTP REQUEST - EVENT] ping on idle connection returned error: error communicating with database: connection aborted"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
+      target: log
+      time: "2024-02-10T06:03:06.192024502Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:06.797748362Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:07.444854732Z"
+      v: 0
+  - data:
+      file: crates/server/src/routes/status.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 50
+      line: 60
+      msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
+      target: "my_server::routes::status"
+      time: "2024-02-10T06:03:08.193165123Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 2001
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:08.19338919Z"
+      v: 0
+  - data:
+      file: crates/server/src/routes/status.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 50
+      line: 60
+      msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
+      target: "my_server::routes::status"
+      time: "2024-02-10T06:03:08.799070853Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 2001
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:08.799252303Z"
+      v: 0
+  - data:
+      file: crates/server/src/routes/status.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 50
+      line: 60
+      msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
+      target: "my_server::routes::status"
+      time: "2024-02-10T06:03:09.446331651Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 2001
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:09.446655074Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - START]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:13.082901829Z"
+      v: 0
+  - data:
+      file: crates/server/src/routes/status.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 50
+      line: 60
+      msg: "[HTTP REQUEST - EVENT] Error for \"Connect to Database\" - pool timed out while waiting for an open connection"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      pid: 201399
+      request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
+      target: "my_server::routes::status"
+      time: "2024-02-10T06:03:15.084438959Z"
+      v: 0
+  - data:
+      elapsed_milliseconds: 2001
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs
+      hostname: my_pc
+      http.client_ip: 127.0.0.1
+      http.flavor: "1.1"
+      http.host: "127.0.0.1:8000"
+      http.method: GET
+      http.route: /status
+      http.scheme: http
+      http.status_code: 200
+      http.target: /status
+      http.user_agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0"
+      level: 30
+      line: 40
+      msg: "[HTTP REQUEST - END]"
+      name: my_server
+      otel.kind: server
+      otel.name: HTTP GET /status
+      otel.status_code: OK
+      pid: 201399
+      request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
+      target: "tracing_actix_web::root_span_builder"
+      time: "2024-02-10T06:03:15.084681044Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/server.rs
+      hostname: my_pc
+      level: 30
+      line: 319
+      msg: SIGINT received; starting forced shutdown
+      name: my_server
+      pid: 201399
+      target: "actix_server::server"
+      time: "2024-02-10T06:03:26.993587646Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/accept.rs
+      hostname: my_pc
+      level: 30
+      line: 143
+      msg: accept thread stopped
+      name: my_server
+      pid: 201399
+      target: "actix_server::accept"
+      time: "2024-02-10T06:03:26.993775955Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.993775787Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.993775779Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.993775827Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.993783793Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.993808637Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.994068372Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.994080138Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs
+      hostname: my_pc
+      level: 30
+      line: 595
+      msg: shutting down idle worker
+      name: my_server
+      pid: 201399
+      target: "actix_server::worker"
+      time: "2024-02-10T06:03:26.994147513Z"
+      v: 0
+  - data:
+      file: crates/server/src/main.rs
+      hostname: my_pc
+      level: 30
+      line: 31
+      msg: API has exited
+      name: my_server
+      pid: 201399
+      target: my_server
+      time: "2024-02-10T06:03:27.295589706Z"
+      v: 0
 

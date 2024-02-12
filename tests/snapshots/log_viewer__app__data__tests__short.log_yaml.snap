@@ -4,28 +4,26 @@ expression: data
 ---
 selected_row: ~
 rows:
-  - time: "2024-02-10T03:13:04.191299188Z"
-    request_id: ~
-    otel.name: ~
-    msg: "Server address is: 127.0.0.1:8000"
-    file: crates/server/src/startup.rs
-    hostname: my_pc
-    level: 30
-    line: 34
-    name: my_server
-    pid: 50401
-    target: "my_server::startup"
-    v: 0
-  - time: "2024-02-10T03:13:04.191610465Z"
-    request_id: ~
-    otel.name: ~
-    msg: starting 8 workers
-    file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs
-    hostname: my_pc
-    level: 30
-    line: 240
-    name: my_server
-    pid: 50401
-    target: "actix_server::builder"
-    v: 0
+  - data:
+      file: crates/server/src/startup.rs
+      hostname: my_pc
+      level: 30
+      line: 34
+      msg: "Server address is: 127.0.0.1:8000"
+      name: my_server
+      pid: 50401
+      target: "my_server::startup"
+      time: "2024-02-10T03:13:04.191299188Z"
+      v: 0
+  - data:
+      file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs
+      hostname: my_pc
+      level: 30
+      line: 240
+      msg: starting 8 workers
+      name: my_server
+      pid: 50401
+      target: "actix_server::builder"
+      time: "2024-02-10T03:13:04.191610465Z"
+      v: 0
 
