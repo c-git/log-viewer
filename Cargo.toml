@@ -5,23 +5,23 @@ authors = ["Emil Ernerfeldt <emil.ernerfeldt@gmail.com>"]
 edition = "2021"
 rust-version = "1.72"
 
+# TODO 3: Upgrade egui
+# TODO 3: Confirm all dependencies are needed
 
 [dependencies]
-egui = "0.25.0"
-eframe = { version = "0.25.0", default-features = false, features = [
-    "accesskit",     # Make egui compatible with screen readers. NOTE: adds a lot of dependencies.
-    "default_fonts", # Embed the default egui fonts.
-    "glow",          # Use the glow rendering backend. Alternative: "wgpu".
-    "persistence",   # Enable restoring app state when restarting the app.
+eframe = { version = "0.25.0", default-features = false, features = ["accesskit", # Make egui compatible with screen readers. NOTE: adds a lot of dependencies.
+  "default_fonts", # Embed the default egui fonts.
+  "glow", # Use the glow rendering backend. Alternative: "wgpu".
+  "persistence", # Enable restoring app state when restarting the app.
 ] }
+egui = "0.25.0"
 log = "0.4"
 
-# You only need serde if you want app persistence:
-serde = { version = "1", features = ["derive"] }
+anyhow = "1.0.79"
 egui_extras = "0.25.0"
 futures = "0.3.30"
-anyhow = "1.0.79"
 rfd = { version = "0.13.0", features = ["tokio"] }
+serde = { version = "1", features = ["derive"] }
 serde_json = "1.0.113"
 
 # native:
@@ -35,14 +35,12 @@ tokio = { version = "1.35.1", features = ["full"] }
 poll-promise = { version = "0.3.0", features = ["web"] }
 wasm-bindgen-futures = "0.4"
 
-
 [profile.release]
 opt-level = 2 # fast and small wasm
 
 # Optimize all dependencies even in debug builds:
 [profile.dev.package."*"]
 opt-level = 2
-
 
 [patch.crates-io]
 
