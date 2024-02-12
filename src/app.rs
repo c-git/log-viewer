@@ -179,60 +179,20 @@ impl LogViewerApp {
             });
         });
 
-        table.body(|_| {}); // TODO 1: Implement details section
+        let mut iter = selected_log_row.iter();
+        let total_rows = selected_log_row.len();
 
-        // let mut iter_extra = selected_log_row.extra.iter();
-
-        // table.body(|body| {
-        //     body.rows(text_height, 4 + selected_log_row.extra.len(), |mut row| {
-        //         let row_index = row.index();
-        //         match row_index {
-        //             0 => {
-        //                 row.col(|ui| {
-        //                     ui.label("Time");
-        //                 });
-        //                 row.col(|ui| {
-        //                     ui.label(selected_log_row.time());
-        //                 });
-        //             }
-        //             1 => {
-        //                 row.col(|ui| {
-        //                     ui.label("request_id");
-        //                 });
-        //                 row.col(|ui| {
-        //                     ui.label(selected_log_row.request_id());
-        //                 });
-        //             }
-        //             2 => {
-        //                 row.col(|ui| {
-        //                     ui.label("otel.name");
-        //                 });
-        //                 row.col(|ui| {
-        //                     ui.label(selected_log_row.otel_name());
-        //                 });
-        //             }
-        //             3 => {
-        //                 row.col(|ui| {
-        //                     ui.label("msg");
-        //                 });
-        //                 row.col(|ui| {
-        //                     ui.label(selected_log_row.msg());
-        //                 });
-        //             }
-        //             _ => {
-        //                 let (key, value) = iter_extra
-        //                     .next()
-        //                     .expect("should not run out and still get called");
-        //                 row.col(|ui| {
-        //                     ui.label(key);
-        //                 });
-        //                 row.col(|ui| {
-        //                     ui.label(value.to_string());
-        //                 });
-        //             }
-        //         }
-        //     });
-        // });
+        table.body(|body| {
+            body.rows(text_height, total_rows, |mut row| {
+                let (title, value) = iter.next().expect("should always match total_rows");
+                row.col(|ui| {
+                    ui.label(title);
+                });
+                row.col(|ui| {
+                    ui.label(value.to_string());
+                });
+            });
+        });
     }
 
     fn ui_loading(&mut self, ui: &mut egui::Ui) {

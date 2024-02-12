@@ -41,6 +41,15 @@ impl LogRow {
             None => FieldContent::Missing,
         }
     }
+
+    pub fn iter(&self) -> impl Iterator<Item = (&String, &serde_json::Value)> {
+        // TODO 4: Determine if here is actually value in making the "main_fields" show first
+        self.data.iter()
+    }
+
+    pub(crate) fn len(&self) -> usize {
+        self.data.len()
+    }
 }
 
 impl Data {
