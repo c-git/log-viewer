@@ -19,7 +19,7 @@ const SPACE_BETWEEN_TABLES: f32 = 10.;
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
     data: Option<Data>,
-    details_size: f32,
+    main_table_screen_proportion: f32,
     data_display_options: DataDisplayOptions,
 
     #[serde(skip)]
@@ -30,7 +30,7 @@ impl Default for LogViewerApp {
     fn default() -> Self {
         Self {
             data: Default::default(),
-            details_size: 100.,
+            main_table_screen_proportion: 0.8,
             data_display_options: Default::default(),
             loading_status: Default::default(),
         }
@@ -272,10 +272,10 @@ impl LogViewerApp {
         ui.collapsing("Options", |ui| {
             ui.horizontal(|ui| {
                 ui.add(
-                    egui::DragValue::new(&mut self.details_size)
-                        .speed(1.)
-                        .clamp_range(2. * SPACE_BETWEEN_TABLES..=f32::INFINITY)
-                        .prefix("Detail Area Size "),
+                    egui::DragValue::new(&mut self.main_table_screen_proportion)
+                        .speed(0.01)
+                        .clamp_range(0.2..=0.85)
+                        .prefix("Main Area Proportion Percentage "),
                 );
             });
         });
@@ -338,9 +338,9 @@ impl eframe::App for LogViewerApp {
                 .id_source("scroll for overflow")
                 .show(ui, |ui| {
                     StripBuilder::new(ui)
-                        .size(Size::remainder().at_least(self.details_size + SPACE_BETWEEN_TABLES)) // for the log lines
+                        .size(Size::relative(self.main_table_screen_proportion)) // for the log lines
                         .size(Size::exact(SPACE_BETWEEN_TABLES)) // for the log lines
-                        .size(Size::exact(self.details_size)) // for the details area
+                        .size(Size::remainder()) // for the details area
                         .vertical(|mut strip| {
                             strip.cell(|ui| {
                                 egui::ScrollArea::horizontal().id_source("log lines").show(
