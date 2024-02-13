@@ -28,7 +28,13 @@ impl<'a> FieldContent<'a> {
     pub fn display(&self) -> String {
         // TODO 4: Revisit implementation to see if a more efficient way can be found (should be benchmarked to see if it's worth it)
         match self {
-            FieldContent::Present(val) => val.to_string(),
+            FieldContent::Present(val) => {
+                if let Some(s) = val.as_str() {
+                    s.to_string()
+                } else {
+                    val.to_string()
+                }
+            }
             FieldContent::Missing => Self::TEXT_FOR_EMPTY.to_string(),
         }
     }
