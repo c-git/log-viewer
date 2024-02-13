@@ -15,7 +15,7 @@ pub struct Data {
 pub struct LogRow {
     data: BTreeMap<String, serde_json::Value>,
     #[serde(skip)]
-    cached_display_list: Option<Vec<(String, serde_json::Value)>>,
+    cached_display_list: Option<Vec<(String, String)>>,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -50,10 +50,13 @@ impl LogRow {
         }
     }
 
-    pub fn as_slice(&mut self) -> &[(String, serde_json::Value)] {
+    pub fn as_slice(&mut self) -> &[(String, String)] {
         // TODO 1: Return FieldContent
         if self.cached_display_list.is_none() {
-            let value = self.iter().map(|(k, v)| (k.clone(), v.clone())).collect();
+            let value = self
+                .iter()
+                .map(|(k, v)| (k.clone(), FieldContent::Present(v).display())) // Use display to keep formatting consistent
+                .collect();
             self.cached_display_list = Some(value);
         }
 
@@ -74,7 +77,7 @@ impl Data {
         &self.rows
     }
 
-    pub fn selected_row_data_as_slice(&mut self) -> Option<&[(String, serde_json::Value)]> {
+    pub fn selected_row_data_as_slice(&mut self) -> Option<&[(String, String)]> {
         let selected_row_index = self.selected_row?;
         Some(self.rows[selected_row_index].as_slice())
     }
