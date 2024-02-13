@@ -27,7 +27,7 @@ impl Default for LogViewerApp {
     fn default() -> Self {
         Self {
             data: Default::default(),
-            main_table_screen_proportion: 0.8,
+            main_table_screen_proportion: 0.5,
             data_display_options: Default::default(),
             loading_status: Default::default(),
         }
