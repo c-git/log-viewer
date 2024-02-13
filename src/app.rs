@@ -263,16 +263,15 @@ impl LogViewerApp {
     fn initiate_loading(&self, ctx: egui::Context) -> LoadingStatus {
         let start_open_path = Arc::clone(&self.start_open_path);
         execute(async move {
-            let dialog = rfd::AsyncFileDialog::new();
-            let dialog = if let Some(path) = start_open_path.lock().unwrap().as_mut() {
-                dialog.set_directory(path)
-            } else {
-                dialog
-            };
+            let mut dialog = rfd::AsyncFileDialog::new();
+            if let Some(path) = start_open_path.lock().unwrap().as_mut() {
+                dialog = dialog.set_directory(path);
+            }
             let Some(file) = dialog.pick_file().await else {
                 // user canceled loading
                 return Box::new(LoadingStatus::NotInProgress);
             };
+            #[cfg(not(target_arch = "wasm32"))]
             if let Some(parent) = file.path().parent() {
                 *start_open_path.lock().unwrap() = Some(PathBuf::from(parent));
             }
