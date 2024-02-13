@@ -68,14 +68,21 @@ impl LogViewerApp {
             .size
             .max(ui.spacing().interact_size.y);
 
-        // TODO 1: Fix this should match number of column headings
         let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
-            .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT))
-            .column(Column::auto())
-            .column(Column::auto())
-            .column(Column::auto())
+            .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT));
+
+        let n = self.data_display_options.main_list_fields().len();
+        for _ in self
+            .data_display_options
+            .main_list_fields()
+            .iter()
+            .take(n - 1)
+        {
+            table_builder = table_builder.column(Column::auto());
+        }
+        table_builder = table_builder
             .column(Column::remainder())
             .min_scrolled_height(0.0);
 
