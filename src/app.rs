@@ -1,3 +1,8 @@
+use std::{
+    path::PathBuf,
+    sync::{Arc, Mutex},
+};
+
 use egui_extras::{Column, Size, StripBuilder, TableBuilder};
 use log::info;
 
@@ -18,6 +23,7 @@ pub struct LogViewerApp {
     data: Option<Data>,
     main_table_screen_proportion: f32,
     data_display_options: DataDisplayOptions,
+    start_open_path: Arc<Mutex<Option<PathBuf>>>,
 
     #[serde(skip)]
     loading_status: LoadingStatus,
@@ -29,6 +35,7 @@ impl Default for LogViewerApp {
             data: Default::default(),
             main_table_screen_proportion: 0.5,
             data_display_options: Default::default(),
+            start_open_path: Default::default(),
             loading_status: Default::default(),
         }
     }
@@ -254,11 +261,21 @@ impl LogViewerApp {
     }
 
     fn initiate_loading(&self, ctx: egui::Context) -> LoadingStatus {
+        let start_open_path = Arc::clone(&self.start_open_path);
         execute(async move {
-            let Some(file) = rfd::AsyncFileDialog::new().pick_file().await else {
+            let dialog = rfd::AsyncFileDialog::new();
+            let dialog = if let Some(path) = start_open_path.lock().unwrap().as_mut() {
+                dialog.set_directory(path)
+            } else {
+                dialog
+            };
+            let Some(file) = dialog.pick_file().await else {
                 // user canceled loading
                 return Box::new(LoadingStatus::NotInProgress);
             };
+            if let Some(parent) = file.path().parent() {
+                *start_open_path.lock().unwrap() = Some(PathBuf::from(parent));
+            }
             let text = file.read().await;
 
             // Uncomment the following line to simulate taking long to load, only works on native
