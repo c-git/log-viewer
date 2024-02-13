@@ -164,13 +164,16 @@ impl LogViewerApp {
             .size
             .max(ui.spacing().interact_size.y);
 
-        let table_builder = TableBuilder::new(ui)
+        let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
             .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT))
             .column(Column::auto())
             .column(Column::remainder())
             .min_scrolled_height(0.0);
+
+        // Clicks not needed but adds highlight row
+        table_builder = table_builder.sense(egui::Sense::click());
 
         let table = table_builder.header(20.0, |mut header| {
             header.col(|ui| {
