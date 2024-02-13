@@ -1,5 +1,6 @@
 ---
 source: src/app/data.rs
+assertion_line: 155
 expression: data
 ---
 Data {
@@ -18,6 +19,7 @@ Data {
                 "time": String("2024-02-10T03:13:04.191299188Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -32,6 +34,7 @@ Data {
                 "time": String("2024-02-10T03:13:04.191610465Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
     ],
 }

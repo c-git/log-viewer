@@ -1,5 +1,6 @@
 ---
 source: src/app/data.rs
+assertion_line: 155
 expression: data
 ---
 Data {
@@ -18,6 +19,7 @@ Data {
                 "time": String("2024-02-10T06:02:11.961915483Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -32,6 +34,7 @@ Data {
                 "time": String("2024-02-10T06:02:11.962339028Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -46,6 +49,7 @@ Data {
                 "time": String("2024-02-10T06:02:11.962427666Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -71,6 +75,7 @@ Data {
                 "time": String("2024-02-10T06:02:21.163518462Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -99,6 +104,7 @@ Data {
                 "time": String("2024-02-10T06:02:21.170432285Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -124,6 +130,7 @@ Data {
                 "time": String("2024-02-10T06:02:21.224469025Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -152,6 +159,7 @@ Data {
                 "time": String("2024-02-10T06:02:21.224813634Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -177,6 +185,7 @@ Data {
                 "time": String("2024-02-10T06:02:27.735320535Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -205,6 +214,7 @@ Data {
                 "time": String("2024-02-10T06:02:27.73652712Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -230,6 +240,7 @@ Data {
                 "time": String("2024-02-10T06:02:28.778516388Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -258,6 +269,7 @@ Data {
                 "time": String("2024-02-10T06:02:28.780296567Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -283,6 +295,7 @@ Data {
                 "time": String("2024-02-10T06:02:29.752816316Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -311,6 +324,7 @@ Data {
                 "time": String("2024-02-10T06:02:29.754506839Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -336,6 +350,7 @@ Data {
                 "time": String("2024-02-10T06:02:30.528781299Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -364,6 +379,7 @@ Data {
                 "time": String("2024-02-10T06:02:30.530387153Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -389,6 +405,7 @@ Data {
                 "time": String("2024-02-10T06:02:31.01154897Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -417,6 +434,7 @@ Data {
                 "time": String("2024-02-10T06:02:31.013404537Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -442,6 +460,7 @@ Data {
                 "time": String("2024-02-10T06:02:31.476792941Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -470,6 +489,7 @@ Data {
                 "time": String("2024-02-10T06:02:31.478740965Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -495,6 +515,7 @@ Data {
                 "time": String("2024-02-10T06:02:31.909142641Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -523,6 +544,7 @@ Data {
                 "time": String("2024-02-10T06:02:31.911001241Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -548,6 +570,7 @@ Data {
                 "time": String("2024-02-10T06:02:32.398038641Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -576,6 +599,7 @@ Data {
                 "time": String("2024-02-10T06:02:32.398942635Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -601,6 +625,7 @@ Data {
                 "time": String("2024-02-10T06:02:32.753169442Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -629,6 +654,7 @@ Data {
                 "time": String("2024-02-10T06:02:32.753910825Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -654,6 +680,7 @@ Data {
                 "time": String("2024-02-10T06:02:33.189998435Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -682,6 +709,7 @@ Data {
                 "time": String("2024-02-10T06:02:33.190858115Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -707,6 +735,7 @@ Data {
                 "time": String("2024-02-10T06:02:33.581415707Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -735,6 +764,7 @@ Data {
                 "time": String("2024-02-10T06:02:33.58330603Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -760,6 +790,7 @@ Data {
                 "time": String("2024-02-10T06:02:33.995029867Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -788,6 +819,7 @@ Data {
                 "time": String("2024-02-10T06:02:33.995775333Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -813,6 +845,7 @@ Data {
                 "time": String("2024-02-10T06:02:34.49601321Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -841,6 +874,7 @@ Data {
                 "time": String("2024-02-10T06:02:34.498318841Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -866,6 +900,7 @@ Data {
                 "time": String("2024-02-10T06:02:34.933587244Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -894,6 +929,7 @@ Data {
                 "time": String("2024-02-10T06:02:34.935651543Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -919,6 +955,7 @@ Data {
                 "time": String("2024-02-10T06:02:35.404631082Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -947,6 +984,7 @@ Data {
                 "time": String("2024-02-10T06:02:35.406396297Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -972,6 +1010,7 @@ Data {
                 "time": String("2024-02-10T06:02:35.908410809Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1000,6 +1039,7 @@ Data {
                 "time": String("2024-02-10T06:02:35.909930198Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1025,6 +1065,7 @@ Data {
                 "time": String("2024-02-10T06:02:36.406646686Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1053,6 +1094,7 @@ Data {
                 "time": String("2024-02-10T06:02:36.408148172Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1078,6 +1120,7 @@ Data {
                 "time": String("2024-02-10T06:02:36.883330358Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1106,6 +1149,7 @@ Data {
                 "time": String("2024-02-10T06:02:36.884516393Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1131,6 +1175,7 @@ Data {
                 "time": String("2024-02-10T06:02:37.414535794Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1159,6 +1204,7 @@ Data {
                 "time": String("2024-02-10T06:02:37.416158356Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1184,6 +1230,7 @@ Data {
                 "time": String("2024-02-10T06:02:37.988422018Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1212,6 +1259,7 @@ Data {
                 "time": String("2024-02-10T06:02:37.990135478Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1237,6 +1285,7 @@ Data {
                 "time": String("2024-02-10T06:02:38.516440225Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1265,6 +1314,7 @@ Data {
                 "time": String("2024-02-10T06:02:38.518258022Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1290,6 +1340,7 @@ Data {
                 "time": String("2024-02-10T06:02:39.063656597Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1318,6 +1369,7 @@ Data {
                 "time": String("2024-02-10T06:02:39.065560988Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1343,6 +1395,7 @@ Data {
                 "time": String("2024-02-10T06:02:39.677814726Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1371,6 +1424,7 @@ Data {
                 "time": String("2024-02-10T06:02:39.678891214Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1396,6 +1450,7 @@ Data {
                 "time": String("2024-02-10T06:02:40.233335145Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1424,6 +1479,7 @@ Data {
                 "time": String("2024-02-10T06:02:40.235457041Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1449,6 +1505,7 @@ Data {
                 "time": String("2024-02-10T06:02:40.809624727Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1477,6 +1534,7 @@ Data {
                 "time": String("2024-02-10T06:02:40.811254162Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1502,6 +1560,7 @@ Data {
                 "time": String("2024-02-10T06:03:06.191856068Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1531,6 +1590,7 @@ Data {
                 "time": String("2024-02-10T06:03:06.192024502Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1556,6 +1616,7 @@ Data {
                 "time": String("2024-02-10T06:03:06.797748362Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1581,6 +1642,7 @@ Data {
                 "time": String("2024-02-10T06:03:07.444854732Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1606,6 +1668,7 @@ Data {
                 "time": String("2024-02-10T06:03:08.193165123Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1634,6 +1697,7 @@ Data {
                 "time": String("2024-02-10T06:03:08.19338919Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1659,6 +1723,7 @@ Data {
                 "time": String("2024-02-10T06:03:08.799070853Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1687,6 +1752,7 @@ Data {
                 "time": String("2024-02-10T06:03:08.799252303Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1712,6 +1778,7 @@ Data {
                 "time": String("2024-02-10T06:03:09.446331651Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1740,6 +1807,7 @@ Data {
                 "time": String("2024-02-10T06:03:09.446655074Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1765,6 +1833,7 @@ Data {
                 "time": String("2024-02-10T06:03:13.082901829Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1790,6 +1859,7 @@ Data {
                 "time": String("2024-02-10T06:03:15.084438959Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1818,6 +1888,7 @@ Data {
                 "time": String("2024-02-10T06:03:15.084681044Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1832,6 +1903,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.993587646Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1846,6 +1918,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.993775955Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1860,6 +1933,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.993775787Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1874,6 +1948,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.993775779Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1888,6 +1963,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.993775827Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1902,6 +1978,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.993783793Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1916,6 +1993,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.993808637Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1930,6 +2008,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.994068372Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1944,6 +2023,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.994080138Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1958,6 +2038,7 @@ Data {
                 "time": String("2024-02-10T06:03:26.994147513Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
         LogRow {
             data: {
@@ -1972,6 +2053,7 @@ Data {
                 "time": String("2024-02-10T06:03:27.295589706Z"),
                 "v": Number(0),
             },
+            cached_display_list: None,
         },
     ],
 }
