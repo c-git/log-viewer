@@ -6,6 +6,7 @@ use self::{
     data_display_options::DataDisplayOptions,
 };
 
+// TODO 1: Fix scroll not working on details area
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
 // TODO 3: Add checkbox to filter by current request id
@@ -71,6 +72,7 @@ impl LogViewerApp {
             .size
             .max(ui.spacing().interact_size.y);
 
+        // TODO 1: Fix this should match number of column headings
         let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
