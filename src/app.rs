@@ -1,12 +1,8 @@
 use egui_extras::{Column, Size, StripBuilder, TableBuilder};
 use log::info;
 
-use self::{
-    data::{Data, LogRow},
-    data_display_options::DataDisplayOptions,
-};
+use self::{data::Data, data_display_options::DataDisplayOptions};
 
-// TODO 1: Fix scroll not working on details area
 // TODO 3: Add search
 // TODO 3: Add filter by and let user pick like ID or date or something like that
 // TODO 3: Add checkbox to filter by current request id
@@ -154,11 +150,17 @@ impl LogViewerApp {
         }
     }
 
-    fn show_log_details(&self, ui: &mut egui::Ui) {
-        let Some(selected_log_row) = self.selected_row_data() else {
+    fn show_log_details(&mut self, ui: &mut egui::Ui) {
+        let Some(data) = self.data.as_mut() else {
+            ui.label("No data");
+            return;
+        };
+
+        let Some(selected_values) = data.selected_row_data_as_slice() else {
             ui.label("No row Selected");
             return;
         };
+
         let text_height = egui::TextStyle::Body
             .resolve(ui.style())
             .size
@@ -184,12 +186,10 @@ impl LogViewerApp {
             });
         });
 
-        let mut iter = selected_log_row.iter();
-        let total_rows = selected_log_row.len();
-
         table.body(|body| {
-            body.rows(text_height, total_rows, |mut row| {
-                let (title, value) = iter.next().expect("should always match total_rows");
+            body.rows(text_height, selected_values.len(), |mut row| {
+                let row_index = row.index();
+                let (title, value) = &selected_values[row_index];
                 row.col(|ui| {
                     ui.label(title);
                 });
@@ -265,12 +265,6 @@ impl LogViewerApp {
                 Err(e) => LoadingStatus::Failed(format!("{e}")),
             })
         })
-    }
-
-    fn selected_row_data(&self) -> Option<&LogRow> {
-        let data = self.data.as_ref()?;
-        let selected_row_index = data.selected_row?;
-        Some(&data.rows()[selected_row_index])
     }
 
     fn ui_options(&mut self, ui: &mut egui::Ui) {

@@ -14,6 +14,8 @@ pub struct Data {
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 pub struct LogRow {
     data: BTreeMap<String, serde_json::Value>,
+    #[serde(skip)]
+    cached_display_list: Option<Vec<(String, serde_json::Value)>>,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -48,19 +50,33 @@ impl LogRow {
         }
     }
 
-    pub fn iter(&self) -> impl Iterator<Item = (&String, &serde_json::Value)> {
-        // TODO 4: Determine if here is actually value in making the "main_fields" show first
-        self.data.iter()
+    pub fn as_slice(&mut self) -> &[(String, serde_json::Value)] {
+        // TODO 1: Return FieldContent
+        if self.cached_display_list.is_none() {
+            let value = self.iter().map(|(k, v)| (k.clone(), v.clone())).collect();
+            self.cached_display_list = Some(value);
+        }
+
+        self.cached_display_list.get_or_insert_with(|| {
+            unreachable!("should have been initialized above if it was empty")
+        })
     }
 
-    pub(crate) fn len(&self) -> usize {
-        self.data.len()
+    fn iter(&self) -> impl Iterator<Item = (&String, &serde_json::Value)> {
+        // TODO 4: Determine if here is actually value in making the "main_fields" show first
+        // TODO 4: Determine if memory wasted here is worth trying to figure out how to use references instead
+        self.data.iter()
     }
 }
 
 impl Data {
     pub fn rows(&self) -> &[LogRow] {
         &self.rows
+    }
+
+    pub fn selected_row_data_as_slice(&mut self) -> Option<&[(String, serde_json::Value)]> {
+        let selected_row_index = self.selected_row?;
+        Some(self.rows[selected_row_index].as_slice())
     }
 }
 
@@ -70,6 +86,7 @@ impl TryFrom<&str> for LogRow {
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         Ok(Self {
             data: serde_json::from_str(value)?,
+            cached_display_list: None,
         })
     }
 }
