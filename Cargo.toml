@@ -1,24 +1,19 @@
 [package]
 name = "log_viewer"
 version = "0.1.0"
-authors = ["Emil Ernerfeldt <emil.ernerfeldt@gmail.com>"]
 edition = "2021"
-rust-version = "1.72"
-
-# TODO 3: Upgrade egui
-# TODO 3: Confirm all dependencies are needed
 
 [dependencies]
-eframe = { version = "0.25.0", default-features = false, features = ["accesskit", # Make egui compatible with screen readers. NOTE: adds a lot of dependencies.
+eframe = { version = "0.26.1", default-features = false, features = ["accesskit", # Make egui compatible with screen readers. NOTE: adds a lot of dependencies.
   "default_fonts", # Embed the default egui fonts.
   "glow", # Use the glow rendering backend. Alternative: "wgpu".
   "persistence", # Enable restoring app state when restarting the app.
 ] }
-egui = "0.25.0"
+egui = "0.26.1"
 log = "0.4"
 
 anyhow = "1.0.79"
-egui_extras = "0.25.0"
+egui_extras = "0.26.1"
 futures = "0.3.30"
 rfd = { version = "0.13.0", features = ["tokio"] }
 serde = { version = "1", features = ["derive"] }
