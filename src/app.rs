@@ -262,7 +262,7 @@ impl LogViewerApp {
 
     fn initiate_loading(&self, ctx: egui::Context) -> LoadingStatus {
         let start_open_path = Arc::clone(&self.start_open_path);
-        execute(async move {
+        LoadingStatus::InProgress(execute(async move {
             let mut dialog = rfd::AsyncFileDialog::new();
             if let Some(path) = start_open_path.lock().unwrap().as_mut() {
                 dialog = dialog.set_directory(path);
@@ -287,7 +287,7 @@ impl LogViewerApp {
                 Ok(val) => LoadingStatus::Success(val),
                 Err(e) => LoadingStatus::Failed(format!("{e}")),
             })
-        })
+        }))
     }
 
     fn ui_options(&mut self, ui: &mut egui::Ui) {
@@ -307,13 +307,15 @@ impl LogViewerApp {
 #[cfg(not(target_arch = "wasm32"))]
 fn execute(
     f: impl std::future::Future<Output = Box<LoadingStatus>> + 'static + Send,
-) -> LoadingStatus {
-    LoadingStatus::InProgress(poll_promise::Promise::spawn_async(f))
+) -> poll_promise::Promise<Box<LoadingStatus>> {
+    poll_promise::Promise::spawn_async(f)
 }
 
 #[cfg(target_arch = "wasm32")]
-fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static>(f: F) -> LoadingStatus {
-    LoadingStatus::InProgress(poll_promise::Promise::spawn_local(f))
+fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static>(
+    f: F,
+) -> poll_promise::Promise<Box<LoadingStatus>> {
+    poll_promise::Promise::spawn_local(f)
 }
 
 impl eframe::App for LogViewerApp {
