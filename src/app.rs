@@ -1,10 +1,9 @@
 use std::{
-    fs,
     path::PathBuf,
     sync::{Arc, Mutex},
-    time::SystemTime,
 };
 
+#[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use egui_extras::{Column, Size, StripBuilder, TableBuilder};
 use log::info;
@@ -347,6 +346,7 @@ impl LogViewerApp {
         });
     }
 
+    #[cfg(not(target_arch = "wasm32"))]
     /// Attempts to read the contents of the last loaded file and return it in a loading status otherwise returns an error loading status
     fn reload_file(&self) -> LoadingStatus {
         let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
@@ -356,18 +356,19 @@ impl LogViewerApp {
             return LoadingStatus::Failed("no last filename available".into());
         };
         let file_path = folder.join(filename);
-        match fs::read_to_string(file_path) {
+        match std::fs::read_to_string(file_path) {
             Ok(val) => LoadingStatus::Success(val),
             Err(e) => LoadingStatus::Failed(format!("error loading file: {e:?}")),
         }
     }
 
+    #[cfg(not(target_arch = "wasm32"))]
     fn load_most_recent_file(&self) -> LoadingStatus {
         let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
             return LoadingStatus::Failed("unable to find starting folder".into());
         };
         match get_most_recent_file(&folder) {
-            Ok(path) => match fs::read_to_string(&path) {
+            Ok(path) => match std::fs::read_to_string(&path) {
                 Ok(val) => {
                     *self.last_filename.lock().unwrap() =
                         Some(PathBuf::from(path.file_name().unwrap()));
@@ -383,13 +384,14 @@ impl LogViewerApp {
     }
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 fn get_most_recent_file(folder: &PathBuf) -> anyhow::Result<PathBuf> {
     let max = std::fs::read_dir(folder)
         .context("failed to get directory listing")?
         .map(|x| Ok(x.context("failed to open read_dir path")?.path()))
         .filter(|x| x.as_ref().is_ok_and(|x| x.is_file()))
         .map(
-            |x: anyhow::Result<PathBuf>| -> anyhow::Result<(SystemTime, PathBuf)> {
+            |x: anyhow::Result<PathBuf>| -> anyhow::Result<(std::time::SystemTime, PathBuf)> {
                 let path = x?;
                 Ok((
                     std::fs::metadata(&path)
@@ -400,7 +402,7 @@ fn get_most_recent_file(folder: &PathBuf) -> anyhow::Result<PathBuf> {
                 ))
             },
         )
-        .collect::<anyhow::Result<Vec<(SystemTime, PathBuf)>>>()?
+        .collect::<anyhow::Result<Vec<(std::time::SystemTime, PathBuf)>>>()?
         .into_iter()
         .max();
     if let Some((_, path)) = max {
