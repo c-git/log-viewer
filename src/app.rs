@@ -2,8 +2,10 @@ use std::{
     fs,
     path::PathBuf,
     sync::{Arc, Mutex},
+    time::SystemTime,
 };
 
+use anyhow::{bail, Context};
 use egui_extras::{Column, Size, StripBuilder, TableBuilder};
 use log::info;
 
@@ -242,27 +244,10 @@ impl LogViewerApp {
                     #[cfg(not(target_arch = "wasm32"))]
                     {
                         if ui.button("Reload").clicked() {
-                            let mut file_path = None;
-                            if let Some(folder) = self.start_open_path.lock().unwrap().as_ref() {
-                                if let Some(filename) = self.last_filename.lock().unwrap().as_ref()
-                                {
-                                    file_path = Some(folder.join(filename));
-                                }
-                            }
-                            if let Some(path) = file_path {
-                                match fs::read_to_string(path) {
-                                    Ok(val) => self.loading_status = LoadingStatus::Success(val),
-                                    Err(e) => {
-                                        self.loading_status = LoadingStatus::Failed(format!(
-                                            "error loading file: {e:?}"
-                                        ))
-                                    }
-                                }
-                            } else {
-                                self.loading_status = LoadingStatus::Failed(
-                                    "unable to determine path to file to load".into(),
-                                );
-                            }
+                            self.loading_status = self.reload_file();
+                        }
+                        if ui.button("Load Most Recent File").clicked() {
+                            self.loading_status = self.load_most_recent_file();
                         }
                     }
                     if ui.button("Clear Data").clicked() {
@@ -360,6 +345,68 @@ impl LogViewerApp {
                 );
             });
         });
+    }
+
+    /// Attempts to read the contents of the last loaded file and return it in a loading status otherwise returns an error loading status
+    fn reload_file(&self) -> LoadingStatus {
+        let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
+            return LoadingStatus::Failed("no staring folder available".into());
+        };
+        let Some(filename) = self.last_filename.lock().unwrap().clone() else {
+            return LoadingStatus::Failed("no last filename available".into());
+        };
+        let file_path = folder.join(filename);
+        match fs::read_to_string(file_path) {
+            Ok(val) => LoadingStatus::Success(val),
+            Err(e) => LoadingStatus::Failed(format!("error loading file: {e:?}")),
+        }
+    }
+
+    fn load_most_recent_file(&self) -> LoadingStatus {
+        let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
+            return LoadingStatus::Failed("unable to find starting folder".into());
+        };
+        match get_most_recent_file(&folder) {
+            Ok(path) => match fs::read_to_string(&path) {
+                Ok(val) => {
+                    *self.last_filename.lock().unwrap() =
+                        Some(PathBuf::from(path.file_name().unwrap()));
+                    LoadingStatus::Success(val)
+                }
+                Err(e) => LoadingStatus::Failed(format!("error loading file: {e:?}")),
+            },
+            Err(e) => LoadingStatus::Failed(format!(
+                "unable to determine most recent file in starting directory '{}'. Error: {e}",
+                folder.display()
+            )),
+        }
+    }
+}
+
+fn get_most_recent_file(folder: &PathBuf) -> anyhow::Result<PathBuf> {
+    let max = std::fs::read_dir(folder)
+        .context("failed to get directory listing")?
+        .map(|x| Ok(x.context("failed to open read_dir path")?.path()))
+        .filter(|x| x.as_ref().is_ok_and(|x| x.is_file()))
+        .map(
+            |x: anyhow::Result<PathBuf>| -> anyhow::Result<(SystemTime, PathBuf)> {
+                let path = x?;
+                Ok((
+                    std::fs::metadata(&path)
+                        .with_context(|| format!("failed to read file meta data. Path: {path:?}"))?
+                        .modified()
+                        .with_context(|| format!("failed to get modified time. Path: {path:?}"))?,
+                    path,
+                ))
+            },
+        )
+        .collect::<anyhow::Result<Vec<(SystemTime, PathBuf)>>>()?
+        .into_iter()
+        .max();
+    if let Some((_, path)) = max {
+        Ok(path)
+    } else {
+        bail!("no files found")
     }
 }
 
