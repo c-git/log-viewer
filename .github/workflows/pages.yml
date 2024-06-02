@@ -26,7 +26,7 @@ jobs:
       - uses: actions-rs/toolchain@v1 # get rust toolchain for wasm
         with:
           profile: minimal
-          toolchain: stable
+          toolchain: 1.73.0 # TODO 2: Switch back to stable but need higher version than 1.72 which I'm getting now for trunk
           target: wasm32-unknown-unknown
           override: true
       - name: Download and install Trunk binary
