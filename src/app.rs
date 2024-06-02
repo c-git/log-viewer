@@ -304,12 +304,20 @@ impl LogViewerApp {
 
     fn ui_options(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Options", |ui| {
+            ui.add(
+                egui::DragValue::new(&mut self.main_table_screen_proportion)
+                    .speed(0.01)
+                    .clamp_range(0.2..=0.85)
+                    .prefix("Main Area Proportion Percentage "),
+            );
+        });
+    }
+
+    fn ui_help(&mut self, ui: &mut egui::Ui) {
+        ui.collapsing("Help", |ui| {
             ui.horizontal(|ui| {
-                ui.add(
-                    egui::DragValue::new(&mut self.main_table_screen_proportion)
-                        .speed(0.01)
-                        .clamp_range(0.2..=0.85)
-                        .prefix("Main Area Proportion Percentage "),
+                ui.label(
+                    "Text is selectable just hover over it for a short time if you want to copy",
                 );
             });
         });
@@ -368,6 +376,8 @@ impl eframe::App for LogViewerApp {
             self.ui_loading(ui);
             ui.separator();
             self.ui_options(ui);
+            ui.separator();
+            self.ui_help(ui);
             ui.separator();
 
             egui::ScrollArea::vertical()
