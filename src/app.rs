@@ -294,12 +294,10 @@ impl LogViewerApp {
                 return Box::new(LoadingStatus::NotInProgress);
             };
             #[cfg(not(target_arch = "wasm32"))]
-            {
-                if let Some(parent) = file.path().parent() {
-                    *start_open_path.lock().unwrap() = Some(PathBuf::from(parent));
-                }
-                *last_filename.lock().unwrap() = Some(PathBuf::from(file.path()));
+            if let Some(parent) = file.path().parent() {
+                *start_open_path.lock().unwrap() = Some(PathBuf::from(parent));
             }
+            *last_filename.lock().unwrap() = Some(PathBuf::from(file.file_name()));
             let text = file.read().await;
 
             // Uncomment the following line to simulate taking long to load, only works on native
