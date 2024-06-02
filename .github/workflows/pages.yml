@@ -1,5 +1,9 @@
 name: Github Pages
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # By default, runs if you push to main. keeps your deployed app in sync with main branch.
 on:
   push:
