@@ -8,11 +8,6 @@ use log::info;
 
 use self::{data::Data, data_display_options::DataDisplayOptions};
 
-// TODO 3: Add search
-// TODO 3: Add filter by and let user pick like ID or date or something like that
-// TODO 3: Add checkbox to filter by current request id
-// TODO 3: Add support for arrow keys like up and down
-
 mod data;
 mod data_display_options;
 
