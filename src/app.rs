@@ -17,6 +17,7 @@ mod data;
 mod data_display_options;
 
 const SPACE_BETWEEN_TABLES: f32 = 10.;
+
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
@@ -96,7 +97,7 @@ impl LogViewerApp {
         // Make table clickable
         table_builder = table_builder.sense(egui::Sense::click());
 
-        let table = table_builder.header(20.0, |mut header| {
+        let table = table_builder.header(text_height, |mut header| {
             for field_name in self.data_display_options.main_list_fields() {
                 header.col(|ui| {
                     ui.strong(field_name);
@@ -106,7 +107,18 @@ impl LogViewerApp {
 
         if let Some(data) = &mut self.data {
             table.body(|body| {
-                body.rows(text_height, data.rows().len(), |mut row| {
+                // TODO 3: Figure out if calculating these values only once is worth it.
+                // TODO 4: Remove hard coded "msg"
+                let heights: Vec<f32> = data
+                    .rows()
+                    .iter()
+                    .map(|x| {
+                        (1f32).max(
+                            x.field_value("msg").display().lines().count() as f32 * text_height,
+                        )
+                    })
+                    .collect();
+                body.heterogeneous_rows(heights.into_iter(), |mut row| {
                     let row_index = row.index();
                     let log_row = &data.rows()[row_index];
 
@@ -191,7 +203,7 @@ impl LogViewerApp {
         // Clicks not needed but adds highlight row
         table_builder = table_builder.sense(egui::Sense::click());
 
-        let table = table_builder.header(20.0, |mut header| {
+        let table = table_builder.header(text_height, |mut header| {
             header.col(|ui| {
                 ui.strong("Field Name");
             });
@@ -201,7 +213,12 @@ impl LogViewerApp {
         });
 
         table.body(|body| {
-            body.rows(text_height, selected_values.len(), |mut row| {
+            // TODO 3: Figure out if calculating these values only once is worth it.
+            let heights: Vec<f32> = selected_values
+                .iter()
+                .map(|x| (1f32).max(x.1.lines().count() as f32 * text_height))
+                .collect();
+            body.heterogeneous_rows(heights.iter().cloned(), |mut row| {
                 let row_index = row.index();
                 let (title, value) = &selected_values[row_index];
                 row.col(|ui| {

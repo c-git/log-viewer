@@ -3,8 +3,7 @@
 mod app;
 pub use app::LogViewerApp;
 
-// TODO 2: Fix bug where multiline messages bleed into the lines below them
-// TODO 2: Text needs to be selectable for copy and paste
+// TODO 2: Figure out how to let the user know that the text is selectable. It's not obvious at first glance (requires you to wait with the mouse in one place then you can select)
 // TODO 2: Add search
 // TODO 3: Add support for navigating using arrow keys
 // TODO 3: Add button to show/hide either the top or bottom
