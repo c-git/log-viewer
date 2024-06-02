@@ -1,4 +1,5 @@
 use std::{
+    fs,
     path::PathBuf,
     sync::{Arc, Mutex},
 };
@@ -237,6 +238,32 @@ impl LogViewerApp {
                     if ui.button("📂 Open log file...").clicked() {
                         let ctx = ui.ctx().clone();
                         self.loading_status = self.initiate_loading(ctx);
+                    }
+                    #[cfg(not(target_arch = "wasm32"))]
+                    {
+                        if ui.button("Reload").clicked() {
+                            let mut file_path = None;
+                            if let Some(folder) = self.start_open_path.lock().unwrap().as_ref() {
+                                if let Some(filename) = self.last_filename.lock().unwrap().as_ref()
+                                {
+                                    file_path = Some(folder.join(filename));
+                                }
+                            }
+                            if let Some(path) = file_path {
+                                match fs::read_to_string(path) {
+                                    Ok(val) => self.loading_status = LoadingStatus::Success(val),
+                                    Err(e) => {
+                                        self.loading_status = LoadingStatus::Failed(format!(
+                                            "error loading file: {e:?}"
+                                        ))
+                                    }
+                                }
+                            } else {
+                                self.loading_status = LoadingStatus::Failed(
+                                    "unable to determine path to file to load".into(),
+                                );
+                            }
+                        }
                     }
                     if ui.button("Clear Data").clicked() {
                         self.data = None;
