@@ -114,9 +114,8 @@ impl LogViewerApp {
                     .rows()
                     .iter()
                     .map(|x| {
-                        (1f32).max(
-                            x.field_value("msg").display().lines().count() as f32 * text_height,
-                        )
+                        (1f32).max(x.field_value("msg").display().lines().count() as f32)
+                            * text_height
                     })
                     .collect();
                 body.heterogeneous_rows(heights.into_iter(), |mut row| {
@@ -217,7 +216,7 @@ impl LogViewerApp {
             // TODO 3: Figure out if calculating these values only once is worth it.
             let heights: Vec<f32> = selected_values
                 .iter()
-                .map(|x| (1f32).max(x.1.lines().count() as f32 * text_height))
+                .map(|x| (1f32).max(x.1.lines().count() as f32) * text_height)
                 .collect();
             body.heterogeneous_rows(heights.iter().cloned(), |mut row| {
                 let row_index = row.index();
