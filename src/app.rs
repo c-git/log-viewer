@@ -20,6 +20,8 @@ pub struct LogViewerApp {
     main_table_screen_proportion: f32,
     data_display_options: DataDisplayOptions,
     start_open_path: Arc<Mutex<Option<PathBuf>>>,
+    last_filename: Arc<Mutex<Option<PathBuf>>>,
+    show_last_filename: bool,
 
     #[serde(skip)]
     loading_status: LoadingStatus,
@@ -33,6 +35,8 @@ impl Default for LogViewerApp {
             data_display_options: Default::default(),
             start_open_path: Default::default(),
             loading_status: Default::default(),
+            last_filename: Default::default(),
+            show_last_filename: true,
         }
     }
 }
@@ -237,6 +241,11 @@ impl LogViewerApp {
                     if ui.button("Clear Data").clicked() {
                         self.data = None;
                     }
+                    if self.show_last_filename {
+                        if let Some(filename) = self.last_filename.lock().unwrap().as_ref() {
+                            ui.label(format!("Filename: {}", filename.display()));
+                        }
+                    }
                 });
             }
             LoadingStatus::InProgress(promise) => {
@@ -274,6 +283,7 @@ impl LogViewerApp {
 
     fn initiate_loading(&self, ctx: egui::Context) -> LoadingStatus {
         let start_open_path = Arc::clone(&self.start_open_path);
+        let last_filename = Arc::clone(&self.last_filename);
         LoadingStatus::InProgress(execute(async move {
             let mut dialog = rfd::AsyncFileDialog::new();
             if let Some(path) = start_open_path.lock().unwrap().as_mut() {
@@ -284,8 +294,11 @@ impl LogViewerApp {
                 return Box::new(LoadingStatus::NotInProgress);
             };
             #[cfg(not(target_arch = "wasm32"))]
-            if let Some(parent) = file.path().parent() {
-                *start_open_path.lock().unwrap() = Some(PathBuf::from(parent));
+            {
+                if let Some(parent) = file.path().parent() {
+                    *start_open_path.lock().unwrap() = Some(PathBuf::from(parent));
+                }
+                *last_filename.lock().unwrap() = Some(PathBuf::from(file.path()));
             }
             let text = file.read().await;
 
@@ -310,6 +323,7 @@ impl LogViewerApp {
                     .clamp_range(0.2..=0.85)
                     .prefix("Main Area Proportion Percentage "),
             );
+            ui.checkbox(&mut self.show_last_filename, "Show last filename");
         });
     }
 
