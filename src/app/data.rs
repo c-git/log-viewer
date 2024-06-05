@@ -1,6 +1,8 @@
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use anyhow::Context;
+
+use super::calculate_hash;
 
 // TODO 1: Create access method that returns enum indicating value or not
 // TODO 2: Create an iterator that allows for selection of first fields to show if present
@@ -15,7 +17,13 @@ pub struct Data {
 pub struct LogRow {
     data: BTreeMap<String, serde_json::Value>,
     #[serde(skip)]
-    cached_display_list: Option<Vec<(String, String)>>,
+    cached_display_list: Option<CachedDisplayInfo>,
+}
+
+#[derive(Default, Debug, PartialEq, Eq)]
+struct CachedDisplayInfo {
+    data: Vec<(String, String)>,
+    common_fields_hash: u64,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
@@ -25,7 +33,7 @@ pub enum FieldContent<'a> {
 }
 
 impl<'a> FieldContent<'a> {
-    const TEXT_FOR_EMPTY: &'static str = "[ --- ]";
+    pub const TEXT_FOR_EMPTY: &'static str = "[ --- ]";
 
     pub fn display(&self) -> String {
         // TODO 4: Revisit implementation to see if a more efficient way can be found (should be benchmarked to see if it's worth it)
@@ -50,25 +58,60 @@ impl LogRow {
         }
     }
 
-    pub fn as_slice(&mut self) -> &[(String, String)] {
-        // TODO 1: Return FieldContent
-        if self.cached_display_list.is_none() {
-            let value = self
-                .iter()
-                .map(|(k, v)| (k.clone(), FieldContent::Present(v).display())) // Use display to keep formatting consistent
-                .collect();
-            self.cached_display_list = Some(value);
-        }
+    pub fn as_slice(&mut self, common_fields: &BTreeSet<String>) -> &[(String, String)] {
+        self.ensure_cache_is_populated(common_fields);
 
-        self.cached_display_list.get_or_insert_with(|| {
-            unreachable!("should have been initialized above if it was empty")
-        })
+        &self
+            .cached_display_list
+            .get_or_insert_with(|| {
+                unreachable!("should have been initialized above if it was empty")
+            })
+            .data
     }
 
-    fn iter(&self) -> impl Iterator<Item = (&String, &serde_json::Value)> {
-        // TODO 4: Determine if here is actually value in making the "main_fields" show first
-        // TODO 4: Determine if memory wasted here is worth trying to figure out how to use references instead
-        self.data.iter()
+    fn ensure_cache_is_populated(&mut self, common_fields: &BTreeSet<String>) {
+        let common_fields_hash = calculate_hash(common_fields);
+
+        if let Some(cache) = self.cached_display_list.as_ref() {
+            if cache.common_fields_hash != common_fields_hash {
+                // Hash changed cache no longer valid
+                self.cached_display_list = None;
+            }
+        }
+
+        if self.cached_display_list.is_none() {
+            // Build data for sorting
+            let mut data: Vec<(bool, (String, String))> = self
+                .data
+                .iter()
+                .map(|(k, v)| {
+                    (
+                        common_fields.contains(k),
+                        (k.clone(), FieldContent::Present(v).display()),
+                    )
+                }) // Use display to keep formatting consistent
+                .collect();
+
+            // Add separator for common fields
+            data.push((
+                true,
+                (
+                    format!(" {}", FieldContent::TEXT_FOR_EMPTY), // prefixed with a leading space so it should end up at top of the common section
+                    FieldContent::TEXT_FOR_EMPTY.to_string(),
+                ),
+            ));
+
+            // Sort data based on common fields (to group them at the bottom)
+            data.sort_unstable();
+
+            // Remove extra info for sorting
+            let data = data.into_iter().map(|x| x.1).collect();
+
+            self.cached_display_list = Some(CachedDisplayInfo {
+                data,
+                common_fields_hash,
+            });
+        }
     }
 }
 
@@ -77,9 +120,12 @@ impl Data {
         &self.rows
     }
 
-    pub fn selected_row_data_as_slice(&mut self) -> Option<&[(String, String)]> {
+    pub fn selected_row_data_as_slice(
+        &mut self,
+        common_fields: &BTreeSet<String>,
+    ) -> Option<&[(String, String)]> {
         let selected_row_index = self.selected_row?;
-        Some(self.rows[selected_row_index].as_slice())
+        Some(self.rows[selected_row_index].as_slice(common_fields))
     }
 }
 

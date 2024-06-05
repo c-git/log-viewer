@@ -1,4 +1,5 @@
 use std::{
+    hash::{DefaultHasher, Hash, Hasher},
     path::PathBuf,
     sync::{Arc, Mutex},
 };
@@ -182,7 +183,9 @@ impl LogViewerApp {
             return;
         };
 
-        let Some(selected_values) = data.selected_row_data_as_slice() else {
+        let Some(selected_values) =
+            data.selected_row_data_as_slice(self.data_display_options.common_fields())
+        else {
             ui.label("No row Selected");
             return;
         };
@@ -510,4 +513,10 @@ fn expanding_content(ui: &mut egui::Ui) {
         rect.center().y,
         (2.0, ui.visuals().text_color()),
     );
+}
+
+pub fn calculate_hash<T: Hash + ?Sized>(t: &T) -> u64 {
+    let mut s = DefaultHasher::new();
+    t.hash(&mut s);
+    s.finish()
 }
