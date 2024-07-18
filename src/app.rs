@@ -415,8 +415,8 @@ fn get_most_recent_file(folder: &PathBuf) -> anyhow::Result<PathBuf> {
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-fn execute(
-    f: impl std::future::Future<Output = Box<LoadingStatus>> + 'static + Send,
+fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static + Send>(
+    f: F,
 ) -> poll_promise::Promise<Box<LoadingStatus>> {
     poll_promise::Promise::spawn_async(f)
 }
