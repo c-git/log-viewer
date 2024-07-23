@@ -16,6 +16,8 @@ mod data_display_options;
 
 const SPACE_BETWEEN_TABLES: f32 = 10.;
 
+// TODO 3: Replace current setup with using resizable panels https://github.com/emilk/egui/blob/34db001db14940c948eb03d3fe87f2af2c45daba/crates/egui_demo_lib/src/demo/panels.rs#L26
+
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
