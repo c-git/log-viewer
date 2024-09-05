@@ -23,6 +23,7 @@ pub struct LogViewerApp {
     start_open_path: Arc<Mutex<Option<PathBuf>>>,
     last_filename: Arc<Mutex<Option<PathBuf>>>,
     show_last_filename: bool,
+    track_item_align: Option<Align>,
 
     #[serde(skip)]
     should_scroll: bool,
@@ -38,6 +39,7 @@ impl Default for LogViewerApp {
             start_open_path: Default::default(),
             loading_status: Default::default(),
             last_filename: Default::default(),
+            track_item_align: Default::default(),
             should_scroll: Default::default(),
             show_last_filename: true,
         }
@@ -103,7 +105,7 @@ impl LogViewerApp {
             (true, Some(data)) => {
                 self.should_scroll = false;
                 if let Some(selected_row) = data.selected_row {
-                    table_builder.scroll_to_row(selected_row, Some(Align::Center))
+                    table_builder.scroll_to_row(selected_row, self.track_item_align)
                 } else {
                     table_builder
                 }
@@ -344,6 +346,22 @@ impl LogViewerApp {
     fn ui_options(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Options", |ui| {
             ui.checkbox(&mut self.show_last_filename, "Show last filename");
+
+            ui.horizontal(|ui| {
+                ui.label("Item align:");
+                self.should_scroll |= ui
+                    .radio_value(&mut self.track_item_align, Some(Align::Min), "Top")
+                    .clicked();
+                self.should_scroll |= ui
+                    .radio_value(&mut self.track_item_align, Some(Align::Center), "Center")
+                    .clicked();
+                self.should_scroll |= ui
+                    .radio_value(&mut self.track_item_align, Some(Align::Max), "Bottom")
+                    .clicked();
+                self.should_scroll |= ui
+                    .radio_value(&mut self.track_item_align, None, "None (Bring into view)")
+                    .clicked();
+            });
         });
     }
 
