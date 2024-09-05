@@ -6,6 +6,7 @@ use std::{
 
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
+use egui::{Align, Modifiers};
 use egui_extras::{Column, TableBuilder};
 use log::info;
 
@@ -24,6 +25,8 @@ pub struct LogViewerApp {
     show_last_filename: bool,
 
     #[serde(skip)]
+    should_scroll: bool,
+    #[serde(skip)]
     loading_status: LoadingStatus,
 }
 
@@ -35,6 +38,7 @@ impl Default for LogViewerApp {
             start_open_path: Default::default(),
             loading_status: Default::default(),
             last_filename: Default::default(),
+            should_scroll: Default::default(),
             show_last_filename: true,
         }
     }
@@ -94,6 +98,21 @@ impl LogViewerApp {
 
         // Make table clickable
         table_builder = table_builder.sense(egui::Sense::click());
+
+        table_builder = match (self.should_scroll, self.data.as_ref()) {
+            (true, Some(data)) => {
+                self.should_scroll = false;
+                if let Some(selected_row) = data.selected_row {
+                    table_builder.scroll_to_row(selected_row, Some(Align::Center))
+                } else {
+                    table_builder
+                }
+            }
+            (true, None) | (false, _) => {
+                self.should_scroll = false;
+                table_builder
+            }
+        };
 
         let table = table_builder.header(text_height, |mut header| {
             for field_name in self.data_display_options.main_list_fields() {
@@ -374,6 +393,23 @@ impl LogViewerApp {
             )),
         }
     }
+
+    fn check_shortcuts(&mut self, ui: &mut egui::Ui) {
+        if let Some(data) = self.data.as_mut() {
+            let up_shortcut = egui::KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowUp);
+            let down_shortcut = egui::KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowDown);
+
+            if ui.input_mut(|i| i.consume_shortcut(&up_shortcut)) {
+                data.move_selected_to_prev();
+                self.should_scroll = true;
+            }
+
+            if ui.input_mut(|i| i.consume_shortcut(&down_shortcut)) {
+                data.move_selected_to_next();
+                self.should_scroll = true;
+            }
+        }
+    }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -429,6 +465,8 @@ impl eframe::App for LogViewerApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             // The top panel is often a good place for a menu bar:
+
+            self.check_shortcuts(ui);
 
             egui::menu::bar(ui, |ui| {
                 // NOTE: no File->Quit on web pages!

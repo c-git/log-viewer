@@ -127,6 +127,36 @@ impl Data {
         let selected_row_index = self.selected_row?;
         Some(self.rows[selected_row_index].as_slice(common_fields))
     }
+
+    pub fn move_selected_to_next(&mut self) {
+        if let Some(selected) = self.selected_row.as_mut() {
+            if *selected < self.rows.len() - 1 {
+                *selected += 1;
+            } else {
+                // Do nothing already on last row
+            }
+        } else if !self.rows.is_empty() {
+            // Set to first row
+            self.selected_row = Some(0)
+        } else {
+            // No rows to select
+        }
+    }
+
+    pub fn move_selected_to_prev(&mut self) {
+        if let Some(selected) = self.selected_row.as_mut() {
+            if *selected > 0 {
+                *selected -= 1;
+            } else {
+                // Do nothing already on first row
+            }
+        } else if !self.rows.is_empty() {
+            // Set to last row
+            self.selected_row = Some(self.rows.len() - 1)
+        } else {
+            // No rows to select
+        }
+    }
 }
 
 impl TryFrom<&str> for LogRow {
