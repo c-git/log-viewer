@@ -6,7 +6,7 @@ use std::{
 
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
-use egui::{Align, Modifiers};
+use egui::{Align, KeyboardShortcut, Modifiers};
 use egui_extras::{Column, TableBuilder};
 use log::info;
 
@@ -24,6 +24,10 @@ pub struct LogViewerApp {
     last_filename: Arc<Mutex<Option<PathBuf>>>,
     show_last_filename: bool,
     track_item_align: Option<Align>,
+    shortcut_prev: KeyboardShortcut,
+    shortcut_next: KeyboardShortcut,
+    shortcut_first: KeyboardShortcut,
+    shortcut_last: KeyboardShortcut,
 
     #[serde(skip)]
     should_scroll: bool,
@@ -40,6 +44,10 @@ impl Default for LogViewerApp {
             loading_status: Default::default(),
             last_filename: Default::default(),
             track_item_align: Default::default(),
+            shortcut_prev: KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowUp),
+            shortcut_next: KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowDown),
+            shortcut_first: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Home),
+            shortcut_last: KeyboardShortcut::new(Modifiers::NONE, egui::Key::End),
             should_scroll: Default::default(),
             show_last_filename: true,
         }
@@ -254,29 +262,9 @@ impl LogViewerApp {
     fn ui_loading(&mut self, ui: &mut egui::Ui) {
         match &self.loading_status {
             LoadingStatus::NotInProgress => {
-                ui.horizontal(|ui| {
-                    if ui.button("📂 Open log file...").clicked() {
-                        let ctx = ui.ctx().clone();
-                        self.loading_status = self.initiate_loading(ctx);
-                    }
-                    #[cfg(not(target_arch = "wasm32"))]
-                    {
-                        if ui.button("Reload").clicked() {
-                            self.loading_status = self.reload_file();
-                        }
-                        if ui.button("Load Most Recent File").clicked() {
-                            self.loading_status = self.load_most_recent_file();
-                        }
-                    }
-                    if ui.button("Clear Data").clicked() {
-                        self.data = None;
-                    }
-                    if self.show_last_filename {
-                        if let Some(filename) = self.last_filename.lock().unwrap().as_ref() {
-                            ui.label(format!("Filename: {}", filename.display()));
-                        }
-                    }
-                });
+                self.data_load_ui(ui);
+                ui.separator();
+                self.navigation_and_filtering_ui(ui);
             }
             LoadingStatus::InProgress(promise) => {
                 if promise.ready().is_some() {
@@ -365,6 +353,34 @@ impl LogViewerApp {
         });
     }
 
+    fn move_selected_prev(&mut self) {
+        if let Some(data) = self.data.as_mut() {
+            data.move_selected_to_prev();
+            self.should_scroll = true;
+        }
+    }
+
+    fn move_selected_next(&mut self) {
+        if let Some(data) = self.data.as_mut() {
+            data.move_selected_to_next();
+            self.should_scroll = true;
+        }
+    }
+
+    fn move_selected_first(&mut self) {
+        if let Some(data) = self.data.as_mut() {
+            data.move_selected_to_first();
+            self.should_scroll = true;
+        }
+    }
+
+    fn move_selected_last(&mut self) {
+        if let Some(data) = self.data.as_mut() {
+            data.move_selected_to_last();
+            self.should_scroll = true;
+        }
+    }
+
     fn ui_help(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Help", |ui| {
             ui.horizontal(|ui| {
@@ -413,20 +429,93 @@ impl LogViewerApp {
     }
 
     fn check_shortcuts(&mut self, ui: &mut egui::Ui) {
-        if let Some(data) = self.data.as_mut() {
-            let up_shortcut = egui::KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowUp);
-            let down_shortcut = egui::KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowDown);
-
-            if ui.input_mut(|i| i.consume_shortcut(&up_shortcut)) {
-                data.move_selected_to_prev();
-                self.should_scroll = true;
-            }
-
-            if ui.input_mut(|i| i.consume_shortcut(&down_shortcut)) {
-                data.move_selected_to_next();
-                self.should_scroll = true;
-            }
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_prev)) {
+            self.move_selected_prev();
         }
+
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_next)) {
+            self.move_selected_next();
+        }
+
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_first)) {
+            self.move_selected_first();
+        }
+
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_last)) {
+            self.move_selected_last();
+        }
+    }
+
+    fn navigation_and_filtering_ui(&mut self, ui: &mut egui::Ui) {
+        ui.horizontal(|ui| {
+            ui.label("Nav:");
+            if ui
+                .button("⏪")
+                .on_hover_text(format!(
+                    "First ({})",
+                    ui.ctx().format_shortcut(&self.shortcut_first)
+                ))
+                .clicked()
+            {
+                self.move_selected_first();
+            }
+            if ui
+                .button("⬆")
+                .on_hover_text(format!(
+                    "Previous ({})",
+                    ui.ctx().format_shortcut(&self.shortcut_prev)
+                ))
+                .clicked()
+            {
+                self.move_selected_prev();
+            }
+            if ui
+                .button("⬇")
+                .on_hover_text(format!(
+                    "Next ({})",
+                    ui.ctx().format_shortcut(&self.shortcut_next)
+                ))
+                .clicked()
+            {
+                self.move_selected_next();
+            }
+            if ui
+                .button("⏩")
+                .on_hover_text(format!(
+                    "Last ({})",
+                    ui.ctx().format_shortcut(&self.shortcut_last)
+                ))
+                .clicked()
+            {
+                self.move_selected_last();
+            }
+        });
+    }
+    fn data_load_ui(&mut self, ui: &mut egui::Ui) {
+        ui.horizontal(|ui| {
+            if ui.button("📂 Open log file...").clicked() {
+                let ctx = ui.ctx().clone();
+                self.loading_status = self.initiate_loading(ctx);
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                if ui.button("Reload").clicked() {
+                    self.loading_status = self.reload_file();
+                }
+                if ui.button("Load Most Recent File").clicked() {
+                    self.loading_status = self.load_most_recent_file();
+                }
+            }
+            if ui.button("Clear Data").clicked() {
+                self.data = None;
+            }
+
+            if self.show_last_filename {
+                if let Some(filename) = self.last_filename.lock().unwrap().as_ref() {
+                    ui.label(format!("Filename: {}", filename.display()));
+                }
+            }
+        });
     }
 }
 

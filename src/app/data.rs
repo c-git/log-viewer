@@ -135,11 +135,8 @@ impl Data {
             } else {
                 // Do nothing already on last row
             }
-        } else if !self.rows.is_empty() {
-            // Set to first row
-            self.selected_row = Some(0)
         } else {
-            // No rows to select
+            self.move_selected_to_last();
         }
     }
 
@@ -150,9 +147,22 @@ impl Data {
             } else {
                 // Do nothing already on first row
             }
-        } else if !self.rows.is_empty() {
-            // Set to last row
-            self.selected_row = Some(self.rows.len() - 1)
+        } else {
+            self.move_selected_to_first()
+        }
+    }
+
+    pub fn move_selected_to_first(&mut self) {
+        if !self.rows.is_empty() {
+            self.selected_row = Some(0)
+        } else {
+            // No rows to select
+        }
+    }
+
+    pub fn move_selected_to_last(&mut self) {
+        if !self.rows.is_empty() {
+            self.selected_row = Some(self.rows.len() - 1);
         } else {
             // No rows to select
         }
