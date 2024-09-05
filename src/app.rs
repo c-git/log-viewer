@@ -6,7 +6,7 @@ use std::{
 
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
-use egui_extras::{Column, Size, StripBuilder, TableBuilder};
+use egui_extras::{Column, TableBuilder};
 use log::info;
 
 use self::{data::Data, data_display_options::DataDisplayOptions};
@@ -14,15 +14,10 @@ use self::{data::Data, data_display_options::DataDisplayOptions};
 mod data;
 mod data_display_options;
 
-const SPACE_BETWEEN_TABLES: f32 = 10.;
-
-// TODO 3: Replace current setup with using resizable panels https://github.com/emilk/egui/blob/34db001db14940c948eb03d3fe87f2af2c45daba/crates/egui_demo_lib/src/demo/panels.rs#L26
-
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct LogViewerApp {
     data: Option<Data>,
-    main_table_screen_proportion: f32,
     data_display_options: DataDisplayOptions,
     start_open_path: Arc<Mutex<Option<PathBuf>>>,
     last_filename: Arc<Mutex<Option<PathBuf>>>,
@@ -36,7 +31,6 @@ impl Default for LogViewerApp {
     fn default() -> Self {
         Self {
             data: Default::default(),
-            main_table_screen_proportion: 0.5,
             data_display_options: Default::default(),
             start_open_path: Default::default(),
             loading_status: Default::default(),
@@ -330,12 +324,6 @@ impl LogViewerApp {
 
     fn ui_options(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Options", |ui| {
-            ui.add(
-                egui::DragValue::new(&mut self.main_table_screen_proportion)
-                    .speed(0.01)
-                    .clamp_range(0.2..=0.85)
-                    .prefix("Main Area Proportion Percentage "),
-            );
             ui.checkbox(&mut self.show_last_filename, "Show last filename");
         });
     }
@@ -472,49 +460,37 @@ impl eframe::App for LogViewerApp {
             self.ui_help(ui);
             ui.separator();
 
-            egui::ScrollArea::vertical()
-                .id_source("scroll for overflow")
-                .show(ui, |ui| {
-                    StripBuilder::new(ui)
-                        .size(Size::relative(self.main_table_screen_proportion)) // for the log lines
-                        .size(Size::exact(SPACE_BETWEEN_TABLES)) // for the log lines
-                        .size(Size::remainder()) // for the details area
-                        .vertical(|mut strip| {
-                            strip.cell(|ui| {
-                                egui::ScrollArea::horizontal().id_source("log lines").show(
-                                    ui,
-                                    |ui| {
-                                        ui.push_id("table log lines", |ui| self.show_log_lines(ui));
-                                    },
-                                );
-                            });
-                            strip.cell(|ui| {
-                                expanding_content(ui);
-                            });
-                            strip.cell(|ui| {
-                                egui::ScrollArea::horizontal()
-                                    .id_source("details area")
-                                    .show(ui, |ui| {
-                                        ui.push_id("table details", |ui| self.show_log_details(ui));
-                                    });
-                            });
+            const MIN_LOG_LINES_SIZE: f32 = 100.0;
+            let max_details_height = ui.available_height() - MIN_LOG_LINES_SIZE;
+
+            egui::TopBottomPanel::bottom("details_panel")
+                .resizable(true)
+                .default_height(200.)
+                .max_height(max_details_height)
+                .min_height(60.)
+                .show_inside(ui, |ui| {
+                    ui.vertical_centered(|ui| {
+                        ui.heading("Details");
+                    });
+                    egui::ScrollArea::horizontal()
+                        .id_source("details area")
+                        .show(ui, |ui| {
+                            ui.push_id("table details", |ui| self.show_log_details(ui));
                         });
+                    if ui.available_height() > 0.0 {
+                        ui.allocate_space(ui.available_size());
+                    }
                 });
+
+            egui::CentralPanel::default().show_inside(ui, |ui| {
+                egui::ScrollArea::horizontal()
+                    .id_source("log lines")
+                    .show(ui, |ui| {
+                        ui.push_id("table log lines", |ui| self.show_log_lines(ui));
+                    });
+            });
         });
     }
-}
-
-fn expanding_content(ui: &mut egui::Ui) {
-    // Taken from https://github.com/emilk/egui/blob/15370bbea0b468cf719a75cc6d1e39eb00c420d8/crates/egui_demo_lib/src/demo/table_demo.rs#L276
-    let width = ui.available_width();
-    let height = ui.available_height();
-    let (rect, response) = ui.allocate_exact_size(egui::vec2(width, height), egui::Sense::hover());
-    response.on_hover_text("See options to change size");
-    ui.painter().hline(
-        rect.x_range(),
-        rect.center().y,
-        (2.0, ui.visuals().text_color()),
-    );
 }
 
 pub fn calculate_hash<T: Hash + ?Sized>(t: &T) -> u64 {
