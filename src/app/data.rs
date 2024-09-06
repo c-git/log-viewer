@@ -201,13 +201,17 @@ impl Data {
     }
 
     pub fn unfilter(&mut self) {
-        self.selected_row = None;
+        let previous_real_index_selected = self.selected_row.map(|x| self.get_real_index(x));
         self.filtered_rows = None;
+        if let Some(old_selected) = previous_real_index_selected {
+            self.selected_row = Some(old_selected);
+        }
     }
 
     pub fn apply_filter(&mut self, common_fields: &BTreeSet<String>) {
         if let Some(filter) = self.filter.as_ref() {
-            self.selected_row = None; // TODO 3: Update selected if still included in displayed rows
+            let previous_real_index_selected = self.selected_row.map(|x| self.get_real_index(x));
+
             self.filtered_rows = Some(
                 self.rows
                     .iter_mut()
@@ -221,6 +225,11 @@ impl Data {
                     })
                     .collect(),
             );
+            if let Some(old_selected) = previous_real_index_selected {
+                if let Some(filtered) = self.filtered_rows.as_ref() {
+                    self.selected_row = filtered.iter().position(|&idx| idx == old_selected);
+                }
+            }
         } else {
             warn!("Apply called but no filter is available")
         }
@@ -474,5 +483,89 @@ mod tests {
             data.apply_filter(common_fields);
             insta_settings.bind(|| insta::assert_yaml_snapshot!(data));
         }
+    }
+
+    #[test]
+    fn selected_maintenance_with_filtering() {
+        let test_field = String::from("test field");
+        let rows = (5..10)
+            .map(|i| {
+                let mut row = create_log_row_no_extra();
+                row.data.insert(test_field.clone(), i.into());
+                row
+            })
+            .collect();
+        let mut data = Data {
+            rows,
+            ..Default::default()
+        };
+        let display_options = DataDisplayOptions::default();
+        let common_fields = display_options.common_fields();
+
+        // Set "7" as selected
+        data.selected_row = Some(2);
+
+        // Save selected row from before
+        let expected = data
+            .selected_row_data_as_slice(common_fields)
+            .unwrap()
+            .to_vec();
+
+        data.filter = Some(FilterConfig {
+            search_key: "7".to_string(),
+            ..Default::default()
+        });
+        data.apply_filter(DataDisplayOptions::default().common_fields());
+
+        // Test that 7 is still selected
+        let actual = data
+            .selected_row_data_as_slice(common_fields)
+            .unwrap()
+            .to_vec();
+
+        assert_eq!(actual, expected);
+
+        // Then reverse
+        data.unfilter();
+
+        // Test that 7 is still selected
+        let actual = data
+            .selected_row_data_as_slice(common_fields)
+            .unwrap()
+            .to_vec();
+
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn selected_unselected_when_not_present() {
+        let test_field = String::from("test field");
+        let rows = (5..10)
+            .map(|i| {
+                let mut row = create_log_row_no_extra();
+                row.data.insert(test_field.clone(), i.into());
+                row
+            })
+            .collect();
+        let mut data = Data {
+            rows,
+            ..Default::default()
+        };
+        let display_options = DataDisplayOptions::default();
+        let common_fields = display_options.common_fields();
+
+        // Set "7" as selected
+        data.selected_row = Some(2);
+
+        // Filter for 6, so 7 is not included
+        data.filter = Some(FilterConfig {
+            search_key: "6".to_string(),
+            ..Default::default()
+        });
+        data.apply_filter(DataDisplayOptions::default().common_fields());
+
+        let actual = data.selected_row_data_as_slice(common_fields);
+
+        assert!(actual.is_none());
     }
 }
