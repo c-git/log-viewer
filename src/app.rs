@@ -297,7 +297,11 @@ impl LogViewerApp {
             }
             LoadingStatus::Success(data) => {
                 self.loading_status = match Data::try_from(&data[..]) {
-                    Ok(data) => {
+                    Ok(mut data) => {
+                        if let Some(old_data) = self.data.as_mut() {
+                            // Preserve filter across loads of the data
+                            data.filter = old_data.filter.take();
+                        }
                         self.data = Some(data);
                         LoadingStatus::NotInProgress
                     }
