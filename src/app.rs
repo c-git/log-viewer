@@ -290,7 +290,7 @@ impl LogViewerApp {
                 if ui.button("Clear Error Status").clicked() {
                     self.loading_status = LoadingStatus::NotInProgress;
                 }
-                ui.label(msg);
+                ui.colored_label(ui.visuals().error_fg_color, msg);
             }
             LoadingStatus::Success(data) => {
                 self.loading_status = match Data::try_from(&data[..]) {
