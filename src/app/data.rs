@@ -12,9 +12,6 @@ use super::calculate_hash;
 mod data_iter;
 pub mod filter;
 
-// TODO 1: Create access method that returns enum indicating value or not
-// TODO 2: Create an iterator that allows for selection of first fields to show if present
-
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 #[serde(default)]
 pub struct Data {
