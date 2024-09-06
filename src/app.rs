@@ -437,50 +437,8 @@ impl LogViewerApp {
         }
     }
 
-    fn check_shortcuts(&mut self, ui: &mut egui::Ui) {
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.prev)) {
-            self.move_selected_prev();
-        }
-
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.next)) {
-            self.move_selected_next();
-        }
-
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.first)) {
-            self.move_selected_first();
-        }
-
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.last)) {
-            self.move_selected_last();
-        }
-
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.unfilter)) {
-            if let Some(data) = self.data.as_mut() {
-                data.unfilter();
-            }
-        }
-
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.open)) {
-            self.loading_status = self.initiate_loading(ui.ctx().clone());
-        }
-
-        #[cfg(not(target_arch = "wasm32"))]
-        {
-            if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.reload)) {
-                self.loading_status = self.reload_file();
-            }
-
-            if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.load_latest)) {
-                self.loading_status = self.load_most_recent_file();
-            }
-        }
-
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.apply_filter)) {
-            if let Some(data) = self.data.as_mut() {
-                data.apply_filter(self.data_display_options.common_fields());
-            }
-        }
-
+    /// These shortcuts are always enabled
+    fn check_global_shortcuts(&mut self, ui: &mut egui::Ui) {
         if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.search)) {
             self.focus_search_text_edit();
         }
@@ -509,12 +467,11 @@ impl LogViewerApp {
             }
             let mut should_apply_filter = false;
             if is_filter_enabled {
-                if shortcut_button(ui, "Apply", "", &self.shortcuts.apply_filter).clicked() {
+                if shortcut_button(ui, "Apply", "", &self.shortcuts.apply_filter) {
                     should_apply_filter = true;
                 }
                 if data.is_filtered()
                     && shortcut_button(ui, "Unfilter", "Clears Filter ", &self.shortcuts.unfilter)
-                        .clicked()
                 {
                     data.unfilter();
                 }
@@ -598,32 +555,30 @@ impl LogViewerApp {
 
     fn navigation_ui(&mut self, ui: &mut egui::Ui) {
         ui.label("Nav:");
-        if shortcut_button(ui, "⏪", "First ", &self.shortcuts.first).clicked() {
+        if shortcut_button(ui, "⏪", "First ", &self.shortcuts.first) {
             self.move_selected_first();
         }
-        if shortcut_button(ui, "⬆", "Previous ", &self.shortcuts.prev).clicked() {
+        if shortcut_button(ui, "⬆", "Previous ", &self.shortcuts.prev) {
             self.move_selected_prev();
         }
-        if shortcut_button(ui, "⬇", "Next ", &self.shortcuts.next).clicked() {
+        if shortcut_button(ui, "⬇", "Next ", &self.shortcuts.next) {
             self.move_selected_next();
         }
-        if shortcut_button(ui, "⏩", "Last ", &self.shortcuts.last).clicked() {
+        if shortcut_button(ui, "⏩", "Last ", &self.shortcuts.last) {
             self.move_selected_last();
         }
     }
     fn data_load_ui(&mut self, ui: &mut egui::Ui) {
         ui.horizontal(|ui| {
-            if shortcut_button(ui, "📂 Open log file...", "", &self.shortcuts.open).clicked() {
+            if shortcut_button(ui, "📂 Open log file...", "", &self.shortcuts.open) {
                 self.loading_status = self.initiate_loading(ui.ctx().clone());
             }
             #[cfg(not(target_arch = "wasm32"))]
             {
-                if shortcut_button(ui, "Reload", "", &self.shortcuts.reload).clicked() {
+                if shortcut_button(ui, "Reload", "", &self.shortcuts.reload) {
                     self.loading_status = self.reload_file();
                 }
-                if shortcut_button(ui, "Load Most Recent File", "", &self.shortcuts.load_latest)
-                    .clicked()
-                {
+                if shortcut_button(ui, "Load Most Recent File", "", &self.shortcuts.load_latest) {
                     self.loading_status = self.load_most_recent_file();
                 }
             }
@@ -701,7 +656,7 @@ impl eframe::App for LogViewerApp {
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             // The top panel is often a good place for a menu bar:
 
-            self.check_shortcuts(ui);
+            self.check_global_shortcuts(ui);
 
             egui::menu::bar(ui, |ui| {
                 // NOTE: no File->Quit on web pages!
@@ -769,14 +724,20 @@ pub fn calculate_hash<T: Hash + ?Sized>(t: &T) -> u64 {
     s.finish()
 }
 
+/// Returns true if the button is clicked or the shortcut is pressed
+///
+/// Note: This makes it the case that the code for both the button and the shortcut press will do the same thing and you cannot use the shortcut to bypass the button not showing
 fn shortcut_button(
     ui: &mut egui::Ui,
     caption: impl Into<egui::WidgetText>,
     hint_msg: &str,
     shortcut: &KeyboardShortcut,
-) -> egui::Response {
-    ui.button(caption).on_hover_text(format!(
-        "{hint_msg}({})",
-        ui.ctx().format_shortcut(shortcut)
-    ))
+) -> bool {
+    ui.button(caption)
+        .on_hover_text(format!(
+            "{hint_msg}({})",
+            ui.ctx().format_shortcut(shortcut)
+        ))
+        .clicked()
+        || ui.input_mut(|i| i.consume_shortcut(shortcut))
 }
