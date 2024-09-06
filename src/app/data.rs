@@ -136,13 +136,22 @@ impl Data {
         }
     }
 
+    /// If the points are not filtered returns the input otherwise translates it from the filtered array
+    fn get_real_index(&self, index: usize) -> usize {
+        if let Some(filtered) = self.filtered_rows.as_ref() {
+            filtered[index]
+        } else {
+            index
+        }
+    }
+
     pub fn selected_row_data_as_slice(
         &mut self,
         common_fields: &BTreeSet<String>,
     ) -> Option<&[(String, String)]> {
         let selected_row_index = self.selected_row?;
-        // TODO 1: Fix here to use appropriate list
-        Some(self.rows[selected_row_index].as_slice(common_fields))
+        let real_index = self.get_real_index(selected_row_index);
+        Some(self.rows[real_index].as_slice(common_fields))
     }
 
     pub fn move_selected_to_next(&mut self) {

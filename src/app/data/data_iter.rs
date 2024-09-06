@@ -16,22 +16,12 @@ impl<'a> Iterator for DataIter<'a> {
     type Item = &'a LogRow;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let result = match self.data.filtered_rows.as_ref() {
-            Some(filtered) => {
-                if self.pos >= filtered.len() {
-                    return None;
-                }
-                Some(&self.data.rows[filtered[self.pos]])
-            }
-            None => {
-                if self.pos >= self.data.rows.len() {
-                    return None;
-                }
-                Some(&self.data.rows[self.pos])
-            }
-        };
+        if self.pos >= self.data.len() {
+            return None;
+        }
+        let real_index = self.data.get_real_index(self.pos);
         self.pos += 1;
-        result
+        Some(&self.data.rows[real_index])
     }
 
     fn nth(&mut self, n: usize) -> Option<Self::Item> {
