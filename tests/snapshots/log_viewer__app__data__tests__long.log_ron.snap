@@ -4,6 +4,7 @@ expression: data
 ---
 Data(
   selected_row: None,
+  filter: None,
   rows: [
     LogRow(
       data: {
@@ -1974,4 +1975,5 @@ Data(
       },
     ),
   ],
+  filtered_rows: None,
 )

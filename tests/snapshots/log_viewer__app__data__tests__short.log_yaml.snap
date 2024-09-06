@@ -3,6 +3,7 @@ source: src/app/data.rs
 expression: data
 ---
 selected_row: ~
+filter: ~
 rows:
   - data:
       file: crates/server/src/startup.rs
@@ -26,4 +27,4 @@ rows:
       target: "actix_server::builder"
       time: "2024-02-10T03:13:04.191610465Z"
       v: 0
-
+filtered_rows: ~

@@ -1,10 +1,10 @@
 ---
 source: src/app/data.rs
-assertion_line: 155
 expression: data
 ---
 Data {
     selected_row: None,
+    filter: None,
     rows: [
         LogRow {
             data: {
@@ -2056,4 +2056,5 @@ Data {
             cached_display_list: None,
         },
     ],
+    filtered_rows: None,
 }

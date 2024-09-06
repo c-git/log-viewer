@@ -3,6 +3,7 @@ source: src/app/data.rs
 expression: data
 ---
 selected_row: ~
+filter: ~
 rows:
   - data:
       file: crates/server/src/startup.rs
@@ -1729,4 +1730,4 @@ rows:
       target: my_server
       time: "2024-02-10T06:03:27.295589706Z"
       v: 0
-
+filtered_rows: ~
