@@ -299,9 +299,13 @@ impl TryFrom<&str> for Data {
 mod tests {
     use std::fmt::{Debug, Display};
 
+    use filter::Comparator;
     use insta::glob;
     use pretty_assertions::assert_eq;
     use rstest::{fixture, rstest};
+    use strum::IntoEnumIterator;
+
+    use crate::app::data_display_options::DataDisplayOptions;
 
     use super::*;
 
@@ -418,5 +422,57 @@ mod tests {
         assert_eq!(after, before);
     }
 
-    // TODO 1: Add tests for filters
+    #[rstest]
+    fn comparisons_specific_field(insta_settings: insta::Settings) {
+        let row0 = create_log_row_no_extra();
+        let row1 = create_log_row_with_extra();
+        let mut data = Data {
+            rows: vec![row0.clone(), row1.clone()],
+            ..Default::default()
+        };
+
+        data.filter = Some(FilterConfig {
+            search_key: "200".to_string(),
+            filter_on: filter::FilterOn::Field(FieldSpecifier {
+                name: "http.status_code".to_string(),
+            }),
+            is_case_sensitive: false,
+            comparator: Default::default(),
+        });
+
+        let display_options = DataDisplayOptions::default();
+        let common_fields = display_options.common_fields();
+
+        for comparator in Comparator::iter() {
+            data.filter.as_mut().unwrap().comparator = comparator;
+            data.apply_filter(common_fields);
+            insta_settings.bind(|| insta::assert_yaml_snapshot!(data));
+        }
+    }
+
+    #[rstest]
+    fn comparisons_any(insta_settings: insta::Settings) {
+        let row0 = create_log_row_no_extra();
+        let row1 = create_log_row_with_extra();
+        let mut data = Data {
+            rows: vec![row0.clone(), row1.clone()],
+            ..Default::default()
+        };
+
+        data.filter = Some(FilterConfig {
+            search_key: "20".to_string(),
+            filter_on: filter::FilterOn::Any,
+            is_case_sensitive: false,
+            comparator: Default::default(),
+        });
+
+        let display_options = DataDisplayOptions::default();
+        let common_fields = display_options.common_fields();
+
+        for comparator in Comparator::iter() {
+            data.filter.as_mut().unwrap().comparator = comparator;
+            data.apply_filter(common_fields);
+            insta_settings.bind(|| insta::assert_yaml_snapshot!(data));
+        }
+    }
 }

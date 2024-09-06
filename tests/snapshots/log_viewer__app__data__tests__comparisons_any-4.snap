@@ -1,0 +1,21 @@
+---
+source: src/app/data.rs
+expression: data
+---
+selected_row: ~
+filter:
+  search_key: "20"
+  filter_on: Any
+  is_case_sensitive: false
+  comparator: GreaterThan
+rows:
+  - data:
+      otel.name: HTTP GET /status
+      time: time value
+  - data:
+      http.status_code: 200
+      otel.name: HTTP GET /status
+      time: time value
+filtered_rows:
+  - 0
+  - 1

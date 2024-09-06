@@ -39,6 +39,7 @@ impl FilterOn {
     }
 }
 
+#[cfg_attr(test, derive(strum::EnumIter))]
 #[derive(Debug, Default, serde::Serialize, serde::Deserialize, PartialEq, Eq, Clone, Copy)]
 pub enum Comparator {
     LessThan,
