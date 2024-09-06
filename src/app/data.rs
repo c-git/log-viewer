@@ -1,26 +1,34 @@
 use std::collections::{BTreeMap, BTreeSet};
 
 use anyhow::Context;
+use data_iter::DataIter;
+use filter::{FieldSpecifier, FilterConfig};
+use log::warn;
 
 use super::calculate_hash;
+mod data_iter;
+pub mod filter;
 
 // TODO 1: Create access method that returns enum indicating value or not
 // TODO 2: Create an iterator that allows for selection of first fields to show if present
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
+#[serde(default)]
 pub struct Data {
     pub selected_row: Option<usize>,
+    pub filter: Option<filter::FilterConfig>,
     rows: Vec<LogRow>,
+    filtered_rows: Option<Vec<usize>>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq, Clone)]
 pub struct LogRow {
     data: BTreeMap<String, serde_json::Value>,
     #[serde(skip)]
     cached_display_list: Option<CachedDisplayInfo>,
 }
 
-#[derive(Default, Debug, PartialEq, Eq)]
+#[derive(Default, Debug, PartialEq, Eq, Clone)]
 struct CachedDisplayInfo {
     data: Vec<(String, String)>,
     common_fields_hash: u64,
@@ -104,7 +112,7 @@ impl LogRow {
             // Sort data based on common fields (to group them at the bottom)
             data.sort_unstable();
 
-            // Remove extra info for sorting
+            // Remove extra info that was used for sorting
             let data = data.into_iter().map(|x| x.1).collect();
 
             self.cached_display_list = Some(CachedDisplayInfo {
@@ -116,8 +124,8 @@ impl LogRow {
 }
 
 impl Data {
-    pub fn rows(&self) -> &[LogRow] {
-        &self.rows
+    pub fn rows_iter(&self) -> impl Iterator<Item = &'_ LogRow> {
+        DataIter::new(self)
     }
 
     pub fn selected_row_data_as_slice(
@@ -166,6 +174,57 @@ impl Data {
         } else {
             // No rows to select
         }
+    }
+
+    pub fn is_filtered(&self) -> bool {
+        self.filtered_rows.is_some()
+    }
+
+    pub fn unfilter(&mut self) {
+        self.selected_row = None;
+        self.filtered_rows = None;
+    }
+
+    pub fn apply_filter(&mut self, common_fields: &BTreeSet<String>) {
+        if let Some(filter) = self.filter.as_ref() {
+            self.selected_row = None;
+            self.filtered_rows = Some(
+                self.rows
+                    .iter_mut()
+                    .enumerate()
+                    .filter_map(|(i, row)| {
+                        if is_included(row, filter, common_fields) {
+                            Some(i)
+                        } else {
+                            None
+                        }
+                    })
+                    .collect(),
+            );
+        } else {
+            warn!("Apply called but no filter is available")
+        }
+    }
+}
+
+fn is_included(
+    row: &mut LogRow,
+    filter: &filter::FilterConfig,
+    common_fields: &BTreeSet<String>,
+) -> bool {
+    let FilterConfig {
+        search_key,
+        filter_on,
+        comparator,
+    } = filter;
+    let fields_and_values = row.as_slice(common_fields);
+    match filter_on {
+        filter::FilterOn::Any => fields_and_values
+            .iter()
+            .any(|(_, value)| comparator.apply(search_key, value)),
+        filter::FilterOn::Field(FieldSpecifier { name }) => fields_and_values
+            .iter()
+            .any(|(field_name, value)| name == field_name && comparator.apply(search_key, value)),
     }
 }
 
@@ -258,7 +317,7 @@ mod tests {
             let rows_before = Data::try_from(&input[..]).unwrap();
 
             // Test individual rows
-            for (i, row_before) in rows_before.rows().iter().enumerate() {
+            for (i, row_before) in rows_before.rows_iter().enumerate() {
                 let as_string = match serde_format {
                     SerdeFormat::Ron => ron::to_string(&row_before).unwrap(),
                     SerdeFormat::Json => serde_json::to_string(&row_before).unwrap(),
@@ -286,7 +345,7 @@ mod tests {
         });
     }
 
-    fn create_log_row_no_extra() -> LogRow {
+    pub fn create_log_row_no_extra() -> LogRow {
         let mut result = LogRow::default();
         result.data.insert("time".into(), "time value".into());
         result
@@ -295,7 +354,7 @@ mod tests {
         result
     }
 
-    fn create_log_row_with_extra() -> LogRow {
+    pub fn create_log_row_with_extra() -> LogRow {
         let mut result = create_log_row_no_extra();
         result.data.insert("http.status_code".into(), 200.into());
         result
@@ -317,4 +376,6 @@ mod tests {
         };
         assert_eq!(after, before);
     }
+
+    // TODO 1: Add tests for filters
 }

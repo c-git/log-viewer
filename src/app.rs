@@ -6,6 +6,7 @@ use std::{
 
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
+use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
 use egui::{Align, KeyboardShortcut, Modifiers};
 use egui_extras::{Column, TableBuilder};
 use log::info;
@@ -28,6 +29,7 @@ pub struct LogViewerApp {
     shortcut_next: KeyboardShortcut,
     shortcut_first: KeyboardShortcut,
     shortcut_last: KeyboardShortcut,
+    shortcut_unfilter: KeyboardShortcut,
 
     #[serde(skip)]
     should_scroll: bool,
@@ -48,6 +50,7 @@ impl Default for LogViewerApp {
             shortcut_next: KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowDown),
             shortcut_first: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Home),
             shortcut_last: KeyboardShortcut::new(Modifiers::NONE, egui::Key::End),
+            shortcut_unfilter: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Escape),
             should_scroll: Default::default(),
             show_last_filename: true,
         }
@@ -137,8 +140,7 @@ impl LogViewerApp {
                 // TODO 3: Figure out if calculating these values only once is worth it.
                 // TODO 4: Remove hard coded "msg"
                 let heights: Vec<f32> = data
-                    .rows()
-                    .iter()
+                    .rows_iter()
                     .map(|x| {
                         (1f32).max(x.field_value("msg").display().lines().count() as f32)
                             * text_height
@@ -146,7 +148,10 @@ impl LogViewerApp {
                     .collect();
                 body.heterogeneous_rows(heights.into_iter(), |mut row| {
                     let row_index = row.index();
-                    let log_row = &data.rows()[row_index];
+                    let log_row = &data
+                        .rows_iter()
+                        .nth(row_index)
+                        .expect("len was passed above should only be valid indices");
 
                     let emphasis_info = if let Some(selected_row) = data.selected_row {
                         row.set_selected(selected_row == row_index);
@@ -157,7 +162,10 @@ impl LogViewerApp {
                                 &self.data_display_options.main_list_fields()[emphasis_field_idx];
                             Some((
                                 emphasis_field_idx,
-                                data.rows()[selected_row].field_value(field_name),
+                                data.rows_iter()
+                                    .nth(selected_row)
+                                    .expect("selected row should always be a valid index")
+                                    .field_value(field_name),
                             ))
                         } else {
                             None
@@ -444,52 +452,162 @@ impl LogViewerApp {
         if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_last)) {
             self.move_selected_last();
         }
+
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_unfilter)) {
+            if let Some(data) = self.data.as_mut() {
+                data.unfilter();
+            }
+        }
     }
 
     fn navigation_and_filtering_ui(&mut self, ui: &mut egui::Ui) {
         ui.horizontal(|ui| {
-            ui.label("Nav:");
-            if ui
-                .button("⏪")
-                .on_hover_text(format!(
-                    "First ({})",
-                    ui.ctx().format_shortcut(&self.shortcut_first)
-                ))
-                .clicked()
-            {
-                self.move_selected_first();
-            }
-            if ui
-                .button("⬆")
-                .on_hover_text(format!(
-                    "Previous ({})",
-                    ui.ctx().format_shortcut(&self.shortcut_prev)
-                ))
-                .clicked()
-            {
-                self.move_selected_prev();
-            }
-            if ui
-                .button("⬇")
-                .on_hover_text(format!(
-                    "Next ({})",
-                    ui.ctx().format_shortcut(&self.shortcut_next)
-                ))
-                .clicked()
-            {
-                self.move_selected_next();
-            }
-            if ui
-                .button("⏩")
-                .on_hover_text(format!(
-                    "Last ({})",
-                    ui.ctx().format_shortcut(&self.shortcut_last)
-                ))
-                .clicked()
-            {
-                self.move_selected_last();
-            }
+            self.navigation_ui(ui);
+            ui.separator();
+            self.filtering_ui(ui);
         });
+    }
+
+    fn filtering_ui(&mut self, ui: &mut egui::Ui) {
+        if let Some(data) = self.data.as_mut() {
+            ui.label("Filter:");
+            let mut is_filter_enabled = data.filter.is_some();
+            ui.checkbox(&mut is_filter_enabled, "");
+            match (is_filter_enabled, data.filter.is_some()) {
+                (false, false) | (true, true) => {} // Already match
+                (true, false) => data.filter = Some(Default::default()),
+                (false, true) => {
+                    data.unfilter();
+                    data.filter = None
+                }
+            }
+            let mut should_apply_filter = false;
+            if is_filter_enabled {
+                if ui.button("Apply").clicked() {
+                    should_apply_filter = true;
+                }
+                if data.is_filtered()
+                    && ui
+                        .button("Unfilter")
+                        .on_hover_text(format!(
+                            "Clears Filter ({})",
+                            ui.ctx().format_shortcut(&self.shortcut_unfilter)
+                        ))
+                        .clicked()
+                {
+                    data.unfilter();
+                }
+            }
+
+            if let Some(filter) = data.filter.as_mut() {
+                let FilterConfig {
+                    search_key,
+                    filter_on,
+                    comparator,
+                } = filter;
+                ui.label("Search Key: ");
+                if ui.text_edit_singleline(search_key).lost_focus()
+                    && ui.input(|i| i.key_pressed(egui::Key::Enter))
+                {
+                    should_apply_filter = true;
+                }
+
+                ui.spacing();
+                egui::ComboBox::from_label("")
+                    .selected_text(format!("{}", comparator))
+                    .show_ui(ui, |ui| {
+                        ui.selectable_value(comparator, Comparator::LessThan, "Less than");
+                        ui.selectable_value(
+                            comparator,
+                            Comparator::LessThanEqual,
+                            "Less than equal",
+                        );
+                        ui.selectable_value(comparator, Comparator::Equal, "Equal");
+                        ui.selectable_value(comparator, Comparator::GreaterThan, "Greater than");
+                        ui.selectable_value(
+                            comparator,
+                            Comparator::GreaterThanEqual,
+                            "Greater than equal",
+                        );
+                        ui.selectable_value(comparator, Comparator::NotEqual, "Not equal");
+                        ui.selectable_value(comparator, Comparator::Contains, "Contains");
+                        ui.selectable_value(comparator, Comparator::NotContains, "Not contains");
+                    });
+
+                ui.spacing();
+                let mut is_any = filter_on.is_any();
+                ui.toggle_value(&mut is_any, "Any");
+                if is_any && !filter_on.is_any() {
+                    // Toggled on
+                    *filter_on = FilterOn::Any;
+                }
+
+                let mut is_field = filter_on.is_field();
+                ui.toggle_value(&mut is_field, "Field");
+                if is_field && !filter_on.is_field() {
+                    // Toggled on
+                    *filter_on = FilterOn::Field(Default::default());
+                }
+
+                if let FilterOn::Field(FieldSpecifier { name }) = filter_on {
+                    ui.spacing();
+                    if ui
+                        .add(egui::TextEdit::singleline(name).hint_text("Name"))
+                        .lost_focus()
+                        && ui.input(|i| i.key_pressed(egui::Key::Enter))
+                    {
+                        should_apply_filter = true;
+                    }
+                }
+            }
+            if should_apply_filter {
+                data.apply_filter(self.data_display_options.common_fields());
+            }
+        }
+    }
+
+    fn navigation_ui(&mut self, ui: &mut egui::Ui) {
+        ui.label("Nav:");
+        if ui
+            .button("⏪")
+            .on_hover_text(format!(
+                "First ({})",
+                ui.ctx().format_shortcut(&self.shortcut_first)
+            ))
+            .clicked()
+        {
+            self.move_selected_first();
+        }
+        if ui
+            .button("⬆")
+            .on_hover_text(format!(
+                "Previous ({})",
+                ui.ctx().format_shortcut(&self.shortcut_prev)
+            ))
+            .clicked()
+        {
+            self.move_selected_prev();
+        }
+        if ui
+            .button("⬇")
+            .on_hover_text(format!(
+                "Next ({})",
+                ui.ctx().format_shortcut(&self.shortcut_next)
+            ))
+            .clicked()
+        {
+            self.move_selected_next();
+        }
+        if ui
+            .button("⏩")
+            .on_hover_text(format!(
+                "Last ({})",
+                ui.ctx().format_shortcut(&self.shortcut_last)
+            ))
+            .clicked()
+        {
+            self.move_selected_last();
+        }
     }
     fn data_load_ui(&mut self, ui: &mut egui::Ui) {
         ui.horizontal(|ui| {
