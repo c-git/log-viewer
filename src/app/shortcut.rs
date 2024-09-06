@@ -8,6 +8,11 @@ pub struct Shortcuts {
     pub first: KeyboardShortcut,
     pub last: KeyboardShortcut,
     pub unfilter: KeyboardShortcut,
+    pub open: KeyboardShortcut,
+    pub reload: KeyboardShortcut,
+    pub load_latest: KeyboardShortcut,
+    pub apply_filter: KeyboardShortcut,
+    pub search: KeyboardShortcut,
 }
 
 impl Default for Shortcuts {
@@ -18,6 +23,11 @@ impl Default for Shortcuts {
             first: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Home),
             last: KeyboardShortcut::new(Modifiers::NONE, egui::Key::End),
             unfilter: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Escape),
+            open: KeyboardShortcut::new(Modifiers::CTRL, egui::Key::O),
+            reload: KeyboardShortcut::new(Modifiers::NONE, egui::Key::F5),
+            load_latest: KeyboardShortcut::new(Modifiers::NONE, egui::Key::F6),
+            apply_filter: KeyboardShortcut::new(Modifiers::NONE, egui::Key::F7),
+            search: KeyboardShortcut::new(Modifiers::CTRL, egui::Key::F),
         }
     }
 }

@@ -7,7 +7,7 @@ use std::{
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
-use egui::Align;
+use egui::{Align, KeyboardShortcut};
 use egui_extras::{Column, TableBuilder};
 use log::info;
 use shortcut::Shortcuts;
@@ -30,6 +30,8 @@ pub struct LogViewerApp {
     shortcuts: Shortcuts,
 
     #[serde(skip)]
+    should_focus_search: bool,
+    #[serde(skip)]
     should_scroll: bool,
     #[serde(skip)]
     loading_status: LoadingStatus,
@@ -45,6 +47,7 @@ impl Default for LogViewerApp {
             last_filename: Default::default(),
             track_item_align: Default::default(),
             shortcuts: Default::default(),
+            should_focus_search: Default::default(),
             should_scroll: Default::default(),
             show_last_filename: true,
         }
@@ -456,6 +459,31 @@ impl LogViewerApp {
                 data.unfilter();
             }
         }
+
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.open)) {
+            self.loading_status = self.initiate_loading(ui.ctx().clone());
+        }
+
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.reload)) {
+                self.loading_status = self.reload_file();
+            }
+
+            if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.load_latest)) {
+                self.loading_status = self.load_most_recent_file();
+            }
+        }
+
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.apply_filter)) {
+            if let Some(data) = self.data.as_mut() {
+                data.apply_filter(self.data_display_options.common_fields());
+            }
+        }
+
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.search)) {
+            self.focus_search_text_edit();
+        }
     }
 
     fn navigation_and_filtering_ui(&mut self, ui: &mut egui::Ui) {
@@ -481,16 +509,11 @@ impl LogViewerApp {
             }
             let mut should_apply_filter = false;
             if is_filter_enabled {
-                if ui.button("Apply").clicked() {
+                if shortcut_button(ui, "Apply", "", &self.shortcuts.apply_filter).clicked() {
                     should_apply_filter = true;
                 }
                 if data.is_filtered()
-                    && ui
-                        .button("Unfilter")
-                        .on_hover_text(format!(
-                            "Clears Filter ({})",
-                            ui.ctx().format_shortcut(&self.shortcuts.unfilter)
-                        ))
+                    && shortcut_button(ui, "Unfilter", "Clears Filter ", &self.shortcuts.unfilter)
                         .clicked()
                 {
                     data.unfilter();
@@ -505,7 +528,12 @@ impl LogViewerApp {
                     comparator,
                 } = filter;
                 ui.label("Search Key: ");
-                if ui.text_edit_singleline(search_key).lost_focus()
+                let search_key_text_edit = ui.text_edit_singleline(search_key);
+                if self.should_focus_search {
+                    self.should_focus_search = false;
+                    search_key_text_edit.request_focus();
+                }
+                if search_key_text_edit.lost_focus()
                     && ui.input(|i| i.key_pressed(egui::Key::Enter))
                 {
                     should_apply_filter = true;
@@ -570,59 +598,32 @@ impl LogViewerApp {
 
     fn navigation_ui(&mut self, ui: &mut egui::Ui) {
         ui.label("Nav:");
-        if ui
-            .button("⏪")
-            .on_hover_text(format!(
-                "First ({})",
-                ui.ctx().format_shortcut(&self.shortcuts.first)
-            ))
-            .clicked()
-        {
+        if shortcut_button(ui, "⏪", "First ", &self.shortcuts.first).clicked() {
             self.move_selected_first();
         }
-        if ui
-            .button("⬆")
-            .on_hover_text(format!(
-                "Previous ({})",
-                ui.ctx().format_shortcut(&self.shortcuts.prev)
-            ))
-            .clicked()
-        {
+        if shortcut_button(ui, "⬆", "Previous ", &self.shortcuts.prev).clicked() {
             self.move_selected_prev();
         }
-        if ui
-            .button("⬇")
-            .on_hover_text(format!(
-                "Next ({})",
-                ui.ctx().format_shortcut(&self.shortcuts.next)
-            ))
-            .clicked()
-        {
+        if shortcut_button(ui, "⬇", "Next ", &self.shortcuts.next).clicked() {
             self.move_selected_next();
         }
-        if ui
-            .button("⏩")
-            .on_hover_text(format!(
-                "Last ({})",
-                ui.ctx().format_shortcut(&self.shortcuts.last)
-            ))
-            .clicked()
-        {
+        if shortcut_button(ui, "⏩", "Last ", &self.shortcuts.last).clicked() {
             self.move_selected_last();
         }
     }
     fn data_load_ui(&mut self, ui: &mut egui::Ui) {
         ui.horizontal(|ui| {
-            if ui.button("📂 Open log file...").clicked() {
-                let ctx = ui.ctx().clone();
-                self.loading_status = self.initiate_loading(ctx);
+            if shortcut_button(ui, "📂 Open log file...", "", &self.shortcuts.open).clicked() {
+                self.loading_status = self.initiate_loading(ui.ctx().clone());
             }
             #[cfg(not(target_arch = "wasm32"))]
             {
-                if ui.button("Reload").clicked() {
+                if shortcut_button(ui, "Reload", "", &self.shortcuts.reload).clicked() {
                     self.loading_status = self.reload_file();
                 }
-                if ui.button("Load Most Recent File").clicked() {
+                if shortcut_button(ui, "Load Most Recent File", "", &self.shortcuts.load_latest)
+                    .clicked()
+                {
                     self.loading_status = self.load_most_recent_file();
                 }
             }
@@ -636,6 +637,13 @@ impl LogViewerApp {
                 }
             }
         });
+    }
+
+    fn focus_search_text_edit(&mut self) {
+        if let Some(data) = self.data.as_mut() {
+            data.filter.get_or_insert(Default::default()); // Create filter if it doesn't exist
+            self.should_focus_search = true;
+        }
     }
 }
 
@@ -759,4 +767,16 @@ pub fn calculate_hash<T: Hash + ?Sized>(t: &T) -> u64 {
     let mut s = DefaultHasher::new();
     t.hash(&mut s);
     s.finish()
+}
+
+fn shortcut_button(
+    ui: &mut egui::Ui,
+    caption: impl Into<egui::WidgetText>,
+    hint_msg: &str,
+    shortcut: &KeyboardShortcut,
+) -> egui::Response {
+    ui.button(caption).on_hover_text(format!(
+        "{hint_msg}({})",
+        ui.ctx().format_shortcut(shortcut)
+    ))
 }
