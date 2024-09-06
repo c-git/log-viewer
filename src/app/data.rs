@@ -163,7 +163,7 @@ impl Data {
                 // Do nothing already on last row
             }
         } else {
-            self.move_selected_to_last();
+            self.move_selected_to_first();
         }
     }
 
@@ -175,7 +175,7 @@ impl Data {
                 // Do nothing already on first row
             }
         } else {
-            self.move_selected_to_first()
+            self.move_selected_to_last()
         }
     }
 
