@@ -7,14 +7,16 @@ use std::{
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
-use egui::{Align, KeyboardShortcut, Modifiers};
+use egui::Align;
 use egui_extras::{Column, TableBuilder};
 use log::info;
+use shortcut::Shortcuts;
 
 use self::{data::Data, data_display_options::DataDisplayOptions};
 
 mod data;
 mod data_display_options;
+mod shortcut;
 
 #[derive(serde::Deserialize, serde::Serialize)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
@@ -25,11 +27,7 @@ pub struct LogViewerApp {
     last_filename: Arc<Mutex<Option<PathBuf>>>,
     show_last_filename: bool,
     track_item_align: Option<Align>,
-    shortcut_prev: KeyboardShortcut,
-    shortcut_next: KeyboardShortcut,
-    shortcut_first: KeyboardShortcut,
-    shortcut_last: KeyboardShortcut,
-    shortcut_unfilter: KeyboardShortcut,
+    shortcuts: Shortcuts,
 
     #[serde(skip)]
     should_scroll: bool,
@@ -46,11 +44,7 @@ impl Default for LogViewerApp {
             loading_status: Default::default(),
             last_filename: Default::default(),
             track_item_align: Default::default(),
-            shortcut_prev: KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowUp),
-            shortcut_next: KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowDown),
-            shortcut_first: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Home),
-            shortcut_last: KeyboardShortcut::new(Modifiers::NONE, egui::Key::End),
-            shortcut_unfilter: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Escape),
+            shortcuts: Default::default(),
             should_scroll: Default::default(),
             show_last_filename: true,
         }
@@ -441,23 +435,23 @@ impl LogViewerApp {
     }
 
     fn check_shortcuts(&mut self, ui: &mut egui::Ui) {
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_prev)) {
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.prev)) {
             self.move_selected_prev();
         }
 
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_next)) {
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.next)) {
             self.move_selected_next();
         }
 
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_first)) {
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.first)) {
             self.move_selected_first();
         }
 
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_last)) {
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.last)) {
             self.move_selected_last();
         }
 
-        if ui.input_mut(|i| i.consume_shortcut(&self.shortcut_unfilter)) {
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.unfilter)) {
             if let Some(data) = self.data.as_mut() {
                 data.unfilter();
             }
@@ -495,7 +489,7 @@ impl LogViewerApp {
                         .button("Unfilter")
                         .on_hover_text(format!(
                             "Clears Filter ({})",
-                            ui.ctx().format_shortcut(&self.shortcut_unfilter)
+                            ui.ctx().format_shortcut(&self.shortcuts.unfilter)
                         ))
                         .clicked()
                 {
@@ -580,7 +574,7 @@ impl LogViewerApp {
             .button("⏪")
             .on_hover_text(format!(
                 "First ({})",
-                ui.ctx().format_shortcut(&self.shortcut_first)
+                ui.ctx().format_shortcut(&self.shortcuts.first)
             ))
             .clicked()
         {
@@ -590,7 +584,7 @@ impl LogViewerApp {
             .button("⬆")
             .on_hover_text(format!(
                 "Previous ({})",
-                ui.ctx().format_shortcut(&self.shortcut_prev)
+                ui.ctx().format_shortcut(&self.shortcuts.prev)
             ))
             .clicked()
         {
@@ -600,7 +594,7 @@ impl LogViewerApp {
             .button("⬇")
             .on_hover_text(format!(
                 "Next ({})",
-                ui.ctx().format_shortcut(&self.shortcut_next)
+                ui.ctx().format_shortcut(&self.shortcuts.next)
             ))
             .clicked()
         {
@@ -610,7 +604,7 @@ impl LogViewerApp {
             .button("⏩")
             .on_hover_text(format!(
                 "Last ({})",
-                ui.ctx().format_shortcut(&self.shortcut_last)
+                ui.ctx().format_shortcut(&self.shortcuts.last)
             ))
             .clicked()
         {
