@@ -503,6 +503,7 @@ impl LogViewerApp {
                 let FilterConfig {
                     search_key,
                     filter_on,
+                    is_case_sensitive,
                     comparator,
                 } = filter;
                 ui.label("Search Key: ");
@@ -511,6 +512,9 @@ impl LogViewerApp {
                 {
                     should_apply_filter = true;
                 }
+
+                ui.spacing();
+                ui.checkbox(is_case_sensitive, "Case Sensitive");
 
                 ui.spacing();
                 egui::ComboBox::from_label("")

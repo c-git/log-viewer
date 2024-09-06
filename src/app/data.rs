@@ -1,4 +1,7 @@
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    borrow::Cow,
+    collections::{BTreeMap, BTreeSet},
+};
 
 use anyhow::Context;
 use data_iter::DataIter;
@@ -16,7 +19,7 @@ pub mod filter;
 #[serde(default)]
 pub struct Data {
     pub selected_row: Option<usize>,
-    pub filter: Option<filter::FilterConfig>,
+    pub filter: Option<FilterConfig>,
     rows: Vec<LogRow>,
     filtered_rows: Option<Vec<usize>>,
 }
@@ -137,6 +140,7 @@ impl Data {
     }
 
     pub fn move_selected_to_next(&mut self) {
+        // TODO 1: Fix index values used
         if let Some(selected) = self.selected_row.as_mut() {
             if *selected < self.rows.len() - 1 {
                 *selected += 1;
@@ -216,15 +220,36 @@ fn is_included(
         search_key,
         filter_on,
         comparator,
+        is_case_sensitive,
     } = filter;
     let fields_and_values = row.as_slice(common_fields);
+    let search_key = if *is_case_sensitive {
+        search_key
+    } else {
+        &search_key.to_lowercase()
+    };
+    let mut iter = fields_and_values.iter().map(|(k, v)| {
+        if *is_case_sensitive {
+            (Cow::Borrowed(k), Cow::Borrowed(v))
+        } else {
+            (Cow::Owned(k.to_lowercase()), Cow::Owned(v.to_lowercase()))
+        }
+    });
+
     match filter_on {
-        filter::FilterOn::Any => fields_and_values
-            .iter()
-            .any(|(_, value)| comparator.apply(search_key, value)),
-        filter::FilterOn::Field(FieldSpecifier { name }) => fields_and_values
-            .iter()
-            .any(|(field_name, value)| name == field_name && comparator.apply(search_key, value)),
+        filter::FilterOn::Any => {
+            iter.any(|(_, value)| comparator.apply(search_key, value.as_str()))
+        }
+        filter::FilterOn::Field(FieldSpecifier { name }) => {
+            let name = if *is_case_sensitive {
+                name
+            } else {
+                &name.to_lowercase()
+            };
+            iter.any(|(field_name, value)| {
+                name == field_name.as_str() && comparator.apply(search_key, value.as_str())
+            })
+        }
     }
 }
 

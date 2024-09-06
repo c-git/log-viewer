@@ -48,6 +48,7 @@ mod tests {
     use super::*;
 
     #[test]
+    #[allow(clippy::iter_nth_zero)]
     fn nth_no_reverse() {
         let row0 = super::super::tests::create_log_row_no_extra();
         let row1 = super::super::tests::create_log_row_with_extra();

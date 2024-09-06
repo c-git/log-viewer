@@ -5,6 +5,7 @@ use std::fmt::Display;
 pub struct FilterConfig {
     pub search_key: String,
     pub filter_on: FilterOn,
+    pub is_case_sensitive: bool,
     pub comparator: Comparator,
 }
 

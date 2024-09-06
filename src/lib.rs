@@ -3,6 +3,5 @@
 mod app;
 pub use app::LogViewerApp;
 
-// TODO 1: On enter apply filter
 // TODO 3: Add button to set to current value if a field is selected
 // TODO 3: Support auto reload (look into watching for changes) https://watchexec.github.io/
