@@ -128,18 +128,27 @@ impl Data {
         DataIter::new(self)
     }
 
+    pub fn len(&self) -> usize {
+        if let Some(filtered) = self.filtered_rows.as_ref() {
+            filtered.len()
+        } else {
+            self.rows.len()
+        }
+    }
+
     pub fn selected_row_data_as_slice(
         &mut self,
         common_fields: &BTreeSet<String>,
     ) -> Option<&[(String, String)]> {
         let selected_row_index = self.selected_row?;
+        // TODO 1: Fix here to use appropriate list
         Some(self.rows[selected_row_index].as_slice(common_fields))
     }
 
     pub fn move_selected_to_next(&mut self) {
-        // TODO 1: Fix index values used
+        let n = self.len();
         if let Some(selected) = self.selected_row.as_mut() {
-            if *selected < self.rows.len() - 1 {
+            if *selected < n - 1 {
                 *selected += 1;
             } else {
                 // Do nothing already on last row
@@ -162,7 +171,7 @@ impl Data {
     }
 
     pub fn move_selected_to_first(&mut self) {
-        if !self.rows.is_empty() {
+        if self.len() > 0 {
             self.selected_row = Some(0)
         } else {
             // No rows to select
@@ -170,8 +179,9 @@ impl Data {
     }
 
     pub fn move_selected_to_last(&mut self) {
-        if !self.rows.is_empty() {
-            self.selected_row = Some(self.rows.len() - 1);
+        let n = self.len();
+        if n > 0 {
+            self.selected_row = Some(n - 1);
         } else {
             // No rows to select
         }
@@ -188,7 +198,7 @@ impl Data {
 
     pub fn apply_filter(&mut self, common_fields: &BTreeSet<String>) {
         if let Some(filter) = self.filter.as_ref() {
-            self.selected_row = None;
+            self.selected_row = None; // TODO 3: Update selected if still included in displayed rows
             self.filtered_rows = Some(
                 self.rows
                     .iter_mut()
