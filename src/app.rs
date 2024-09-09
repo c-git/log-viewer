@@ -605,7 +605,18 @@ impl LogViewerApp {
                     ui.label(format!("Filename: {}", filename.display()));
                 }
             }
-            // TODO 1: Show number of lines
+            if let Some(data) = self.data.as_ref() {
+                let row_count_text =
+                    match (data.is_filtered(), data.len(), data.total_len_unfiltered()) {
+                        (true, filtered_len, total_len) => format!(
+                            "{} of {}",
+                            with_separators(filtered_len),
+                            with_separators(total_len)
+                        ),
+                        (false, _, total_len) => with_separators(total_len),
+                    };
+                ui.label(format!("# Rows: {row_count_text}"));
+            }
         });
     }
 
@@ -757,4 +768,16 @@ fn shortcut_button(
 fn shortcut_hint_text(ui: &mut egui::Ui, hint_msg: &str, shortcut: &KeyboardShortcut) -> String {
     let space = if hint_msg.is_empty() { "" } else { " " };
     format!("{hint_msg}{space}({})", ui.ctx().format_shortcut(shortcut))
+}
+
+fn with_separators(value: usize) -> String {
+    value
+        .to_string()
+        .as_bytes()
+        .rchunks(3)
+        .rev()
+        .map(std::str::from_utf8)
+        .collect::<Result<Vec<&str>, _>>()
+        .unwrap()
+        .join(",")
 }

@@ -137,6 +137,10 @@ impl Data {
         }
     }
 
+    pub fn total_len_unfiltered(&self) -> usize {
+        self.rows.len()
+    }
+
     /// If the points are not filtered returns the input otherwise translates it from the filtered array
     fn get_real_index(&self, index: usize) -> usize {
         if let Some(filtered) = self.filtered_rows.as_ref() {
