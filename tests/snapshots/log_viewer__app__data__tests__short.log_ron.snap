@@ -1,5 +1,6 @@
 ---
-source: src/app/data.rs
+source: src/app/data/tests.rs
+assertion_line: 41
 expression: data
 ---
 Data(
@@ -8,6 +9,7 @@ Data(
   rows: [
     LogRow(
       data: {
+        "Test Row#": 0,
         "file": "crates/server/src/startup.rs",
         "hostname": "my_pc",
         "level": 30,
@@ -22,6 +24,7 @@ Data(
     ),
     LogRow(
       data: {
+        "Test Row#": 1,
         "file": "/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs",
         "hostname": "my_pc",
         "level": 30,

@@ -1,5 +1,6 @@
 ---
-source: src/app/data.rs
+source: src/app/data/tests.rs
+assertion_line: 44
 expression: data
 ---
 Data {
@@ -8,6 +9,7 @@ Data {
     rows: [
         LogRow {
             data: {
+                "Test Row#": Number(0),
                 "file": String("crates/server/src/startup.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -23,6 +25,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -38,6 +41,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(2),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/server.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -53,6 +57,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(3),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -79,6 +84,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(4),
                 "elapsed_milliseconds": Number(6),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -108,6 +114,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(5),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -134,6 +141,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(6),
                 "elapsed_milliseconds": Number(0),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -163,6 +171,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(7),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -189,6 +198,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(8),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -218,6 +228,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(9),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -244,6 +255,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(10),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -273,6 +285,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(11),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -299,6 +312,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(12),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -328,6 +342,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(13),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -354,6 +369,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(14),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -383,6 +399,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(15),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -409,6 +426,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(16),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -438,6 +456,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(17),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -464,6 +483,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(18),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -493,6 +513,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(19),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -519,6 +540,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(20),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -548,6 +570,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(21),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -574,6 +597,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(22),
                 "elapsed_milliseconds": Number(0),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -603,6 +627,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(23),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -629,6 +654,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(24),
                 "elapsed_milliseconds": Number(0),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -658,6 +684,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(25),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -684,6 +711,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(26),
                 "elapsed_milliseconds": Number(0),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -713,6 +741,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(27),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -739,6 +768,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(28),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -768,6 +798,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(29),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -794,6 +825,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(30),
                 "elapsed_milliseconds": Number(0),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -823,6 +855,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(31),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -849,6 +882,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(32),
                 "elapsed_milliseconds": Number(2),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -878,6 +912,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(33),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -904,6 +939,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(34),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -933,6 +969,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(35),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -959,6 +996,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(36),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -988,6 +1026,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(37),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1014,6 +1053,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(38),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1043,6 +1083,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(39),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1069,6 +1110,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(40),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1098,6 +1140,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(41),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1124,6 +1167,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(42),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1153,6 +1197,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(43),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1179,6 +1224,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(44),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1208,6 +1254,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(45),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1234,6 +1281,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(46),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1263,6 +1311,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(47),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1289,6 +1338,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(48),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1318,6 +1368,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(49),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1344,6 +1395,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(50),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1373,6 +1425,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(51),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1399,6 +1452,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(52),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1428,6 +1482,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(53),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1454,6 +1509,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(54),
                 "elapsed_milliseconds": Number(2),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1483,6 +1539,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(55),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1509,6 +1566,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(56),
                 "elapsed_milliseconds": Number(1),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1538,6 +1596,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(57),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1564,6 +1623,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(58),
                 "file": Null,
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1594,6 +1654,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(59),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1620,6 +1681,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(60),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1646,6 +1708,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(61),
                 "file": String("crates/server/src/routes/status.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1672,6 +1735,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(62),
                 "elapsed_milliseconds": Number(2001),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1701,6 +1765,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(63),
                 "file": String("crates/server/src/routes/status.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1727,6 +1792,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(64),
                 "elapsed_milliseconds": Number(2001),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1756,6 +1822,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(65),
                 "file": String("crates/server/src/routes/status.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1782,6 +1849,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(66),
                 "elapsed_milliseconds": Number(2001),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1811,6 +1879,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(67),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1837,6 +1906,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(68),
                 "file": String("crates/server/src/routes/status.rs"),
                 "hostname": String("my_pc"),
                 "http.client_ip": String("127.0.0.1"),
@@ -1863,6 +1933,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(69),
                 "elapsed_milliseconds": Number(2001),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tracing-actix-web-0.6.2/src/root_span_builder.rs"),
                 "hostname": String("my_pc"),
@@ -1892,6 +1963,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(70),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/server.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -1907,6 +1979,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(71),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/accept.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -1922,6 +1995,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(72),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -1937,6 +2011,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(73),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -1952,6 +2027,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(74),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -1967,6 +2043,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(75),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -1982,6 +2059,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(76),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -1997,6 +2075,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(77),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -2012,6 +2091,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(78),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -2027,6 +2107,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(79),
                 "file": String("/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/worker.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),
@@ -2042,6 +2123,7 @@ Data {
         },
         LogRow {
             data: {
+                "Test Row#": Number(80),
                 "file": String("crates/server/src/main.rs"),
                 "hostname": String("my_pc"),
                 "level": Number(30),

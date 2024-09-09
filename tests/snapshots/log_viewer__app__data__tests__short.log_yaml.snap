@@ -1,11 +1,13 @@
 ---
-source: src/app/data.rs
+source: src/app/data/tests.rs
+assertion_line: 42
 expression: data
 ---
 selected_row: ~
 filter: ~
 rows:
   - data:
+      "Test Row#": 0
       file: crates/server/src/startup.rs
       hostname: my_pc
       level: 30
@@ -17,6 +19,7 @@ rows:
       time: "2024-02-10T03:13:04.191299188Z"
       v: 0
   - data:
+      "Test Row#": 1
       file: /home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs
       hostname: my_pc
       level: 30

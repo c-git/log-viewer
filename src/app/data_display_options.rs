@@ -29,7 +29,7 @@ impl Default for DataDisplayOptions {
     fn default() -> Self {
         Self {
             // TODO 3: Add ability to show, select and reorder selected fields
-            main_list_fields: ["time", "request_id", "otel.name", "msg"]
+            main_list_fields: ["row#", "time", "request_id", "otel.name", "msg"]
                 .into_iter()
                 .map(String::from)
                 .collect(),

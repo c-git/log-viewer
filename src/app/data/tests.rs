@@ -36,7 +36,7 @@ pub(crate) fn insta_settings() -> insta::Settings {
 fn deserialize_rows_from_string(insta_settings: insta::Settings) {
     glob!(PATH_PROJECT_ROOT, PATH_TEST_SAMPLES, |path| {
         let input = std::fs::read_to_string(path).unwrap();
-        let data = Data::try_from(&input[..]).unwrap();
+        let data = Data::try_from((Some(&"Test Row#".to_string()), &input[..])).unwrap();
         let log_filename = path.file_name().unwrap().to_string_lossy().to_string();
         insta_settings.bind(|| insta::assert_ron_snapshot!(format!("{log_filename}_ron"), data));
         insta_settings.bind(|| insta::assert_yaml_snapshot!(format!("{log_filename}_yaml"), data));
@@ -58,7 +58,7 @@ fn round_trip_from_samples(#[case] serde_format: SerdeFormat) {
 
     glob!(PATH_PROJECT_ROOT, PATH_TEST_SAMPLES, |path| {
         let input = std::fs::read_to_string(path).unwrap();
-        let rows_before = Data::try_from(&input[..]).unwrap();
+        let rows_before = Data::try_from((Some(&"Test Row#".to_string()), &input[..])).unwrap();
 
         // Test individual rows
         for (i, row_before) in rows_before.rows_iter().enumerate() {

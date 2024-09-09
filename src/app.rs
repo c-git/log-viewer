@@ -29,6 +29,9 @@ pub struct LogViewerApp {
     track_item_align: Option<Align>,
     shortcuts: Shortcuts,
     auto_scroll_to_end: bool,
+    // TODO 4: Add UI to set / unset field
+    /// When set adds a field with this name and populates it with the row numbers
+    pub row_idx_field_name: Option<String>,
 
     #[serde(skip)]
     should_focus_search: bool,
@@ -49,6 +52,7 @@ impl Default for LogViewerApp {
             track_item_align: Default::default(),
             shortcuts: Default::default(),
             auto_scroll_to_end: Default::default(),
+            row_idx_field_name: Some("row#".to_string()),
             should_focus_search: Default::default(),
             should_scroll: Default::default(),
             show_last_filename: true,
@@ -296,20 +300,21 @@ impl LogViewerApp {
                 ui.colored_label(ui.visuals().error_fg_color, msg);
             }
             LoadingStatus::Success(data) => {
-                self.loading_status = match Data::try_from(&data[..]) {
-                    Ok(mut data) => {
-                        if let Some(old_data) = self.data.as_mut() {
-                            // Preserve filter across loads of the data
-                            data.filter = old_data.filter.take();
+                self.loading_status =
+                    match Data::try_from((self.row_idx_field_name.as_ref(), &data[..])) {
+                        Ok(mut data) => {
+                            if let Some(old_data) = self.data.as_mut() {
+                                // Preserve filter settings across loads of the data
+                                data.filter = old_data.filter.take();
+                            }
+                            self.data = Some(data);
+                            if self.auto_scroll_to_end {
+                                self.move_selected_last();
+                            }
+                            LoadingStatus::NotInProgress
                         }
-                        self.data = Some(data);
-                        if self.auto_scroll_to_end {
-                            self.move_selected_last();
-                        }
-                        LoadingStatus::NotInProgress
+                        Err(e) => LoadingStatus::Failed(format!("{e:?}")),
                     }
-                    Err(e) => LoadingStatus::Failed(format!("{e:?}")),
-                }
             }
         }
     }

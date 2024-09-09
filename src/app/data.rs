@@ -7,10 +7,13 @@ use anyhow::Context;
 use data_iter::DataIter;
 use filter::{FieldSpecifier, FilterConfig};
 use log::warn;
+use serde_json::Value;
 
 use super::calculate_hash;
 mod data_iter;
 pub mod filter;
+
+type LogRowIdxFieldName<'a> = Option<&'a String>;
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 #[serde(default)]
@@ -30,7 +33,6 @@ pub struct LogRow {
 
 #[derive(Default, Debug, PartialEq, Eq, Clone)]
 struct CachedDisplayInfo {
-    // TODO 1: Add row numbers to top section (optionally)
     data: Vec<(String, String)>,
     common_fields_hash: u64,
 }
@@ -121,6 +123,11 @@ impl LogRow {
                 common_fields_hash,
             });
         }
+    }
+
+    /// Adds the value passed at the key if the key does not exist
+    fn or_insert(&mut self, key: String, value: Value) {
+        self.data.entry(key).or_insert(value);
     }
 }
 
@@ -283,25 +290,33 @@ fn is_included(
     }
 }
 
-impl TryFrom<&str> for LogRow {
+impl TryFrom<(LogRowIdxFieldName<'_>, usize, &str)> for LogRow {
     type Error = anyhow::Error;
 
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        Ok(Self {
+    fn try_from(
+        (log_row_idx_key, row_idx_val, value): (LogRowIdxFieldName<'_>, usize, &str),
+    ) -> Result<Self, Self::Error> {
+        let mut result = Self {
             data: serde_json::from_str(value)?,
             cached_display_list: None,
-        })
+        };
+        if let Some(key) = log_row_idx_key {
+            result.or_insert(key.to_string(), row_idx_val.into());
+        }
+        Ok(result)
     }
 }
 
-impl TryFrom<&str> for Data {
+impl TryFrom<(LogRowIdxFieldName<'_>, &str)> for Data {
     type Error = anyhow::Error;
 
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
+    fn try_from(
+        (log_row_idx_key, value): (LogRowIdxFieldName<'_>, &str),
+    ) -> Result<Self, Self::Error> {
         let mut result = Data::default();
         for (i, line) in value.lines().enumerate() {
             result.rows.push(
-                LogRow::try_from(line)
+                LogRow::try_from((log_row_idx_key, i, line))
                     .with_context(|| format!("failed to parse line {}", i + 1))?,
             );
         }
