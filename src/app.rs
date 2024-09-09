@@ -28,7 +28,7 @@ pub struct LogViewerApp {
     show_last_filename: bool,
     track_item_align: Option<Align>,
     shortcuts: Shortcuts,
-    auto_scroll_to_end: bool,
+    should_scroll_to_end_on_load: bool,
     // TODO 4: Add UI to set / unset field
     /// When set adds a field with this name and populates it with the row numbers
     pub row_idx_field_name: Option<String>,
@@ -51,7 +51,7 @@ impl Default for LogViewerApp {
             last_filename: Default::default(),
             track_item_align: Default::default(),
             shortcuts: Default::default(),
-            auto_scroll_to_end: Default::default(),
+            should_scroll_to_end_on_load: Default::default(),
             row_idx_field_name: Some("row#".to_string()),
             should_focus_search: Default::default(),
             should_scroll: Default::default(),
@@ -97,7 +97,7 @@ impl LogViewerApp {
         let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
-            .stick_to_bottom(self.auto_scroll_to_end)
+            // .stick_to_bottom(self.scroll_to_end_on_load) // Removed because it disabled scroll on move of selected
             .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT));
 
         let n = self.data_display_options.main_list_fields().len();
@@ -308,7 +308,7 @@ impl LogViewerApp {
                                 data.filter = old_data.filter.take();
                             }
                             self.data = Some(data);
-                            if self.auto_scroll_to_end {
+                            if self.should_scroll_to_end_on_load {
                                 self.move_selected_last();
                             }
                             LoadingStatus::NotInProgress
@@ -354,12 +354,15 @@ impl LogViewerApp {
     fn ui_options(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Options", |ui| {
             ui.checkbox(&mut self.show_last_filename, "Show last filename");
-            ui.checkbox(&mut self.auto_scroll_to_end, "Auto scroll to end")
-                .on_hover_text(shortcut_hint_text(
-                    ui,
-                    "Enables Auto Scroll and Scroll to bottom on loading a new file",
-                    &self.shortcuts.auto_scroll,
-                ));
+            ui.checkbox(
+                &mut self.should_scroll_to_end_on_load,
+                "Scroll to end on load",
+            )
+            .on_hover_text(shortcut_hint_text(
+                ui,
+                "Only has an effect when a new file is loaded",
+                &self.shortcuts.auto_scroll,
+            ));
             ui.horizontal(|ui| {
                 ui.label("Item align:");
                 self.should_scroll |= ui
@@ -459,7 +462,7 @@ impl LogViewerApp {
             self.focus_search_text_edit();
         }
         if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.auto_scroll)) {
-            self.auto_scroll_to_end = !self.auto_scroll_to_end;
+            self.should_scroll_to_end_on_load = !self.should_scroll_to_end_on_load;
         }
     }
 
