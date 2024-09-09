@@ -30,6 +30,7 @@ pub struct LogRow {
 
 #[derive(Default, Debug, PartialEq, Eq, Clone)]
 struct CachedDisplayInfo {
+    // TODO 1: Add row numbers to top section (optionally)
     data: Vec<(String, String)>,
     common_fields_hash: u64,
 }

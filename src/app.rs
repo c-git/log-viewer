@@ -28,6 +28,7 @@ pub struct LogViewerApp {
     show_last_filename: bool,
     track_item_align: Option<Align>,
     shortcuts: Shortcuts,
+    auto_scroll_to_end: bool,
 
     #[serde(skip)]
     should_focus_search: bool,
@@ -47,6 +48,7 @@ impl Default for LogViewerApp {
             last_filename: Default::default(),
             track_item_align: Default::default(),
             shortcuts: Default::default(),
+            auto_scroll_to_end: Default::default(),
             should_focus_search: Default::default(),
             should_scroll: Default::default(),
             show_last_filename: true,
@@ -91,6 +93,7 @@ impl LogViewerApp {
         let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
+            .stick_to_bottom(self.auto_scroll_to_end)
             .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT));
 
         let n = self.data_display_options.main_list_fields().len();
@@ -300,6 +303,9 @@ impl LogViewerApp {
                             data.filter = old_data.filter.take();
                         }
                         self.data = Some(data);
+                        if self.auto_scroll_to_end {
+                            self.move_selected_last();
+                        }
                         LoadingStatus::NotInProgress
                     }
                     Err(e) => LoadingStatus::Failed(format!("{e:?}")),
@@ -343,7 +349,12 @@ impl LogViewerApp {
     fn ui_options(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Options", |ui| {
             ui.checkbox(&mut self.show_last_filename, "Show last filename");
-
+            ui.checkbox(&mut self.auto_scroll_to_end, "Auto scroll to end")
+                .on_hover_text(shortcut_hint_text(
+                    ui,
+                    "Enables Auto Scroll and Scroll to bottom on loading a new file",
+                    &self.shortcuts.auto_scroll,
+                ));
             ui.horizontal(|ui| {
                 ui.label("Item align:");
                 self.should_scroll |= ui
@@ -442,6 +453,9 @@ impl LogViewerApp {
         if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.search)) {
             self.focus_search_text_edit();
         }
+        if ui.input_mut(|i| i.consume_shortcut(&self.shortcuts.auto_scroll)) {
+            self.auto_scroll_to_end = !self.auto_scroll_to_end;
+        }
     }
 
     fn navigation_and_filtering_ui(&mut self, ui: &mut egui::Ui) {
@@ -471,7 +485,7 @@ impl LogViewerApp {
                     should_apply_filter = true;
                 }
                 if data.is_filtered()
-                    && shortcut_button(ui, "Unfilter", "Clears Filter ", &self.shortcuts.unfilter)
+                    && shortcut_button(ui, "Unfilter", "Clears Filter", &self.shortcuts.unfilter)
                 {
                     data.unfilter();
                 }
@@ -555,16 +569,16 @@ impl LogViewerApp {
 
     fn navigation_ui(&mut self, ui: &mut egui::Ui) {
         ui.label("Nav:");
-        if shortcut_button(ui, "⏪", "First ", &self.shortcuts.first) {
+        if shortcut_button(ui, "⏪", "First", &self.shortcuts.first) {
             self.move_selected_first();
         }
-        if shortcut_button(ui, "⬆", "Previous ", &self.shortcuts.prev) {
+        if shortcut_button(ui, "⬆", "Previous", &self.shortcuts.prev) {
             self.move_selected_prev();
         }
-        if shortcut_button(ui, "⬇", "Next ", &self.shortcuts.next) {
+        if shortcut_button(ui, "⬇", "Next", &self.shortcuts.next) {
             self.move_selected_next();
         }
-        if shortcut_button(ui, "⏩", "Last ", &self.shortcuts.last) {
+        if shortcut_button(ui, "⏩", "Last", &self.shortcuts.last) {
             self.move_selected_last();
         }
     }
@@ -591,6 +605,7 @@ impl LogViewerApp {
                     ui.label(format!("Filename: {}", filename.display()));
                 }
             }
+            // TODO 1: Show number of lines
         });
     }
 
@@ -734,10 +749,12 @@ fn shortcut_button(
     shortcut: &KeyboardShortcut,
 ) -> bool {
     ui.button(caption)
-        .on_hover_text(format!(
-            "{hint_msg}({})",
-            ui.ctx().format_shortcut(shortcut)
-        ))
+        .on_hover_text(shortcut_hint_text(ui, hint_msg, shortcut))
         .clicked()
         || ui.input_mut(|i| i.consume_shortcut(shortcut))
+}
+
+fn shortcut_hint_text(ui: &mut egui::Ui, hint_msg: &str, shortcut: &KeyboardShortcut) -> String {
+    let space = if hint_msg.is_empty() { "" } else { " " };
+    format!("{hint_msg}{space}({})", ui.ctx().format_shortcut(shortcut))
 }

@@ -13,6 +13,7 @@ pub struct Shortcuts {
     pub load_latest: KeyboardShortcut,
     pub apply_filter: KeyboardShortcut,
     pub search: KeyboardShortcut,
+    pub auto_scroll: KeyboardShortcut,
 }
 
 impl Default for Shortcuts {
@@ -28,6 +29,7 @@ impl Default for Shortcuts {
             load_latest: KeyboardShortcut::new(Modifiers::NONE, egui::Key::F6),
             apply_filter: KeyboardShortcut::new(Modifiers::NONE, egui::Key::F7),
             search: KeyboardShortcut::new(Modifiers::CTRL, egui::Key::F),
+            auto_scroll: KeyboardShortcut::new(Modifiers::NONE, egui::Key::F8),
         }
     }
 }
