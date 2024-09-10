@@ -7,7 +7,10 @@ use std::{
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
-use egui::{Align, KeyboardShortcut};
+use egui::{
+    text::{CCursor, CCursorRange},
+    Align, KeyboardShortcut,
+};
 use egui_extras::{Column, TableBuilder};
 use log::info;
 use shortcut::Shortcuts;
@@ -506,13 +509,30 @@ impl LogViewerApp {
                     is_case_sensitive,
                     comparator,
                 } = filter;
+
                 ui.label("Search Key: ");
-                let search_key_text_edit = ui.text_edit_singleline(search_key);
+                let mut search_key_text_edit = egui::TextEdit::singleline(search_key).show(ui);
                 if self.should_focus_search {
                     self.should_focus_search = false;
-                    search_key_text_edit.request_focus();
+
+                    // Set focus on edit
+                    search_key_text_edit.response.request_focus();
+
+                    // Select all text
+                    search_key_text_edit
+                        .state
+                        .cursor
+                        .set_char_range(Some(CCursorRange::two(
+                            CCursor::new(0),
+                            CCursor::new(search_key.len()),
+                        )));
+
+                    // Apply selection changes
+                    search_key_text_edit
+                        .state
+                        .store(ui.ctx(), search_key_text_edit.response.id);
                 }
-                if search_key_text_edit.lost_focus()
+                if search_key_text_edit.response.lost_focus()
                     && ui.input(|i| i.key_pressed(egui::Key::Enter))
                 {
                     should_apply_filter = true;
