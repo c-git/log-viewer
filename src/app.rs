@@ -34,7 +34,9 @@ pub struct LogViewerApp {
     should_scroll_to_end_on_load: bool,
     // TODO 4: Add UI to set / unset field
     /// When set adds a field with this name and populates it with the row numbers
-    pub row_idx_field_name: Option<String>,
+    row_idx_field_name: Option<String>,
+    /// Allows the user to dim the warning by clicking on it
+    should_highlight_field_warning: bool,
 
     #[serde(skip)]
     should_focus_search: bool,
@@ -56,6 +58,7 @@ impl Default for LogViewerApp {
             shortcuts: Default::default(),
             should_scroll_to_end_on_load: Default::default(),
             row_idx_field_name: Some("row#".to_string()),
+            should_highlight_field_warning: true,
             should_focus_search: Default::default(),
             should_scroll: Default::default(),
             show_last_filename: true,
@@ -587,6 +590,24 @@ impl LogViewerApp {
                     {
                         should_apply_filter = true;
                     }
+
+                    let color = if self.should_highlight_field_warning {
+                        ui.visuals().warn_fg_color
+                    } else {
+                        ui.visuals().text_color()
+                    };
+                    let hint_text = if self.should_highlight_field_warning {
+                        "Click to DIM warning"
+                    } else {
+                        "Click to Highlight warning"
+                    };
+                    if ui
+                        .colored_label(color, "(Field filtering enabled)")
+                        .on_hover_text(hint_text)
+                        .clicked()
+                    {
+                        self.should_highlight_field_warning = !self.should_highlight_field_warning;
+                    };
                 }
             }
             if should_apply_filter {
