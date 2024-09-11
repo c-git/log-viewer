@@ -507,7 +507,8 @@ impl LogViewerApp {
                 (true, false) => data.filter = Some(Default::default()),
                 (false, true) => {
                     data.unfilter();
-                    data.filter = None
+                    data.filter = None;
+                    self.should_scroll = true;
                 }
             }
             let mut should_apply_filter = false;
@@ -693,6 +694,7 @@ impl LogViewerApp {
                 ui.separator();
                 if shortcut_button(ui, "Unfilter", "Clears Filter", &self.shortcuts.unfilter) {
                     data.unfilter();
+                    self.should_scroll = true;
                 }
             }
         }
