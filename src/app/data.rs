@@ -246,6 +246,19 @@ impl Data {
             warn!("Apply called but no filter is available")
         }
     }
+
+    pub fn take_config(&mut self, other: &mut Self, common_fields: &BTreeSet<String>) {
+        let is_filtered = other.is_filtered();
+        self.filter = other.filter.take();
+        if is_filtered {
+            self.apply_filter(common_fields);
+        }
+        if let Some(i) = other.selected_row {
+            if i < self.len() {
+                self.selected_row = Some(i);
+            }
+        }
+    }
 }
 
 fn is_included(

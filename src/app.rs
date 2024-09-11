@@ -310,12 +310,17 @@ impl LogViewerApp {
                     match Data::try_from((self.row_idx_field_name.as_ref(), &data[..])) {
                         Ok(mut data) => {
                             if let Some(old_data) = self.data.as_mut() {
-                                // Preserve filter settings across loads of the data
-                                data.filter = old_data.filter.take();
+                                // Preserve settings across loads of the data
+                                data.take_config(
+                                    old_data,
+                                    self.data_display_options.common_fields(),
+                                );
                             }
                             self.data = Some(data);
                             if self.should_scroll_to_end_on_load {
                                 self.move_selected_last();
+                            } else {
+                                self.should_scroll = true;
                             }
                             LoadingStatus::NotInProgress
                         }
