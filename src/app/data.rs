@@ -166,6 +166,31 @@ impl Data {
         Some(self.rows[real_index].as_slice(common_fields))
     }
 
+    pub fn selected_row_data_as_slice_with_filter_matching_fields(
+        &mut self,
+        common_fields: &BTreeSet<String>,
+    ) -> Option<(&[(String, String)], Vec<usize>)> {
+        // Collect other needed info before taking mutable borrow to appease the borrow checker (couldn't find another readable way)
+        let is_filtered = self.is_filtered();
+        let filter = if is_filtered {
+            self.filter.clone()
+        } else {
+            None
+        };
+        let row_slice = self.selected_row_data_as_slice(common_fields)?;
+        let matching_fields = if is_filtered {
+            if let Some(filter) = filter.as_ref() {
+                matching_fields(row_slice, filter).unwrap_or_default()
+            } else {
+                debug_assert!(false, "No filter but is_filtered is true?");
+                Vec::new()
+            }
+        } else {
+            Vec::new()
+        };
+        Some((row_slice, matching_fields))
+    }
+
     pub fn move_selected_to_next(&mut self) {
         let n = self.len();
         if let Some(selected) = self.selected_row.as_mut() {
@@ -229,7 +254,7 @@ impl Data {
                     .iter_mut()
                     .enumerate()
                     .filter_map(|(i, row)| {
-                        if is_included(row, filter, common_fields) {
+                        if matching_fields(row.as_slice(common_fields), filter).is_some() {
                             Some(i)
                         } else {
                             None
@@ -261,45 +286,54 @@ impl Data {
     }
 }
 
-fn is_included(
-    row: &mut LogRow,
-    filter: &filter::FilterConfig,
-    common_fields: &BTreeSet<String>,
-) -> bool {
+/// If the slice of fields and values matches the filter then the indices of the fields that match are returned or None if it does not match
+fn matching_fields(
+    fields_and_values: &[(String, String)],
+    filter: &FilterConfig,
+) -> Option<Vec<usize>> {
     let FilterConfig {
         search_key,
         filter_on,
         comparator,
         is_case_sensitive,
     } = filter;
-    let fields_and_values = row.as_slice(common_fields);
     let search_key = if *is_case_sensitive {
         search_key
     } else {
         &search_key.to_lowercase()
     };
-    let mut iter = fields_and_values.iter().map(|(k, v)| {
-        if *is_case_sensitive {
-            (Cow::Borrowed(k), Cow::Borrowed(v))
-        } else {
-            (Cow::Owned(k.to_lowercase()), Cow::Owned(v.to_lowercase()))
-        }
-    });
-
-    match filter_on {
-        filter::FilterOn::Any => {
-            iter.any(|(_, value)| comparator.apply(search_key, value.as_str()))
-        }
+    let iter = fields_and_values
+        .iter()
+        .map(|(k, v)| {
+            if *is_case_sensitive {
+                (Cow::Borrowed(k), Cow::Borrowed(v))
+            } else {
+                (Cow::Owned(k.to_lowercase()), Cow::Owned(v.to_lowercase()))
+            }
+        })
+        .enumerate();
+    let result: Vec<usize> = match filter_on {
+        filter::FilterOn::Any => iter
+            .filter_map(|(i, (_, value))| comparator.apply(search_key, value.as_str()).then_some(i))
+            .collect(),
         filter::FilterOn::Field(FieldSpecifier { name }) => {
             let name = if *is_case_sensitive {
                 name
             } else {
                 &name.to_lowercase()
             };
-            iter.any(|(field_name, value)| {
-                name == field_name.as_str() && comparator.apply(search_key, value.as_str())
+            iter.filter_map(|(i, (field_name, value))| {
+                (name == field_name.as_str() && comparator.apply(search_key, value.as_str()))
+                    .then_some(i)
             })
+            .collect()
         }
+    };
+
+    if result.is_empty() {
+        None
+    } else {
+        Some(result)
     }
 }
 

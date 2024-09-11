@@ -226,13 +226,17 @@ impl LogViewerApp {
             return;
         };
 
-        let Some(selected_values) =
-            data.selected_row_data_as_slice(self.data_display_options.common_fields())
+        let Some((selected_values, fields_matching_filter)) = data
+            .selected_row_data_as_slice_with_filter_matching_fields(
+                self.data_display_options.common_fields(),
+            )
         else {
             ui.label("No row Selected");
             return;
         };
 
+        let color_matching_field = ui.visuals().strong_text_color();
+        let color_normal_field = ui.visuals().text_color();
         let text_height = egui::TextStyle::Body
             .resolve(ui.style())
             .size
@@ -267,11 +271,16 @@ impl LogViewerApp {
             body.heterogeneous_rows(heights.iter().cloned(), |mut row| {
                 let row_index = row.index();
                 let (title, value) = &selected_values[row_index];
+                let color = if fields_matching_filter.contains(&row_index) {
+                    color_matching_field
+                } else {
+                    color_normal_field
+                };
                 row.col(|ui| {
-                    ui.label(title);
+                    ui.colored_label(color, title);
                 });
                 row.col(|ui| {
-                    ui.label(value.to_string());
+                    ui.colored_label(color, value.to_string());
                 });
             });
         });
