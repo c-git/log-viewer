@@ -1,5 +1,5 @@
 ---
-source: src/app/data.rs
+source: src/app/data/tests.rs
 expression: data
 ---
 selected_row: ~
@@ -18,3 +18,8 @@ rows:
       time: time value
 filtered_rows:
   - 1
+applied_filter:
+  search_key: "20"
+  filter_on: Any
+  is_case_sensitive: false
+  comparator: Contains

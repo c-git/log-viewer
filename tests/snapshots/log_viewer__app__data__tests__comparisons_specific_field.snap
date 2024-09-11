@@ -1,5 +1,5 @@
 ---
-source: src/app/data.rs
+source: src/app/data/tests.rs
 expression: data
 ---
 selected_row: ~
@@ -19,3 +19,10 @@ rows:
       otel.name: HTTP GET /status
       time: time value
 filtered_rows: []
+applied_filter:
+  search_key: "200"
+  filter_on:
+    Field:
+      name: http.status_code
+  is_case_sensitive: false
+  comparator: LessThan

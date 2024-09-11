@@ -1,6 +1,5 @@
 ---
 source: src/app/data/tests.rs
-assertion_line: 44
 expression: data
 ---
 Data {
@@ -41,4 +40,5 @@ Data {
         },
     ],
     filtered_rows: None,
+    applied_filter: None,
 }
