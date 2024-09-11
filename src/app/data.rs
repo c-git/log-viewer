@@ -14,6 +14,7 @@ mod data_iter;
 pub mod filter;
 
 type LogRowIdxFieldName<'a> = Option<&'a String>;
+type RowSlice<'a> = &'a [(String, String)];
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
 #[serde(default)]
@@ -69,7 +70,7 @@ impl LogRow {
         }
     }
 
-    pub fn as_slice(&mut self, common_fields: &BTreeSet<String>) -> &[(String, String)] {
+    pub fn as_slice(&mut self, common_fields: &BTreeSet<String>) -> RowSlice<'_> {
         self.ensure_cache_is_populated(common_fields);
 
         &self
@@ -160,7 +161,7 @@ impl Data {
     pub fn selected_row_data_as_slice(
         &mut self,
         common_fields: &BTreeSet<String>,
-    ) -> Option<&[(String, String)]> {
+    ) -> Option<RowSlice<'_>> {
         let selected_row_index = self.selected_row?;
         let real_index = self.get_real_index(selected_row_index);
         Some(self.rows[real_index].as_slice(common_fields))
@@ -169,7 +170,7 @@ impl Data {
     pub fn selected_row_data_as_slice_with_filter_matching_fields(
         &mut self,
         common_fields: &BTreeSet<String>,
-    ) -> Option<(&[(String, String)], Vec<usize>)> {
+    ) -> Option<(RowSlice<'_>, Vec<usize>)> {
         // Collect other needed info before taking mutable borrow to appease the borrow checker (couldn't find another readable way)
         let is_filtered = self.is_filtered();
         let filter = if is_filtered {
@@ -287,10 +288,7 @@ impl Data {
 }
 
 /// If the slice of fields and values matches the filter then the indices of the fields that match are returned or None if it does not match
-fn matching_fields(
-    fields_and_values: &[(String, String)],
-    filter: &FilterConfig,
-) -> Option<Vec<usize>> {
+fn matching_fields(fields_and_values: RowSlice<'_>, filter: &FilterConfig) -> Option<Vec<usize>> {
     let FilterConfig {
         search_key,
         filter_on,
