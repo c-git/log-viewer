@@ -57,7 +57,7 @@ impl Default for DataDisplayOptions {
             .into_iter()
             .map(String::from)
             .collect(),
-            emphasize_if_matching_field_idx: Some(1),
+            emphasize_if_matching_field_idx: Some(2),
         }
     }
 }
