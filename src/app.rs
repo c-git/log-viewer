@@ -32,7 +32,7 @@ pub struct LogViewerApp {
     track_item_align: Option<Align>,
     shortcuts: Shortcuts,
     should_scroll_to_end_on_load: bool,
-    // TODO 4: Add UI to set / unset field
+    // TODO 4: Add UI to set / unset row_idx_field_name
     /// When set adds a field with this name and populates it with the row numbers
     row_idx_field_name: Option<String>,
     /// Allows the user to dim the warning by clicking on it
@@ -492,6 +492,9 @@ impl LogViewerApp {
             ui.separator();
             self.filtering_ui(ui);
         });
+        ui.horizontal(|ui| {
+            self.unfilter_ui(ui);
+        });
     }
 
     fn filtering_ui(&mut self, ui: &mut egui::Ui) {
@@ -508,15 +511,8 @@ impl LogViewerApp {
                 }
             }
             let mut should_apply_filter = false;
-            if is_filter_enabled {
-                if shortcut_button(ui, "Apply", "", &self.shortcuts.apply_filter) {
-                    should_apply_filter = true;
-                }
-                if data.is_filtered()
-                    && shortcut_button(ui, "Unfilter", "Clears Filter", &self.shortcuts.unfilter)
-                {
-                    data.unfilter();
-                }
+            if is_filter_enabled && shortcut_button(ui, "Apply", "", &self.shortcuts.apply_filter) {
+                should_apply_filter = true;
             }
 
             if let Some(filter) = data.filter.as_mut() {
@@ -687,6 +683,18 @@ impl LogViewerApp {
         if let Some(data) = self.data.as_mut() {
             data.filter.get_or_insert(Default::default()); // Create filter if it doesn't exist
             self.should_focus_search = true;
+        }
+    }
+
+    fn unfilter_ui(&mut self, ui: &mut egui::Ui) {
+        if let Some(data) = self.data.as_mut() {
+            if data.is_filtered() {
+                ui.label(format!("Applied Filter: {}", data.applied_filter_display()));
+                ui.separator();
+                if shortcut_button(ui, "Unfilter", "Clears Filter", &self.shortcuts.unfilter) {
+                    data.unfilter();
+                }
+            }
         }
     }
 }

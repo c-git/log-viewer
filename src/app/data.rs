@@ -23,6 +23,7 @@ pub struct Data {
     pub filter: Option<FilterConfig>,
     rows: Vec<LogRow>,
     filtered_rows: Option<Vec<usize>>,
+    applied_filter: Option<FilterConfig>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq, Clone)]
@@ -174,7 +175,7 @@ impl Data {
         // Collect other needed info before taking mutable borrow to appease the borrow checker (couldn't find another readable way)
         let is_filtered = self.is_filtered();
         let filter = if is_filtered {
-            self.filter.clone()
+            self.applied_filter.clone()
         } else {
             None
         };
@@ -235,12 +236,14 @@ impl Data {
     }
 
     pub fn is_filtered(&self) -> bool {
+        debug_assert_eq!(self.applied_filter.is_some(), self.filtered_rows.is_some());
         self.filtered_rows.is_some()
     }
 
     pub fn unfilter(&mut self) {
         let previous_real_index_selected = self.selected_row.map(|x| self.get_real_index(x));
         self.filtered_rows = None;
+        self.applied_filter = None;
         if let Some(old_selected) = previous_real_index_selected {
             self.selected_row = Some(old_selected);
         }
@@ -250,6 +253,7 @@ impl Data {
         if let Some(filter) = self.filter.as_ref() {
             let previous_real_index_selected = self.selected_row.map(|x| self.get_real_index(x));
 
+            self.applied_filter = self.filter.clone();
             self.filtered_rows = Some(
                 self.rows
                     .iter_mut()
@@ -284,6 +288,26 @@ impl Data {
                 self.selected_row = Some(i);
             }
         }
+    }
+
+    pub fn applied_filter_display(&self) -> String {
+        let Some(FilterConfig {
+            search_key,
+            filter_on,
+            is_case_sensitive,
+            comparator,
+        }) = self.applied_filter.as_ref()
+        else {
+            debug_assert!(false, "We really shouldn't end up here");
+            return "No Filter Applied".to_string();
+        };
+        format!(
+            "Search Key: {search_key} | Filter On: {filter_on} | Case Sensitive: {} | Comparator: {comparator}", 
+            if *is_case_sensitive {
+                "Yes"
+            } else {
+                "No"
+            })
     }
 }
 

@@ -86,3 +86,18 @@ impl Display for Comparator {
         )
     }
 }
+
+impl Display for FilterOn {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            FilterOn::Any => write!(f, "Any"),
+            FilterOn::Field(name) => write!(f, "[Field Named: {name}]"),
+        }
+    }
+}
+
+impl Display for FieldSpecifier {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.name.fmt(f)
+    }
+}
