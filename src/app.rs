@@ -112,6 +112,7 @@ impl LogViewerApp {
             .main_list_fields()
             .iter()
             .take(n - 1)
+        // TODO 1: Check if this should be just `n` and not `n-1`
         {
             table_builder = table_builder.column(Column::auto());
         }
@@ -612,6 +613,7 @@ impl LogViewerApp {
                     } else {
                         "Click to Highlight warning"
                     };
+                    // TODO 3: Add an option to select how fields are filter and not only exact match
                     if ui
                         .colored_label(color, "(Field filtering enabled)")
                         .on_hover_text(hint_text)
