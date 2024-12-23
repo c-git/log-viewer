@@ -1,15 +1,20 @@
-on: [push, pull_request]
-
 name: CI
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+  
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches:
+      - develop
+  workflow_call: 
 
 env:
-  # --cfg=web_sys_unstable_apis is required to enable the web_sys clipboard API which egui_web uses
-  # https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Clipboard.html
-  # https://rustwasm.github.io/docs/wasm-bindgen/web-sys/unstable-apis.html
   RUSTFLAGS: -D warnings --cfg=web_sys_unstable_apis
   RUSTDOCFLAGS: -D warnings
 
