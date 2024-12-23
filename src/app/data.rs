@@ -45,7 +45,7 @@ pub enum FieldContent<'a> {
     Missing,
 }
 
-impl<'a> FieldContent<'a> {
+impl FieldContent<'_> {
     pub const TEXT_FOR_EMPTY: &'static str = "[ --- ]";
 
     pub fn display(&self) -> String {
