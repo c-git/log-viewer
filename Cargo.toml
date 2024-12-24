@@ -9,26 +9,26 @@ eframe = { version = "0.27.2", default-features = false, features = ["accesskit"
   "glow", # Use the glow rendering backend. Alternative: "wgpu".
   "persistence", # Enable restoring app state when restarting the app.
 ] }
-egui = "0.27.2"
-log = "0.4"
+egui = "0.30"
+log = "0.4.22"
 
-anyhow = "1.0.79"
-egui_extras = "0.27.2"
-futures = "0.3.30"
-rfd = { version = "0.14.1", default-features = false, features = ["gtk3", "tokio"] }
-serde = { version = "1", features = ["derive"] }
-serde_json = "1.0.113"
+anyhow = "1.0.95"
+egui_extras = "0.30"
+futures = "0.3.31"
+rfd = { version = "0.15", default-features = false, features = ["gtk3", "tokio"] }
+serde = { version = "1.0.216", features = ["derive"] }
+serde_json = "1.0.134"
 
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-env_logger = "0.11"
+env_logger = "0.11.6"
 poll-promise = { version = "0.3.0", features = ["tokio"] }
 tokio = { version = "1.35.1", features = ["full"] }
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 poll-promise = { version = "0.3.0", features = ["web"] }
-wasm-bindgen-futures = "0.4"
+wasm-bindgen-futures = "0.4.49"
 
 [profile.release]
 opt-level = 2 # fast and small wasm
@@ -40,10 +40,10 @@ opt-level = 2
 [patch.crates-io]
 
 [dev-dependencies]
-insta = { version = "1.34.0", features = ["ron", "glob", "yaml"] }
-pretty_assertions = "1.4.0"
+insta = { version = "1.41.1", features = ["ron", "glob", "yaml"] }
+pretty_assertions = "1.4.1"
 ron = "0.8.1"
-rstest = "0.21.0"
+rstest = "0.23"
 strum = { version = "0.26.3", features = ["derive"] }
 
 # If you want to use the bleeding edge version of egui and eframe:
