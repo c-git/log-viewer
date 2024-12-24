@@ -771,7 +771,7 @@ impl eframe::App for LogViewerApp {
                     ui.add_space(16.0);
                 }
 
-                egui::widgets::global_dark_light_mode_buttons(ui);
+                egui::widgets::global_theme_preference_buttons(ui);
             });
         });
 
@@ -799,7 +799,7 @@ impl eframe::App for LogViewerApp {
                         ui.heading("Details");
                     });
                     egui::ScrollArea::horizontal()
-                        .id_source("details area")
+                        .id_salt("details area")
                         .show(ui, |ui| {
                             ui.push_id("table details", |ui| self.show_log_details(ui));
                         });
@@ -810,7 +810,7 @@ impl eframe::App for LogViewerApp {
 
             egui::CentralPanel::default().show_inside(ui, |ui| {
                 egui::ScrollArea::horizontal()
-                    .id_source("log lines")
+                    .id_salt("log lines")
                     .show(ui, |ui| {
                         ui.push_id("table log lines", |ui| self.show_log_lines(ui));
                     });

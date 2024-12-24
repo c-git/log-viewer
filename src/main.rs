@@ -20,7 +20,7 @@ async fn main() -> eframe::Result<()> {
     eframe::run_native(
         "Log Viewer",
         native_options,
-        Box::new(|cc| Box::new(log_viewer::LogViewerApp::new(cc))),
+        Box::new(|cc| Ok(Box::new(log_viewer::LogViewerApp::new(cc)))),
     )
 }
 
