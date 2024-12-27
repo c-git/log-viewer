@@ -54,7 +54,7 @@ impl Default for LogViewerApp {
             start_open_path: Default::default(),
             loading_status: Default::default(),
             last_filename: Default::default(),
-            track_item_align: Default::default(),
+            track_item_align: Some(Align::Center),
             shortcuts: Default::default(),
             should_scroll_to_end_on_load: Default::default(),
             row_idx_field_name: Some("row#".to_string()),
