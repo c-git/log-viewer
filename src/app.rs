@@ -1,9 +1,4 @@
-use std::{
-    hash::{DefaultHasher, Hash, Hasher},
-    path::PathBuf,
-    sync::{Arc, Mutex},
-};
-
+use self::{data::Data, data_display_options::DataDisplayOptions};
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
@@ -14,8 +9,11 @@ use egui::{
 use egui_extras::{Column, TableBuilder};
 use log::info;
 use shortcut::Shortcuts;
-
-use self::{data::Data, data_display_options::DataDisplayOptions};
+use std::{
+    hash::{DefaultHasher, Hash, Hasher},
+    path::PathBuf,
+    sync::{Arc, Mutex},
+};
 
 mod data;
 mod data_display_options;
