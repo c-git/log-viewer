@@ -12,7 +12,7 @@ use shortcut::Shortcuts;
 use std::{
     hash::{DefaultHasher, Hash, Hasher},
     path::PathBuf,
-    sync::{Arc, Mutex},
+    sync::{Arc, LazyLock, Mutex},
 };
 
 mod data;
@@ -775,7 +775,9 @@ impl eframe::App for LogViewerApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
-            ui.heading("Log Viewer");
+            static HEADING: LazyLock<&'static str> =
+                LazyLock::new(|| format!("Log Viewer {}", env!("CARGO_PKG_VERSION")).leak());
+            ui.heading(*HEADING);
             ui.separator();
             self.ui_loading(ui);
             ui.separator();
