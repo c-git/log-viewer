@@ -2122,6 +2122,7 @@ dependencies = [
  "strum",
  "tokio",
  "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]

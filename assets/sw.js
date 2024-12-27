@@ -2,8 +2,8 @@ var cacheName = 'log-viewer-pwa';
 var filesToCache = [
   './',
   './index.html',
-  './log_viewer.js',
-  './log_viewer_bg.wasm',
+  './log-viewer.js',
+  './log-viewer_bg.wasm',
 ];
 
 /* Start the service worker and cache all of the app's content */
