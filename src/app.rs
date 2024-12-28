@@ -101,17 +101,12 @@ impl LogViewerApp {
         let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
-            // .stick_to_bottom(self.scroll_to_end_on_load) // Removed because it disabled scroll on move of selected
+            // .stick_to_bottom(self.scroll_to_end_on_load) // Removed because it disabled scroll on move if selected
             .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT));
 
+        // Set all columns but the last to auto, last should be remainder which is set after the loop
         let n = self.data_display_options.main_list_fields().len();
-        for _ in self
-            .data_display_options
-            .main_list_fields()
-            .iter()
-            .take(n - 1)
-        // TODO 1: Check if this should be just `n` and not `n-1`
-        {
+        for _ in 0..n - 1 {
             table_builder = table_builder.column(Column::auto());
         }
         table_builder = table_builder
