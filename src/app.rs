@@ -669,10 +669,10 @@ impl LogViewerApp {
                     match (data.is_filtered(), data.len(), data.total_len_unfiltered()) {
                         (true, filtered_len, total_len) => format!(
                             "{} of {}",
-                            with_separators(filtered_len),
-                            with_separators(total_len)
+                            as_string_with_separators(filtered_len),
+                            as_string_with_separators(total_len)
                         ),
-                        (false, _, total_len) => with_separators(total_len),
+                        (false, _, total_len) => as_string_with_separators(total_len),
                     };
                 ui.label(format!("# Rows: {row_count_text}"));
             }
@@ -844,7 +844,7 @@ fn shortcut_hint_text(ui: &mut egui::Ui, hint_msg: &str, shortcut: &KeyboardShor
     format!("{hint_msg}{space}({})", ui.ctx().format_shortcut(shortcut))
 }
 
-fn with_separators(value: usize) -> String {
+fn as_string_with_separators(value: usize) -> String {
     value
         .to_string()
         .as_bytes()
