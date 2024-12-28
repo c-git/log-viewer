@@ -306,8 +306,6 @@ impl LogViewerApp {
             }
             LoadingStatus::Failed(err_msg) => {
                 let msg = format!("Loading failed: {err_msg}");
-                let msg = msg.replace(r"\n", "\n");
-                let msg = msg.replace(r#"\""#, "\"");
                 if ui.button("Clear Error Status").clicked() {
                     self.loading_status = LoadingStatus::NotInProgress;
                 }
@@ -315,6 +313,7 @@ impl LogViewerApp {
             }
             LoadingStatus::Success(data) => {
                 self.loading_status =
+                // TODO 1: Make a copy of the loading type desired and match on it to get the data to load
                     match Data::try_from((self.row_idx_field_name.as_ref(), &data[..])) {
                         Ok(mut data) => {
                             if let Some(old_data) = self.data.as_mut() {
@@ -332,7 +331,7 @@ impl LogViewerApp {
                             }
                             LoadingStatus::NotInProgress
                         }
-                        Err(e) => LoadingStatus::Failed(format!("{e:?}")),
+                        Err(e) => LoadingStatus::Failed(clean_msg(format!("{e:?}"))),
                     }
             }
         }
@@ -855,4 +854,8 @@ fn with_separators(value: usize) -> String {
         .collect::<Result<Vec<&str>, _>>()
         .unwrap()
         .join(",")
+}
+
+fn clean_msg<S: AsRef<str>>(msg: S) -> String {
+    msg.as_ref().replace(r"\n", "\n").replace(r#"\""#, "\"")
 }
