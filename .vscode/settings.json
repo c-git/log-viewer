@@ -5,6 +5,7 @@
     "hline",
     "libxcb",
     "libxkbcommon",
+    "logviewer",
     "xfixes"
   ]
 }
