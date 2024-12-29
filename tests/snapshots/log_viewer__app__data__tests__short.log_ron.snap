@@ -1,6 +1,8 @@
 ---
 source: src/app/data/tests.rs
+assertion_line: 41
 expression: data
+snapshot_kind: text
 ---
 Data(
   selected_row: None,
@@ -8,14 +10,15 @@ Data(
   rows: [
     LogRow(
       data: {
-        "Test Row#": 0,
         "file": "crates/server/src/startup.rs",
         "hostname": "my_pc",
         "level": 30,
+        "level_str": "Info",
         "line": 34,
         "msg": "Server address is: 127.0.0.1:8000",
         "name": "my_server",
         "pid": 50401,
+        "row#": 0,
         "target": "my_server::startup",
         "time": "2024-02-10T03:13:04.191299188Z",
         "v": 0,
@@ -23,14 +26,15 @@ Data(
     ),
     LogRow(
       data: {
-        "Test Row#": 1,
         "file": "/home/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/actix-server-2.3.0/src/builder.rs",
         "hostname": "my_pc",
         "level": 30,
+        "level_str": "Info",
         "line": 240,
         "msg": "starting 8 workers",
         "name": "my_server",
         "pid": 50401,
+        "row#": 1,
         "target": "actix_server::builder",
         "time": "2024-02-10T03:13:04.191610465Z",
         "v": 0,
