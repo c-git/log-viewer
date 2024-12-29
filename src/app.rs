@@ -1,9 +1,4 @@
-use std::{
-    hash::{DefaultHasher, Hash, Hasher},
-    path::PathBuf,
-    sync::{Arc, Mutex},
-};
-
+use self::{data::Data, data_display_options::DataDisplayOptions};
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
@@ -14,8 +9,11 @@ use egui::{
 use egui_extras::{Column, TableBuilder};
 use log::info;
 use shortcut::Shortcuts;
-
-use self::{data::Data, data_display_options::DataDisplayOptions};
+use std::{
+    hash::{DefaultHasher, Hash, Hasher},
+    path::PathBuf,
+    sync::{Arc, LazyLock, Mutex},
+};
 
 mod data;
 mod data_display_options;
@@ -32,9 +30,6 @@ pub struct LogViewerApp {
     track_item_align: Option<Align>,
     shortcuts: Shortcuts,
     should_scroll_to_end_on_load: bool,
-    // TODO 4: Add UI to set / unset row_idx_field_name
-    /// When set adds a field with this name and populates it with the row numbers
-    row_idx_field_name: Option<String>,
     /// Allows the user to dim the warning by clicking on it
     should_highlight_field_warning: bool,
 
@@ -54,10 +49,9 @@ impl Default for LogViewerApp {
             start_open_path: Default::default(),
             loading_status: Default::default(),
             last_filename: Default::default(),
-            track_item_align: Default::default(),
+            track_item_align: Some(Align::Center),
             shortcuts: Default::default(),
             should_scroll_to_end_on_load: Default::default(),
-            row_idx_field_name: Some("row#".to_string()),
             should_highlight_field_warning: true,
             should_focus_search: Default::default(),
             should_scroll: Default::default(),
@@ -103,17 +97,12 @@ impl LogViewerApp {
         let mut table_builder = TableBuilder::new(ui)
             .striped(true)
             .resizable(true)
-            // .stick_to_bottom(self.scroll_to_end_on_load) // Removed because it disabled scroll on move of selected
+            // .stick_to_bottom(self.scroll_to_end_on_load) // Removed because it disabled scroll on move if selected
             .cell_layout(egui::Layout::left_to_right(egui::Align::LEFT));
 
+        // Set all columns but the last to auto, last should be remainder which is set after the loop
         let n = self.data_display_options.main_list_fields().len();
-        for _ in self
-            .data_display_options
-            .main_list_fields()
-            .iter()
-            .take(n - 1)
-        // TODO 1: Check if this should be just `n` and not `n-1`
-        {
+        for _ in 0..n - 1 {
             table_builder = table_builder.column(Column::auto());
         }
         table_builder = table_builder
@@ -308,34 +297,29 @@ impl LogViewerApp {
             }
             LoadingStatus::Failed(err_msg) => {
                 let msg = format!("Loading failed: {err_msg}");
-                let msg = msg.replace(r"\n", "\n");
-                let msg = msg.replace(r#"\""#, "\"");
                 if ui.button("Clear Error Status").clicked() {
                     self.loading_status = LoadingStatus::NotInProgress;
                 }
                 ui.colored_label(ui.visuals().error_fg_color, msg);
             }
             LoadingStatus::Success(data) => {
-                self.loading_status =
-                    match Data::try_from((self.row_idx_field_name.as_ref(), &data[..])) {
-                        Ok(mut data) => {
-                            if let Some(old_data) = self.data.as_mut() {
-                                // Preserve settings across loads of the data
-                                data.take_config(
-                                    old_data,
-                                    self.data_display_options.common_fields(),
-                                );
-                            }
-                            self.data = Some(data);
-                            if self.should_scroll_to_end_on_load {
-                                self.move_selected_last();
-                            } else {
-                                self.should_scroll = true;
-                            }
-                            LoadingStatus::NotInProgress
+                self.loading_status = match Data::try_from((&self.data_display_options, &data[..]))
+                {
+                    Ok(mut data) => {
+                        if let Some(old_data) = self.data.as_mut() {
+                            // Preserve settings across loads of the data
+                            data.take_config(old_data, self.data_display_options.common_fields());
                         }
-                        Err(e) => LoadingStatus::Failed(format!("{e:?}")),
+                        self.data = Some(data);
+                        if self.should_scroll_to_end_on_load {
+                            self.move_selected_last();
+                        } else {
+                            self.should_scroll = true;
+                        }
+                        LoadingStatus::NotInProgress
                     }
+                    Err(e) => LoadingStatus::Failed(clean_msg(format!("{e:?}"))),
+                }
             }
         }
     }
@@ -672,10 +656,10 @@ impl LogViewerApp {
                     match (data.is_filtered(), data.len(), data.total_len_unfiltered()) {
                         (true, filtered_len, total_len) => format!(
                             "{} of {}",
-                            with_separators(filtered_len),
-                            with_separators(total_len)
+                            as_string_with_separators(filtered_len),
+                            as_string_with_separators(total_len)
                         ),
-                        (false, _, total_len) => with_separators(total_len),
+                        (false, _, total_len) => as_string_with_separators(total_len),
                     };
                 ui.label(format!("# Rows: {row_count_text}"));
             }
@@ -771,13 +755,15 @@ impl eframe::App for LogViewerApp {
                     ui.add_space(16.0);
                 }
 
-                egui::widgets::global_dark_light_mode_buttons(ui);
+                egui::widgets::global_theme_preference_buttons(ui);
             });
         });
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
-            ui.heading("Log Viewer");
+            static HEADING: LazyLock<&'static str> =
+                LazyLock::new(|| format!("Log Viewer {}", env!("CARGO_PKG_VERSION")).leak());
+            ui.heading(*HEADING);
             ui.separator();
             self.ui_loading(ui);
             ui.separator();
@@ -799,7 +785,7 @@ impl eframe::App for LogViewerApp {
                         ui.heading("Details");
                     });
                     egui::ScrollArea::horizontal()
-                        .id_source("details area")
+                        .id_salt("details area")
                         .show(ui, |ui| {
                             ui.push_id("table details", |ui| self.show_log_details(ui));
                         });
@@ -810,7 +796,7 @@ impl eframe::App for LogViewerApp {
 
             egui::CentralPanel::default().show_inside(ui, |ui| {
                 egui::ScrollArea::horizontal()
-                    .id_source("log lines")
+                    .id_salt("log lines")
                     .show(ui, |ui| {
                         ui.push_id("table log lines", |ui| self.show_log_lines(ui));
                     });
@@ -845,7 +831,7 @@ fn shortcut_hint_text(ui: &mut egui::Ui, hint_msg: &str, shortcut: &KeyboardShor
     format!("{hint_msg}{space}({})", ui.ctx().format_shortcut(shortcut))
 }
 
-fn with_separators(value: usize) -> String {
+fn as_string_with_separators(value: usize) -> String {
     value
         .to_string()
         .as_bytes()
@@ -855,4 +841,8 @@ fn with_separators(value: usize) -> String {
         .collect::<Result<Vec<&str>, _>>()
         .unwrap()
         .join(",")
+}
+
+fn clean_msg<S: AsRef<str>>(msg: S) -> String {
+    msg.as_ref().replace(r"\n", "\n").replace(r#"\""#, "\"")
 }

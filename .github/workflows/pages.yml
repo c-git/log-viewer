@@ -19,10 +19,13 @@ permissions:
   contents: write # for committing to gh-pages branch.
 
 jobs:
+  tests:
+    uses: ./.github/workflows/rust.yml
   build-github-pages:
     runs-on: ubuntu-latest
+    needs: tests
     steps:
-      - uses: actions/checkout@v4 # repo checkout
+      - uses: wykies/checkout@main
       - uses: actions-rs/toolchain@v1 # get rust toolchain for wasm
         with:
           profile: minimal

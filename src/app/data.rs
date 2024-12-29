@@ -9,11 +9,13 @@ use filter::{FieldSpecifier, FilterConfig};
 use log::warn;
 use serde_json::Value;
 
-use super::calculate_hash;
+use super::{
+    calculate_hash,
+    data_display_options::{DataDisplayOptions, LevelConversion, RowParseErrorHandling},
+};
 mod data_iter;
 pub mod filter;
 
-type LogRowIdxFieldName<'a> = Option<&'a String>;
 type RowSlice<'a> = &'a [(String, String)];
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
@@ -45,7 +47,7 @@ pub enum FieldContent<'a> {
     Missing,
 }
 
-impl<'a> FieldContent<'a> {
+impl FieldContent<'_> {
     pub const TEXT_FOR_EMPTY: &'static str = "[ --- ]";
 
     pub fn display(&self) -> String {
@@ -359,35 +361,95 @@ fn matching_fields(fields_and_values: RowSlice<'_>, filter: &FilterConfig) -> Op
     }
 }
 
-impl TryFrom<(LogRowIdxFieldName<'_>, usize, &str)> for LogRow {
+impl TryFrom<(&DataDisplayOptions, usize, &str)> for LogRow {
     type Error = anyhow::Error;
 
     fn try_from(
-        (log_row_idx_key, row_idx_val, value): (LogRowIdxFieldName<'_>, usize, &str),
+        (data_display_options, row_idx_val, value): (&DataDisplayOptions, usize, &str),
     ) -> Result<Self, Self::Error> {
+        let data = match serde_json::from_str::<BTreeMap<String, Value>>(value) {
+            Ok(data) => data,
+            Err(e) => match &data_display_options.row_parse_error_handling {
+                RowParseErrorHandling::AbortOnAnyErrors => {
+                    Err(e).context("Parse Error and mode is Abort On Error")?
+                }
+                RowParseErrorHandling::ConvertFailedLines {
+                    raw_line_field_name,
+                    parse_error_field_name,
+                } => {
+                    let mut result = BTreeMap::new();
+                    result.insert(raw_line_field_name.clone(), value.into());
+                    if let Some(err_field) = parse_error_field_name {
+                        result.insert(err_field.clone(), format!("{e:?}").into());
+                    }
+                    result
+                }
+            },
+        };
         let mut result = Self {
-            data: serde_json::from_str(value)?,
+            data,
             cached_display_list: None,
         };
-        if let Some(key) = log_row_idx_key {
+        if let Some(key) = data_display_options.row_idx_field_name.as_ref() {
             result.or_insert(key.to_string(), row_idx_val.into());
+        }
+        if let Some(settings) = data_display_options.level_conversion.as_ref() {
+            if let Some((key, value)) = level_conversion_to_display(&result, settings) {
+                result.or_insert(key, value);
+            }
         }
         Ok(result)
     }
 }
 
-impl TryFrom<(LogRowIdxFieldName<'_>, &str)> for Data {
+fn level_conversion_to_display(
+    row: &LogRow,
+    settings: &LevelConversion,
+) -> Option<(String, Value)> {
+    let FieldContent::Present(raw_value) = row.field_value(&settings.source_field_name) else {
+        return None;
+    };
+    let raw_value = match raw_value.as_i64() {
+        Some(x) => x,
+        None => {
+            warn!(
+                "Failed to convert raw for {:?} to i64: {raw_value:?}",
+                settings.source_field_name
+            );
+            debug_assert!(
+                false,
+                "This is not expected to happen. Unable to convert level to string slice"
+            );
+            return None;
+        }
+    };
+    match settings.convert_map.get(&raw_value) {
+        Some(converted_value) => Some((
+            settings.display_field_name.clone(),
+            converted_value.clone().into(),
+        )),
+        None => {
+            warn!("Failed to convert raw_value to a displayable log level: {raw_value:?}");
+            debug_assert!(
+                false,
+                "This is not expected to happen. Unable to convert level to a corresponding display value"
+            );
+            None
+        }
+    }
+}
+
+impl TryFrom<(&DataDisplayOptions, &str)> for Data {
     type Error = anyhow::Error;
 
     fn try_from(
-        (log_row_idx_key, value): (LogRowIdxFieldName<'_>, &str),
+        (data_display_options, value): (&DataDisplayOptions, &str),
     ) -> Result<Self, Self::Error> {
         let mut result = Data::default();
         for (i, line) in value.lines().enumerate() {
-            result.rows.push(
-                LogRow::try_from((log_row_idx_key, i, line))
-                    .with_context(|| format!("failed to parse line {}", i + 1))?,
-            );
+            let row = LogRow::try_from((data_display_options, i, line))
+                .with_context(|| format!("failed to parse line {}", i + 1))?;
+            result.rows.push(row);
         }
         Ok(result)
     }

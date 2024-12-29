@@ -1,0 +1,7 @@
+[advisories]
+ignore = [
+  # Might have to change of rfd or do the upgrade myself maintainer doesn't seem keen. https://github.com/PolyMeilex/rfd/issues/227
+  "RUSTSEC-2024-0416",
+  "RUSTSEC-2024-0418",
+  "RUSTSEC-2024-0420",
+]
