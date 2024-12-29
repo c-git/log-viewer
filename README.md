@@ -3,12 +3,15 @@
 Simple log viewer.
 Works with log that have json on each line.
 Works in both Web (WASM) and on native.
+Defaults are configured for [bunyan formatted logs](https://github.com/trentm/node-bunyan) but these are setup as setting and are able to be changed (UI not implemented to change at present due to no demand).
+For rust programs one can use the crate [tracing_bunyan_formatter](https://docs.rs/tracing-bunyan-formatter/latest/tracing_bunyan_formatter/) to generate logs as done in the book [Zero To Production In Rust](https://www.zero2prod.com/index.html).
 
 You can use the deployed version without install at <https://c-git.github.io/log-viewer/>
 
 # Description of expected log file format
 
 It is expected that the file will contain multiple json objects separated by new lines.
+If a line is not valid json it can be converted into a Log record with the entire line being one json field.
 See [samples](tests/sample_logs/).
 A toy example would be:
 
@@ -20,7 +23,8 @@ A toy example would be:
 
 # How to run
 
-Make sure you are using the latest version of stable rust by running `rustup update`.
+We do not test on older version of rust so it is possible you may get compilation errors if you are not on the latest version of stable rust.
+To get the most recent stable version use `rustup update`.
 
 ## Native
 

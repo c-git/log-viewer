@@ -11,7 +11,7 @@ use serde_json::Value;
 
 use super::{
     calculate_hash,
-    data_display_options::{DataDisplayOptions, RowParseErrorHandling},
+    data_display_options::{DataDisplayOptions, LevelConversion, RowParseErrorHandling},
 };
 mod data_iter;
 pub mod filter;
@@ -393,7 +393,49 @@ impl TryFrom<(&DataDisplayOptions, usize, &str)> for LogRow {
         if let Some(key) = data_display_options.row_idx_field_name.as_ref() {
             result.or_insert(key.to_string(), row_idx_val.into());
         }
+        if let Some(settings) = data_display_options.level_conversion.as_ref() {
+            if let Some((key, value)) = level_conversion_to_display(&result, settings) {
+                result.or_insert(key, value);
+            }
+        }
         Ok(result)
+    }
+}
+
+fn level_conversion_to_display(
+    row: &LogRow,
+    settings: &LevelConversion,
+) -> Option<(String, Value)> {
+    let FieldContent::Present(raw_value) = row.field_value(&settings.source_field_name) else {
+        return None;
+    };
+    let raw_value = match raw_value.as_i64() {
+        Some(x) => x,
+        None => {
+            warn!(
+                "Failed to convert raw for {:?} to i64: {raw_value:?}",
+                settings.source_field_name
+            );
+            debug_assert!(
+                false,
+                "This is not expected to happen. Unable to convert level to string slice"
+            );
+            return None;
+        }
+    };
+    match settings.convert_map.get(&raw_value) {
+        Some(converted_value) => Some((
+            settings.display_field_name.clone(),
+            converted_value.clone().into(),
+        )),
+        None => {
+            warn!("Failed to convert raw_value to a displayable log level: {raw_value:?}");
+            debug_assert!(
+                false,
+                "This is not expected to happen. Unable to convert level to a corresponding display value"
+            );
+            None
+        }
     }
 }
 
