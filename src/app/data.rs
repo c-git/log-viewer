@@ -9,7 +9,10 @@ use filter::{FieldSpecifier, FilterConfig};
 use log::warn;
 use serde_json::Value;
 
-use super::{calculate_hash, data_display_options::DataDisplayOptions};
+use super::{
+    calculate_hash,
+    data_display_options::{DataDisplayOptions, RowParseErrorHandling},
+};
 mod data_iter;
 pub mod filter;
 
@@ -364,8 +367,27 @@ impl TryFrom<(&DataDisplayOptions, usize, &str)> for LogRow {
     fn try_from(
         (data_display_options, row_idx_val, value): (&DataDisplayOptions, usize, &str),
     ) -> Result<Self, Self::Error> {
+        let data = match serde_json::from_str::<BTreeMap<String, Value>>(value) {
+            Ok(data) => data,
+            Err(e) => match &data_display_options.row_parse_error_handling {
+                RowParseErrorHandling::AbortOnAnyErrors => {
+                    Err(e).context("Parse Error and mode is Abort On Error")?
+                }
+                RowParseErrorHandling::ConvertFailedLines {
+                    raw_line_field_name,
+                    parse_error_field_name,
+                } => {
+                    let mut result = BTreeMap::new();
+                    result.insert(raw_line_field_name.clone(), value.into());
+                    if let Some(err_field) = parse_error_field_name {
+                        result.insert(err_field.clone(), format!("{e:?}").into());
+                    }
+                    result
+                }
+            },
+        };
         let mut result = Self {
-            data: serde_json::from_str(value)?,
+            data,
             cached_display_list: None,
         };
         if let Some(key) = data_display_options.row_idx_field_name.as_ref() {
