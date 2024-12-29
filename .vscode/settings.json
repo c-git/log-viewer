@@ -6,6 +6,7 @@
     "libxcb",
     "libxkbcommon",
     "logviewer",
+    "pkill",
     "xfixes"
   ]
 }
