@@ -303,27 +303,23 @@ impl LogViewerApp {
                 ui.colored_label(ui.visuals().error_fg_color, msg);
             }
             LoadingStatus::Success(data) => {
-                self.loading_status =
-                // TODO 1: Make a copy of the loading type desired and match on it to get the data to load
-                    match Data::try_from((&self.data_display_options, &data[..])) {
-                        Ok(mut data) => {
-                            if let Some(old_data) = self.data.as_mut() {
-                                // Preserve settings across loads of the data
-                                data.take_config(
-                                    old_data,
-                                    self.data_display_options.common_fields(),
-                                );
-                            }
-                            self.data = Some(data);
-                            if self.should_scroll_to_end_on_load {
-                                self.move_selected_last();
-                            } else {
-                                self.should_scroll = true;
-                            }
-                            LoadingStatus::NotInProgress
+                self.loading_status = match Data::try_from((&self.data_display_options, &data[..]))
+                {
+                    Ok(mut data) => {
+                        if let Some(old_data) = self.data.as_mut() {
+                            // Preserve settings across loads of the data
+                            data.take_config(old_data, self.data_display_options.common_fields());
                         }
-                        Err(e) => LoadingStatus::Failed(clean_msg(format!("{e:?}"))),
+                        self.data = Some(data);
+                        if self.should_scroll_to_end_on_load {
+                            self.move_selected_last();
+                        } else {
+                            self.should_scroll = true;
+                        }
+                        LoadingStatus::NotInProgress
                     }
+                    Err(e) => LoadingStatus::Failed(clean_msg(format!("{e:?}"))),
+                }
             }
         }
     }

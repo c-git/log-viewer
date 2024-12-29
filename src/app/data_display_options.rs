@@ -15,6 +15,19 @@ pub struct DataDisplayOptions {
 
     /// When set adds a field with this name and populates it with the row numbers
     pub row_idx_field_name: Option<String>,
+
+    /// Controls how errors during file loading are treated
+    pub row_parse_error_handling: RowParseErrorHandling,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+pub enum RowParseErrorHandling {
+    AbortOnAnyErrors,
+    ConvertFailedLines {
+        raw_line_field_name: String,
+        /// If set the error message from the failure is placed in this field
+        parse_error_field_name: Option<String>,
+    },
 }
 
 impl DataDisplayOptions {
@@ -63,6 +76,16 @@ impl Default for DataDisplayOptions {
             .collect(),
             emphasize_if_matching_field_idx: Some(2),
             row_idx_field_name: Some("row#".to_string()),
+            row_parse_error_handling: Default::default(),
+        }
+    }
+}
+
+impl Default for RowParseErrorHandling {
+    fn default() -> Self {
+        Self::ConvertFailedLines {
+            raw_line_field_name: "msg".into(),
+            parse_error_field_name: Some("parse_err".into()),
         }
     }
 }
