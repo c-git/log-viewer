@@ -30,9 +30,6 @@ pub struct LogViewerApp {
     track_item_align: Option<Align>,
     shortcuts: Shortcuts,
     should_scroll_to_end_on_load: bool,
-    // TODO 4: Add UI to set / unset row_idx_field_name
-    /// When set adds a field with this name and populates it with the row numbers
-    row_idx_field_name: Option<String>,
     /// Allows the user to dim the warning by clicking on it
     should_highlight_field_warning: bool,
 
@@ -55,7 +52,6 @@ impl Default for LogViewerApp {
             track_item_align: Some(Align::Center),
             shortcuts: Default::default(),
             should_scroll_to_end_on_load: Default::default(),
-            row_idx_field_name: Some("row#".to_string()),
             should_highlight_field_warning: true,
             should_focus_search: Default::default(),
             should_scroll: Default::default(),
@@ -309,7 +305,7 @@ impl LogViewerApp {
             LoadingStatus::Success(data) => {
                 self.loading_status =
                 // TODO 1: Make a copy of the loading type desired and match on it to get the data to load
-                    match Data::try_from((self.row_idx_field_name.as_ref(), &data[..])) {
+                    match Data::try_from((&self.data_display_options, &data[..])) {
                         Ok(mut data) => {
                             if let Some(old_data) = self.data.as_mut() {
                                 // Preserve settings across loads of the data

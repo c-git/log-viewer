@@ -9,11 +9,10 @@ use filter::{FieldSpecifier, FilterConfig};
 use log::warn;
 use serde_json::Value;
 
-use super::calculate_hash;
+use super::{calculate_hash, data_display_options::DataDisplayOptions};
 mod data_iter;
 pub mod filter;
 
-type LogRowIdxFieldName<'a> = Option<&'a String>;
 type RowSlice<'a> = &'a [(String, String)];
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq)]
@@ -359,35 +358,34 @@ fn matching_fields(fields_and_values: RowSlice<'_>, filter: &FilterConfig) -> Op
     }
 }
 
-impl TryFrom<(LogRowIdxFieldName<'_>, usize, &str)> for LogRow {
+impl TryFrom<(&DataDisplayOptions, usize, &str)> for LogRow {
     type Error = anyhow::Error;
 
     fn try_from(
-        (log_row_idx_key, row_idx_val, value): (LogRowIdxFieldName<'_>, usize, &str),
+        (data_display_options, row_idx_val, value): (&DataDisplayOptions, usize, &str),
     ) -> Result<Self, Self::Error> {
         let mut result = Self {
             data: serde_json::from_str(value)?,
             cached_display_list: None,
         };
-        if let Some(key) = log_row_idx_key {
+        if let Some(key) = data_display_options.row_idx_field_name.as_ref() {
             result.or_insert(key.to_string(), row_idx_val.into());
         }
         Ok(result)
     }
 }
 
-impl TryFrom<(LogRowIdxFieldName<'_>, &str)> for Data {
+impl TryFrom<(&DataDisplayOptions, &str)> for Data {
     type Error = anyhow::Error;
 
     fn try_from(
-        (log_row_idx_key, value): (LogRowIdxFieldName<'_>, &str),
+        (data_display_options, value): (&DataDisplayOptions, &str),
     ) -> Result<Self, Self::Error> {
         let mut result = Data::default();
         for (i, line) in value.lines().enumerate() {
-            result.rows.push(
-                LogRow::try_from((log_row_idx_key, i, line))
-                    .with_context(|| format!("failed to parse line {}", i + 1))?,
-            );
+            let row = LogRow::try_from((data_display_options, i, line))
+                .with_context(|| format!("failed to parse line {}", i + 1))?;
+            result.rows.push(row);
         }
         Ok(result)
     }

@@ -1,6 +1,7 @@
 use std::collections::BTreeSet;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct DataDisplayOptions {
     main_list_fields: Vec<String>,
 
@@ -11,6 +12,9 @@ pub struct DataDisplayOptions {
     ///
     /// WARNING: This must be a valid index into the list as this is assumed in method implementations
     emphasize_if_matching_field_idx: Option<usize>,
+
+    /// When set adds a field with this name and populates it with the row numbers
+    pub row_idx_field_name: Option<String>,
 }
 
 impl DataDisplayOptions {
@@ -58,6 +62,7 @@ impl Default for DataDisplayOptions {
             .map(String::from)
             .collect(),
             emphasize_if_matching_field_idx: Some(2),
+            row_idx_field_name: Some("row#".to_string()),
         }
     }
 }
