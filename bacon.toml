@@ -1,0 +1,21 @@
+# This is a configuration file for the bacon tool
+#
+# Complete help on configuration: https://dystroy.org/bacon/config/
+#
+#  You may check the current default at
+#   https://github.com/Canop/bacon/blob/main/defaults/default-bacon.toml
+
+[jobs.reset-settings-and-run]
+command = [
+  "sh",
+  "-c",
+  "./scripts/remove_settings_and_run_with_default.sh",
+]
+need_stdout = true
+allow_warnings = true
+background = false
+on_change_strategy = "kill_then_restart"
+kill = ["pkill", "-TERM", "-P"]
+
+[keybindings]
+ctrl-d = "job:reset-settings-and-run"
