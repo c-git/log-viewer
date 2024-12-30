@@ -95,7 +95,7 @@ impl Default for DataDisplayOptions {
             .into_iter()
             .map(String::from)
             .collect(),
-            emphasize_if_matching_field_idx: Some(2),
+            emphasize_if_matching_field_idx: Some(3),
             row_idx_field_name: Some("row#".to_string()),
             row_parse_error_handling: Default::default(),
             level_conversion: Some(Default::default()),
