@@ -1,6 +1,6 @@
 [package]
 name = "log_viewer"
-version = "0.3.1"
+version = "0.3.2"
 edition = "2021"
 
 [dependencies]
@@ -17,15 +17,15 @@ log = "0.4.22"
 anyhow = "1.0.95"
 egui_extras = "0.30"
 futures = "0.3.31"
-rfd = { version = "0.15", default-features = false, features = ["gtk3", "tokio"] }
-serde = { version = "1.0.216", features = ["derive"] }
-serde_json = "1.0.134"
+rfd = { version = "0.15.2", default-features = false, features = ["gtk3", "tokio"] }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.135"
 
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 env_logger = "0.11.6"
 poll-promise = { version = "0.3.0", features = ["tokio"] }
-tokio = { version = "1.35.1", features = ["full"] } # TODO 2: Reduce features of tokio to only those needed
+tokio = { version = "1.43", default-features = false } # I suspect features are brought in with poll-promise (not able to separate out to see what we need)
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
@@ -43,16 +43,8 @@ opt-level = 2
 [patch.crates-io]
 
 [dev-dependencies]
-insta = { version = "1.41.1", features = ["ron", "glob", "yaml"] }
+insta = { version = "1.42", features = ["ron", "glob", "yaml"] }
 pretty_assertions = "1.4.1"
 ron = "0.8.1"
-rstest = "0.23"
+rstest = "0.24"
 strum = { version = "0.26.3", features = ["derive"] }
-
-# If you want to use the bleeding edge version of egui and eframe:
-# egui = { git = "https://github.com/emilk/egui", branch = "master" }
-# eframe = { git = "https://github.com/emilk/egui", branch = "master" }
-
-# If you fork https://github.com/emilk/egui you can test with:
-# egui = { path = "../egui/crates/egui" }
-# eframe = { path = "../egui/crates/eframe" }
