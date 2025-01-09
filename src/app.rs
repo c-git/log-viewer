@@ -648,7 +648,11 @@ impl LogViewerApp {
 
             if self.show_last_filename {
                 if let Some(filename) = self.last_filename.lock().unwrap().as_ref() {
-                    ui.label(format!("Filename: {}", filename.display()));
+                    let label = ui.label(format!("Filename: {}", filename.display()));
+                    #[cfg(not(target_arch = "wasm32"))]
+                    if let Some(folder) = self.start_open_path.lock().unwrap().as_ref() {
+                        label.on_hover_text(folder.display().to_string());
+                    }
                 }
             }
             if let Some(data) = self.data.as_ref() {
