@@ -137,7 +137,7 @@ impl LogViewerApp {
 
         if let Some(data) = &mut self.data {
             table.body(|body| {
-                // TODO 3: Figure out if calculating these values only once is worth it.
+                // TODO 4: Figure out if calculating these values only once is worth it.
                 // TODO 4: Remove hard coded "msg"
                 let heights: Vec<f32> = data
                     .rows_iter()
@@ -253,7 +253,7 @@ impl LogViewerApp {
         });
 
         table.body(|body| {
-            // TODO 3: Figure out if calculating these values only once is worth it.
+            // TODO 4: Figure out if calculating these values only once is worth it.
             let heights: Vec<f32> = selected_values
                 .iter()
                 .map(|x| (1f32).max(x.1.lines().count() as f32) * text_height)
@@ -597,7 +597,7 @@ impl LogViewerApp {
                     } else {
                         "Click to Highlight warning"
                     };
-                    // TODO 3: Add an option to select how fields are filter and not only exact match
+                    // TODO 4: Add an option to select how fields are filter and not only exact match
                     if ui
                         .colored_label(color, "(Field filtering enabled)")
                         .on_hover_text(hint_text)
