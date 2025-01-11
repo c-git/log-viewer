@@ -1,5 +1,7 @@
 use std::collections::{BTreeMap, BTreeSet};
 
+use egui::Color32;
+
 #[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
 pub struct DataDisplayOptions {
@@ -13,6 +15,9 @@ pub struct DataDisplayOptions {
     /// WARNING: This must be a valid index into the list as this is assumed in method implementations
     emphasize_if_matching_field_idx: Option<usize>,
 
+    /// Fields that should be colored based on their value. Key is field name
+    pub colored_fields: BTreeMap<String, FieldColoringRules>,
+
     /// When set adds a field with this name and populates it with the row numbers (Skips record if field name already exists)
     pub row_idx_field_name: Option<String>,
 
@@ -21,6 +26,12 @@ pub struct DataDisplayOptions {
 
     /// Used for optionally converting message levels to strings
     pub level_conversion: Option<LevelConversion>,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+pub struct FieldColoringRules {
+    /// Matches a field value to color
+    pub value_color_map: BTreeMap<String, Color32>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
@@ -99,6 +110,23 @@ impl Default for DataDisplayOptions {
             row_idx_field_name: Some("row#".to_string()),
             row_parse_error_handling: Default::default(),
             level_conversion: Some(Default::default()),
+            colored_fields: [(
+                "level_str".to_string(),
+                FieldColoringRules {
+                    value_color_map: [
+                        ("Trace".to_string(), Color32::from_rgb(150, 100, 200)),
+                        ("Debug".to_string(), Color32::from_rgb(80, 140, 205)),
+                        ("Info".to_string(), Color32::from_rgb(15, 175, 85)),
+                        ("Warn".to_string(), Color32::from_rgb(210, 210, 20)),
+                        ("Error".to_string(), Color32::from_rgb(220, 105, 105)),
+                        ("Fatal".to_string(), Color32::from_rgb(255, 20, 20)),
+                    ]
+                    .into_iter()
+                    .collect(),
+                },
+            )]
+            .into_iter()
+            .collect(),
         }
     }
 }

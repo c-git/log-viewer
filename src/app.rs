@@ -93,6 +93,7 @@ impl LogViewerApp {
             .resolve(ui.style())
             .size
             .max(ui.spacing().interact_size.y);
+        let default_text_color = ui.visuals().text_color();
 
         let mut table_builder = TableBuilder::new(ui)
             .striped(true)
@@ -189,7 +190,18 @@ impl LogViewerApp {
                             if should_emphasize_field {
                                 ui.strong(field_value.display());
                             } else {
-                                ui.label(field_value.display());
+                                let display_value = field_value.display();
+                                if let Some(coloring_rules) =
+                                    self.data_display_options.colored_fields.get(field_name)
+                                {
+                                    let color = coloring_rules
+                                        .value_color_map
+                                        .get(&display_value)
+                                        .unwrap_or(&default_text_color);
+                                    ui.colored_label(*color, display_value);
+                                } else {
+                                    ui.label(display_value);
+                                }
                             }
                         });
                     }
