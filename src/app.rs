@@ -7,13 +7,13 @@ use egui::{
     Align, KeyboardShortcut,
 };
 use egui_extras::{Column, TableBuilder};
-use log::info;
 use shortcut::Shortcuts;
 use std::{
     hash::{DefaultHasher, Hash, Hasher},
     path::PathBuf,
     sync::{Arc, LazyLock, Mutex},
 };
+use tracing::info;
 
 mod data;
 mod data_display_options;

@@ -6,8 +6,8 @@ use std::{
 use anyhow::Context;
 use data_iter::DataIter;
 use filter::{FieldSpecifier, FilterConfig};
-use log::warn;
 use serde_json::Value;
+use tracing::warn;
 
 use super::{
     calculate_hash,
