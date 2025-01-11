@@ -1,9 +1,10 @@
 [package]
 name = "log_viewer"
-version = "0.3.2"
+version = "0.3.3"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.95"
 eframe = { version = "0.30", default-features = false, features = [ #
   "accesskit", # Make egui compatible with screen readers. NOTE: adds a lot of dependencies.
   "default_fonts", # Embed the default egui fonts.
@@ -12,23 +13,22 @@ eframe = { version = "0.30", default-features = false, features = [ #
   "wayland", # To support Linux (and CI)
   "x11",] }
 egui = "0.30"
-log = "0.4.22"
-
-anyhow = "1.0.95"
 egui_extras = "0.30"
 futures = "0.3.31"
 rfd = { version = "0.15.2", default-features = false, features = ["gtk3", "tokio"] }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = "1.0.135"
+tracing = "0.1.41"
 
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
-env_logger = "0.11.6"
 poll-promise = { version = "0.3.0", features = ["tokio"] }
 tokio = { version = "1.43", default-features = false } # I suspect features are brought in with poll-promise (not able to separate out to see what we need)
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
+log = "0.4.24"
 poll-promise = { version = "0.3.0", features = ["web"] }
 wasm-bindgen-futures = "0.4.49"
 web-sys = "0.3.76"
