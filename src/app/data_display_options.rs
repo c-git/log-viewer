@@ -143,7 +143,7 @@ impl Default for DataDisplayOptions {
             .into_iter()
             .map(String::from)
             .collect(),
-            emphasize_if_matching_field_idx: Some(3),
+            emphasize_if_matching_field_idx: Some(4),
             row_idx_field_name: Some("row#".to_string()),
             row_size_config: Some(RowSizeConfig {
                 field_name: "row_size".to_string(),
