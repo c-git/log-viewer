@@ -1,18 +1,17 @@
-use std::{
-    borrow::Cow,
-    collections::{BTreeMap, BTreeSet},
-};
-
-use anyhow::Context;
-use data_iter::DataIter;
-use filter::{FieldSpecifier, FilterConfig};
-use serde_json::Value;
-use tracing::warn;
-
 use super::{
     calculate_hash,
     data_display_options::{DataDisplayOptions, LevelConversion, RowParseErrorHandling},
 };
+use anyhow::Context;
+use data_iter::DataIter;
+use filter::{FieldSpecifier, FilterConfig};
+use serde_json::Value;
+use std::{
+    borrow::Cow,
+    collections::{BTreeMap, BTreeSet},
+};
+use tracing::warn;
+
 mod data_iter;
 pub mod filter;
 
@@ -367,6 +366,7 @@ impl TryFrom<(&DataDisplayOptions, usize, &str)> for LogRow {
     fn try_from(
         (data_display_options, row_idx_val, value): (&DataDisplayOptions, usize, &str),
     ) -> Result<Self, Self::Error> {
+        let row_size_in_bytes = value.len();
         let data = match serde_json::from_str::<BTreeMap<String, Value>>(value) {
             Ok(data) => data,
             Err(e) => match &data_display_options.row_parse_error_handling {
@@ -397,6 +397,12 @@ impl TryFrom<(&DataDisplayOptions, usize, &str)> for LogRow {
             if let Some((key, value)) = level_conversion_to_display(&result, settings) {
                 result.or_insert(key, value);
             }
+        }
+        if let Some(config) = data_display_options.row_size_config.as_ref() {
+            result.or_insert(
+                config.field_name.clone(),
+                config.units.convert(row_size_in_bytes),
+            );
         }
         Ok(result)
     }

@@ -1,8 +1,6 @@
 ---
 source: src/app/data/tests.rs
-assertion_line: 42
 expression: data
-snapshot_kind: text
 ---
 selected_row: ~
 filter: ~
@@ -17,6 +15,7 @@ rows:
       name: my_server
       pid: 50401
       "row#": 0
+      row_size: 228
       target: "my_server::startup"
       time: "2024-02-10T03:13:04.191299188Z"
       v: 0
@@ -30,6 +29,7 @@ rows:
       name: my_server
       pid: 50401
       "row#": 1
+      row_size: 286
       target: "actix_server::builder"
       time: "2024-02-10T03:13:04.191610465Z"
       v: 0
