@@ -4,7 +4,7 @@ use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
 use egui::{
     text::{CCursor, CCursorRange},
-    Align, KeyboardShortcut,
+    Align, KeyboardShortcut, Label,
 };
 use egui_extras::{Column, TableBuilder};
 use shortcut::Shortcuts;
@@ -200,7 +200,7 @@ impl LogViewerApp {
                                         .unwrap_or(&default_text_color);
                                     ui.colored_label(*color, display_value);
                                 } else {
-                                    ui.label(display_value);
+                                    ui.add(Label::new(display_value).truncate());
                                 }
                             }
                         });
