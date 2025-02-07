@@ -26,9 +26,13 @@ pub struct DataDisplayOptions {
 
     /// Used for optionally converting message levels to strings
     pub level_conversion: Option<LevelConversion>,
+
+    /// Used for optionally including the size of messages
+    pub row_size_config: Option<RowSizeConfig>,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[serde(default)]
 pub struct FieldColoringRules {
     /// Matches a field value to color
     pub value_color_map: BTreeMap<String, Color32>,
@@ -45,12 +49,44 @@ pub enum RowParseErrorHandling {
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[serde(default)]
 pub struct LevelConversion {
     /// Skips record if field name already exists
     pub display_field_name: String,
     /// Skips conversion if source field cannot be found
     pub source_field_name: String,
     pub convert_map: BTreeMap<i64, String>,
+}
+
+#[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[serde(default)]
+pub struct RowSizeConfig {
+    pub field_name: String,
+    pub units: SizeUnits,
+}
+
+#[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+pub enum SizeUnits {
+    Bytes,
+    #[default]
+    KB,
+    MB,
+    GB,
+    TB,
+    // TODO 5: Add an auto option to use smallest non fractional (would need to use str instead of f32)
+}
+impl SizeUnits {
+    pub(crate) fn convert(&self, row_size_in_bytes: usize) -> serde_json::Value {
+        let scalar = match self {
+            SizeUnits::Bytes => 1.0,
+            SizeUnits::KB => 1024.0,
+            SizeUnits::MB => 1024.0 * 1024.0,
+            SizeUnits::GB => 1024.0 * 1024.0 * 1024.0,
+            SizeUnits::TB => 1024.0 * 1024.0 * 1024.0 * 1024.0,
+        };
+        let result = row_size_in_bytes as f64 / scalar;
+        result.into()
+    }
 }
 
 impl DataDisplayOptions {
@@ -72,6 +108,7 @@ impl Default for DataDisplayOptions {
             main_list_fields: [
                 "row#",
                 "level_str",
+                "row_size",
                 "time",
                 "request_id",
                 "otel.name",
@@ -108,6 +145,10 @@ impl Default for DataDisplayOptions {
             .collect(),
             emphasize_if_matching_field_idx: Some(3),
             row_idx_field_name: Some("row#".to_string()),
+            row_size_config: Some(RowSizeConfig {
+                field_name: "row_size".to_string(),
+                units: SizeUnits::Bytes,
+            }),
             row_parse_error_handling: Default::default(),
             level_conversion: Some(Default::default()),
             colored_fields: [(
