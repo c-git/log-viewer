@@ -1,8 +1,6 @@
 ---
 source: src/app/data/tests.rs
-assertion_line: 42
 expression: data
-snapshot_kind: text
 ---
 selected_row: ~
 filter: ~
@@ -17,6 +15,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 0
+      row_size: 229
       target: "my_server::startup"
       time: "2024-02-10T06:02:11.961915483Z"
       v: 0
@@ -30,6 +29,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 1
+      row_size: 287
       target: "actix_server::builder"
       time: "2024-02-10T06:02:11.962339028Z"
       v: 0
@@ -43,6 +43,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 2
+      row_size: 322
       target: "actix_server::server"
       time: "2024-02-10T06:02:11.962427666Z"
       v: 0
@@ -67,6 +68,7 @@ rows:
       pid: 201399
       request_id: 4dd8dcd4-c5a6-400d-b6ba-b29658abe7e4
       "row#": 3
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:21.163518462Z"
       v: 0
@@ -94,6 +96,7 @@ rows:
       pid: 201399
       request_id: 4dd8dcd4-c5a6-400d-b6ba-b29658abe7e4
       "row#": 4
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:21.170432285Z"
       v: 0
@@ -118,6 +121,7 @@ rows:
       pid: 201399
       request_id: 2f3521ae-a8ea-43b6-9c6b-1a44d36845f0
       "row#": 5
+      row_size: 680
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:21.224469025Z"
       v: 0
@@ -145,6 +149,7 @@ rows:
       pid: 201399
       request_id: 2f3521ae-a8ea-43b6-9c6b-1a44d36845f0
       "row#": 6
+      row_size: 750
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:21.224813634Z"
       v: 0
@@ -169,6 +174,7 @@ rows:
       pid: 201399
       request_id: 51bb624d-8933-46b0-b5f3-13749cdcfb65
       "row#": 7
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:27.735320535Z"
       v: 0
@@ -196,6 +202,7 @@ rows:
       pid: 201399
       request_id: 51bb624d-8933-46b0-b5f3-13749cdcfb65
       "row#": 8
+      row_size: 758
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:27.73652712Z"
       v: 0
@@ -220,6 +227,7 @@ rows:
       pid: 201399
       request_id: 96758627-0b02-494b-9b5a-201886e1f811
       "row#": 9
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:28.778516388Z"
       v: 0
@@ -247,6 +255,7 @@ rows:
       pid: 201399
       request_id: 96758627-0b02-494b-9b5a-201886e1f811
       "row#": 10
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:28.780296567Z"
       v: 0
@@ -271,6 +280,7 @@ rows:
       pid: 201399
       request_id: 86fb5ce6-8f6b-49cb-b834-0cfaf9ad9ed6
       "row#": 11
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:29.752816316Z"
       v: 0
@@ -298,6 +308,7 @@ rows:
       pid: 201399
       request_id: 86fb5ce6-8f6b-49cb-b834-0cfaf9ad9ed6
       "row#": 12
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:29.754506839Z"
       v: 0
@@ -322,6 +333,7 @@ rows:
       pid: 201399
       request_id: da6a2caf-621b-4cd2-90fd-c67b0fe951b7
       "row#": 13
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:30.528781299Z"
       v: 0
@@ -349,6 +361,7 @@ rows:
       pid: 201399
       request_id: da6a2caf-621b-4cd2-90fd-c67b0fe951b7
       "row#": 14
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:30.530387153Z"
       v: 0
@@ -373,6 +386,7 @@ rows:
       pid: 201399
       request_id: c12cd3d3-b232-4327-9ee3-ad680ff493e2
       "row#": 15
+      row_size: 688
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:31.01154897Z"
       v: 0
@@ -400,6 +414,7 @@ rows:
       pid: 201399
       request_id: c12cd3d3-b232-4327-9ee3-ad680ff493e2
       "row#": 16
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:31.013404537Z"
       v: 0
@@ -424,6 +439,7 @@ rows:
       pid: 201399
       request_id: dfb6d617-b933-4fca-8c0d-1da09d19afed
       "row#": 17
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:31.476792941Z"
       v: 0
@@ -451,6 +467,7 @@ rows:
       pid: 201399
       request_id: dfb6d617-b933-4fca-8c0d-1da09d19afed
       "row#": 18
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:31.478740965Z"
       v: 0
@@ -475,6 +492,7 @@ rows:
       pid: 201399
       request_id: 2b96d8ce-db51-406a-9280-095e751d1ac8
       "row#": 19
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:31.909142641Z"
       v: 0
@@ -502,6 +520,7 @@ rows:
       pid: 201399
       request_id: 2b96d8ce-db51-406a-9280-095e751d1ac8
       "row#": 20
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:31.911001241Z"
       v: 0
@@ -526,6 +545,7 @@ rows:
       pid: 201399
       request_id: 952e04e8-1c0d-4b69-9ee1-63ddd390cb61
       "row#": 21
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:32.398038641Z"
       v: 0
@@ -553,6 +573,7 @@ rows:
       pid: 201399
       request_id: 952e04e8-1c0d-4b69-9ee1-63ddd390cb61
       "row#": 22
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:32.398942635Z"
       v: 0
@@ -577,6 +598,7 @@ rows:
       pid: 201399
       request_id: 8de12498-a0f2-42cf-b989-e8fd2b8728bf
       "row#": 23
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:32.753169442Z"
       v: 0
@@ -604,6 +626,7 @@ rows:
       pid: 201399
       request_id: 8de12498-a0f2-42cf-b989-e8fd2b8728bf
       "row#": 24
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:32.753910825Z"
       v: 0
@@ -628,6 +651,7 @@ rows:
       pid: 201399
       request_id: f84020d7-1137-494b-88d5-0fae03fbd53b
       "row#": 25
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:33.189998435Z"
       v: 0
@@ -655,6 +679,7 @@ rows:
       pid: 201399
       request_id: f84020d7-1137-494b-88d5-0fae03fbd53b
       "row#": 26
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:33.190858115Z"
       v: 0
@@ -679,6 +704,7 @@ rows:
       pid: 201399
       request_id: 862b4783-d633-40d3-8ed6-0d6fbd51b590
       "row#": 27
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:33.581415707Z"
       v: 0
@@ -706,6 +732,7 @@ rows:
       pid: 201399
       request_id: 862b4783-d633-40d3-8ed6-0d6fbd51b590
       "row#": 28
+      row_size: 758
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:33.58330603Z"
       v: 0
@@ -730,6 +757,7 @@ rows:
       pid: 201399
       request_id: 74a2f98c-a9dc-479b-b0f8-863e7ff34d3a
       "row#": 29
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:33.995029867Z"
       v: 0
@@ -757,6 +785,7 @@ rows:
       pid: 201399
       request_id: 74a2f98c-a9dc-479b-b0f8-863e7ff34d3a
       "row#": 30
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:33.995775333Z"
       v: 0
@@ -781,6 +810,7 @@ rows:
       pid: 201399
       request_id: 198ad2b0-9b55-420a-8912-e3122170b760
       "row#": 31
+      row_size: 688
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:34.49601321Z"
       v: 0
@@ -808,6 +838,7 @@ rows:
       pid: 201399
       request_id: 198ad2b0-9b55-420a-8912-e3122170b760
       "row#": 32
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:34.498318841Z"
       v: 0
@@ -832,6 +863,7 @@ rows:
       pid: 201399
       request_id: 9d866454-2d22-414b-aab3-e7a32d73035b
       "row#": 33
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:34.933587244Z"
       v: 0
@@ -859,6 +891,7 @@ rows:
       pid: 201399
       request_id: 9d866454-2d22-414b-aab3-e7a32d73035b
       "row#": 34
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:34.935651543Z"
       v: 0
@@ -883,6 +916,7 @@ rows:
       pid: 201399
       request_id: 25b1c7b3-75d7-4f85-bab6-920b1b3f4435
       "row#": 35
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:35.404631082Z"
       v: 0
@@ -910,6 +944,7 @@ rows:
       pid: 201399
       request_id: 25b1c7b3-75d7-4f85-bab6-920b1b3f4435
       "row#": 36
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:35.406396297Z"
       v: 0
@@ -934,6 +969,7 @@ rows:
       pid: 201399
       request_id: bd28760e-f8be-4285-b3fa-b935de5e3cce
       "row#": 37
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:35.908410809Z"
       v: 0
@@ -961,6 +997,7 @@ rows:
       pid: 201399
       request_id: bd28760e-f8be-4285-b3fa-b935de5e3cce
       "row#": 38
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:35.909930198Z"
       v: 0
@@ -985,6 +1022,7 @@ rows:
       pid: 201399
       request_id: d7410116-e47f-44db-8e95-65ae6d731aa3
       "row#": 39
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:36.406646686Z"
       v: 0
@@ -1012,6 +1050,7 @@ rows:
       pid: 201399
       request_id: d7410116-e47f-44db-8e95-65ae6d731aa3
       "row#": 40
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:36.408148172Z"
       v: 0
@@ -1036,6 +1075,7 @@ rows:
       pid: 201399
       request_id: 1718b374-a08d-491c-8802-6054905141ea
       "row#": 41
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:36.883330358Z"
       v: 0
@@ -1063,6 +1103,7 @@ rows:
       pid: 201399
       request_id: 1718b374-a08d-491c-8802-6054905141ea
       "row#": 42
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:36.884516393Z"
       v: 0
@@ -1087,6 +1128,7 @@ rows:
       pid: 201399
       request_id: 52288c2d-ea91-48c5-9db9-1b7e134a3915
       "row#": 43
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:37.414535794Z"
       v: 0
@@ -1114,6 +1156,7 @@ rows:
       pid: 201399
       request_id: 52288c2d-ea91-48c5-9db9-1b7e134a3915
       "row#": 44
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:37.416158356Z"
       v: 0
@@ -1138,6 +1181,7 @@ rows:
       pid: 201399
       request_id: b362e638-1e2a-4184-84d9-fb39c3cfa5c9
       "row#": 45
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:37.988422018Z"
       v: 0
@@ -1165,6 +1209,7 @@ rows:
       pid: 201399
       request_id: b362e638-1e2a-4184-84d9-fb39c3cfa5c9
       "row#": 46
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:37.990135478Z"
       v: 0
@@ -1189,6 +1234,7 @@ rows:
       pid: 201399
       request_id: fe545736-0993-4bbd-8395-b5be9fe6ccd4
       "row#": 47
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:38.516440225Z"
       v: 0
@@ -1216,6 +1262,7 @@ rows:
       pid: 201399
       request_id: fe545736-0993-4bbd-8395-b5be9fe6ccd4
       "row#": 48
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:38.518258022Z"
       v: 0
@@ -1240,6 +1287,7 @@ rows:
       pid: 201399
       request_id: 63d31d2b-bbfc-4f01-90b3-80e53d407abe
       "row#": 49
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:39.063656597Z"
       v: 0
@@ -1267,6 +1315,7 @@ rows:
       pid: 201399
       request_id: 63d31d2b-bbfc-4f01-90b3-80e53d407abe
       "row#": 50
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:39.065560988Z"
       v: 0
@@ -1291,6 +1340,7 @@ rows:
       pid: 201399
       request_id: ea4e5992-7566-4b3e-bd3e-39e4a6fe9db6
       "row#": 51
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:39.677814726Z"
       v: 0
@@ -1318,6 +1368,7 @@ rows:
       pid: 201399
       request_id: ea4e5992-7566-4b3e-bd3e-39e4a6fe9db6
       "row#": 52
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:39.678891214Z"
       v: 0
@@ -1342,6 +1393,7 @@ rows:
       pid: 201399
       request_id: 4639d2b0-dfbc-404a-b51a-82aa4743972a
       "row#": 53
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:40.233335145Z"
       v: 0
@@ -1369,6 +1421,7 @@ rows:
       pid: 201399
       request_id: 4639d2b0-dfbc-404a-b51a-82aa4743972a
       "row#": 54
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:40.235457041Z"
       v: 0
@@ -1393,6 +1446,7 @@ rows:
       pid: 201399
       request_id: 521e581e-8fbc-4876-bcb6-0754c97423ef
       "row#": 55
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:40.809624727Z"
       v: 0
@@ -1420,6 +1474,7 @@ rows:
       pid: 201399
       request_id: 521e581e-8fbc-4876-bcb6-0754c97423ef
       "row#": 56
+      row_size: 759
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:02:40.811254162Z"
       v: 0
@@ -1444,6 +1499,7 @@ rows:
       pid: 201399
       request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
       "row#": 57
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:06.191856068Z"
       v: 0
@@ -1472,6 +1528,7 @@ rows:
       pid: 201399
       request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
       "row#": 58
+      row_size: 849
       target: log
       time: "2024-02-10T06:03:06.192024502Z"
       v: 0
@@ -1496,6 +1553,7 @@ rows:
       pid: 201399
       request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
       "row#": 59
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:06.797748362Z"
       v: 0
@@ -1520,6 +1578,7 @@ rows:
       pid: 201399
       request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
       "row#": 60
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:07.444854732Z"
       v: 0
@@ -1544,6 +1603,7 @@ rows:
       pid: 201399
       request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
       "row#": 61
+      row_size: 688
       target: "my_server::routes::status"
       time: "2024-02-10T06:03:08.193165123Z"
       v: 0
@@ -1571,6 +1631,7 @@ rows:
       pid: 201399
       request_id: 6113381e-76af-49bb-bca8-7e07cf3b6c5c
       "row#": 62
+      row_size: 761
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:08.19338919Z"
       v: 0
@@ -1595,6 +1656,7 @@ rows:
       pid: 201399
       request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
       "row#": 63
+      row_size: 688
       target: "my_server::routes::status"
       time: "2024-02-10T06:03:08.799070853Z"
       v: 0
@@ -1622,6 +1684,7 @@ rows:
       pid: 201399
       request_id: b675eec1-4b4f-4ba1-be5f-5dfb65f1ce29
       "row#": 64
+      row_size: 762
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:08.799252303Z"
       v: 0
@@ -1646,6 +1709,7 @@ rows:
       pid: 201399
       request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
       "row#": 65
+      row_size: 688
       target: "my_server::routes::status"
       time: "2024-02-10T06:03:09.446331651Z"
       v: 0
@@ -1673,6 +1737,7 @@ rows:
       pid: 201399
       request_id: 8a19c638-9b4e-4dd6-8f00-f2d213fca243
       "row#": 66
+      row_size: 762
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:09.446655074Z"
       v: 0
@@ -1697,6 +1762,7 @@ rows:
       pid: 201399
       request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
       "row#": 67
+      row_size: 689
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:13.082901829Z"
       v: 0
@@ -1721,6 +1787,7 @@ rows:
       pid: 201399
       request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
       "row#": 68
+      row_size: 688
       target: "my_server::routes::status"
       time: "2024-02-10T06:03:15.084438959Z"
       v: 0
@@ -1748,6 +1815,7 @@ rows:
       pid: 201399
       request_id: d4a6f3a2-671b-4cb2-94c4-094867c46345
       "row#": 69
+      row_size: 762
       target: "tracing_actix_web::root_span_builder"
       time: "2024-02-10T06:03:15.084681044Z"
       v: 0
@@ -1761,6 +1829,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 70
+      row_size: 308
       target: "actix_server::server"
       time: "2024-02-10T06:03:26.993587646Z"
       v: 0
@@ -1774,6 +1843,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 71
+      row_size: 288
       target: "actix_server::accept"
       time: "2024-02-10T06:03:26.993775955Z"
       v: 0
@@ -1787,6 +1857,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 72
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.993775787Z"
       v: 0
@@ -1800,6 +1871,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 73
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.993775779Z"
       v: 0
@@ -1813,6 +1885,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 74
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.993775827Z"
       v: 0
@@ -1826,6 +1899,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 75
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.993783793Z"
       v: 0
@@ -1839,6 +1913,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 76
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.993808637Z"
       v: 0
@@ -1852,6 +1927,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 77
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.994068372Z"
       v: 0
@@ -1865,6 +1941,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 78
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.994080138Z"
       v: 0
@@ -1878,6 +1955,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 79
+      row_size: 292
       target: "actix_server::worker"
       time: "2024-02-10T06:03:26.994147513Z"
       v: 0
@@ -1891,6 +1969,7 @@ rows:
       name: my_server
       pid: 201399
       "row#": 80
+      row_size: 198
       target: my_server
       time: "2024-02-10T06:03:27.295589706Z"
       v: 0
