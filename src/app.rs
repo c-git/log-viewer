@@ -13,7 +13,7 @@ use std::{
     path::PathBuf,
     sync::{Arc, LazyLock, Mutex},
 };
-use tracing::info;
+use tracing::{debug, error, info};
 
 mod data;
 mod data_display_options;
@@ -39,6 +39,8 @@ pub struct LogViewerApp {
     should_scroll: bool,
     #[serde(skip)]
     loading_status: LoadingStatus,
+    #[serde(skip)]
+    last_save_hash: Option<u64>,
 }
 
 impl Default for LogViewerApp {
@@ -56,6 +58,7 @@ impl Default for LogViewerApp {
             should_focus_search: Default::default(),
             should_scroll: Default::default(),
             show_last_filename: true,
+            last_save_hash: Default::default(),
         }
     }
 }
@@ -702,6 +705,26 @@ impl LogViewerApp {
             }
         }
     }
+
+    fn is_changed_since_last_save(&mut self) -> bool {
+        let as_ron = match ron::to_string(&self) {
+            Ok(s) => s,
+            Err(err_msg) => {
+                error!(?err_msg, "failed to serialize app data");
+                return true;
+            }
+        };
+        let mut hasher = DefaultHasher::new();
+        as_ron.hash(&mut hasher);
+        let new_hash = hasher.finish();
+        if let Some(&old_hash) = self.last_save_hash.as_ref() {
+            if old_hash == new_hash {
+                return false;
+            }
+        }
+        self.last_save_hash = Some(new_hash);
+        true
+    }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -749,8 +772,12 @@ fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static>(
 impl eframe::App for LogViewerApp {
     /// Called by the frame work to save state before shutdown.
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
-        info!("Saving data");
-        eframe::set_value(storage, eframe::APP_KEY, self);
+        if self.is_changed_since_last_save() {
+            info!("Saving data");
+            eframe::set_value(storage, eframe::APP_KEY, self);
+        } else {
+            debug!("Save skipped, no change detected");
+        }
     }
 
     /// Called each time the UI needs repainting, which may be many times per second.
