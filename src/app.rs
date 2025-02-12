@@ -678,6 +678,7 @@ impl LogViewerApp {
                         (false, _, total_len) => as_string_with_separators(total_len),
                     };
                 ui.label(format!("# Rows: {row_count_text}"));
+                ui.label(format!("Size: {}", data.file_size));
             }
         });
     }
