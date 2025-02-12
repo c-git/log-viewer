@@ -22,3 +22,4 @@ applied_filter:
   filter_on: Any
   is_case_sensitive: false
   comparator: Equal
+file_size: ""

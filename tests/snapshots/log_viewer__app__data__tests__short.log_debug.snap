@@ -17,7 +17,7 @@ Data {
                 "name": String("my_server"),
                 "pid": Number(50401),
                 "row#": Number(0),
-                "row_size": Number(228.0),
+                "row_size": String("0228.0000 Bytes"),
                 "target": String("my_server::startup"),
                 "time": String("2024-02-10T03:13:04.191299188Z"),
                 "v": Number(0),
@@ -35,7 +35,7 @@ Data {
                 "name": String("my_server"),
                 "pid": Number(50401),
                 "row#": Number(1),
-                "row_size": Number(286.0),
+                "row_size": String("0286.0000 Bytes"),
                 "target": String("actix_server::builder"),
                 "time": String("2024-02-10T03:13:04.191610465Z"),
                 "v": Number(0),
@@ -45,4 +45,5 @@ Data {
     ],
     filtered_rows: None,
     applied_filter: None,
+    file_size: "516.0000 Bytes",
 }

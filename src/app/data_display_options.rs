@@ -68,12 +68,13 @@ pub struct RowSizeConfig {
 #[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
 pub enum SizeUnits {
     Bytes,
-    #[default]
     KB,
     MB,
     GB,
     TB,
-    // TODO 5: Add an auto option to use smallest non fractional (would need to use str instead of f32)
+    #[default]
+    /// Is output as a String because it includes the unit and is the largest unit where the output value is >= 1
+    Auto,
 }
 impl SizeUnits {
     pub(crate) fn convert(&self, row_size_in_bytes: usize) -> serde_json::Value {
@@ -83,6 +84,26 @@ impl SizeUnits {
             SizeUnits::MB => 1024.0 * 1024.0,
             SizeUnits::GB => 1024.0 * 1024.0 * 1024.0,
             SizeUnits::TB => 1024.0 * 1024.0 * 1024.0 * 1024.0,
+            SizeUnits::Auto => {
+                // TODO 5: Rewrite with shifts for performance
+                // Special handling see doc string for explanation
+                let units = ["Bytes", "KB", "MB", "GB", "TB"];
+                let mut last_index = 0;
+                let mut scalar = 1.0f64;
+                let row_size_in_bytes = row_size_in_bytes as f64;
+                for i in 1..units.len() {
+                    let new_scalar = scalar * 1024.0;
+                    if (row_size_in_bytes / new_scalar) >= 1.0 {
+                        last_index = i;
+                        scalar = new_scalar;
+                    } else {
+                        // Last was as correct unit
+                        break;
+                    }
+                }
+                let result = row_size_in_bytes / scalar;
+                return format!("{result:0>9.4} {}", units[last_index]).into();
+            }
         };
         let result = row_size_in_bytes as f64 / scalar;
         result.into()
@@ -147,7 +168,7 @@ impl Default for DataDisplayOptions {
             row_idx_field_name: Some("row#".to_string()),
             row_size_config: Some(RowSizeConfig {
                 field_name: "row_size".to_string(),
-                units: SizeUnits::Bytes,
+                units: SizeUnits::Auto,
             }),
             row_parse_error_handling: Default::default(),
             level_conversion: Some(Default::default()),

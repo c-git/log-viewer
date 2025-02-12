@@ -1,6 +1,6 @@
 use super::{
     calculate_hash,
-    data_display_options::{DataDisplayOptions, LevelConversion, RowParseErrorHandling},
+    data_display_options::{DataDisplayOptions, LevelConversion, RowParseErrorHandling, SizeUnits},
 };
 use anyhow::Context;
 use data_iter::DataIter;
@@ -25,6 +25,7 @@ pub struct Data {
     rows: Vec<LogRow>,
     filtered_rows: Option<Vec<usize>>,
     applied_filter: Option<FilterConfig>,
+    pub file_size: String,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq, Clone)]
@@ -451,7 +452,17 @@ impl TryFrom<(&DataDisplayOptions, &str)> for Data {
     fn try_from(
         (data_display_options, value): (&DataDisplayOptions, &str),
     ) -> Result<Self, Self::Error> {
-        let mut result = Data::default();
+        let file_size = SizeUnits::Auto.convert(value.len());
+        let file_size = file_size
+            .as_str()
+            .map(|x| x.to_string())
+            .unwrap_or_else(|| file_size.to_string())
+            .trim_matches('0')
+            .to_string();
+        let mut result = Data {
+            file_size,
+            ..Default::default()
+        };
         for (i, line) in value.lines().enumerate() {
             let row = LogRow::try_from((data_display_options, i, line))
                 .with_context(|| format!("failed to parse line {}", i + 1))?;

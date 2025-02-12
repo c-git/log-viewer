@@ -26,3 +26,4 @@ applied_filter:
       name: http.status_code
   is_case_sensitive: false
   comparator: NotContains
+file_size: ""
