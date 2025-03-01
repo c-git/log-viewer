@@ -311,6 +311,16 @@ impl Data {
                 "No"
             })
     }
+
+    pub(crate) fn row_heights(&self, text_height: f32) -> impl Iterator<Item = f32> {
+        self.rows_iter()
+            .map(|x| {
+                // TODO 4: Remove hard coded "msg"
+                (1f32).max(x.field_value("msg").display().lines().count() as f32) * text_height
+            })
+            .collect::<Vec<f32>>()
+            .into_iter()
+    }
 }
 
 /// If the slice of fields and values matches the filter then the indices of the fields that match are returned or None if it does not match

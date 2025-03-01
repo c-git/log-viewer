@@ -142,16 +142,9 @@ impl LogViewerApp {
 
         if let Some(data) = &mut self.data {
             table.body(|body| {
-                // TODO 4: Figure out if calculating these values only once is worth it.
-                // TODO 4: Remove hard coded "msg"
-                let heights: Vec<f32> = data
-                    .rows_iter()
-                    .map(|x| {
-                        (1f32).max(x.field_value("msg").display().lines().count() as f32)
-                            * text_height
-                    })
-                    .collect();
-                body.heterogeneous_rows(heights.into_iter(), |mut row| {
+                let heights = data.row_heights(text_height);
+
+                body.heterogeneous_rows(heights, |mut row| {
                     let row_index = row.index();
                     let log_row = &data
                         .rows_iter()
