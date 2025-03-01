@@ -2,6 +2,7 @@ use self::{data::Data, data_display_options::DataDisplayOptions};
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
+use data_display_options::SizeUnits;
 use egui::{
     text::{CCursor, CCursorRange},
     Align, KeyboardShortcut, Label,
@@ -398,6 +399,45 @@ impl LogViewerApp {
                     .radio_value(&mut self.track_item_align, None, "None (Bring into view)")
                     .clicked();
             });
+            ui.horizontal(|ui| {
+                let mut show_row_size = self.data_display_options.row_size_config.is_some();
+                ui.checkbox(&mut show_row_size, "Show row size");
+                match (
+                    show_row_size,
+                    self.data_display_options.row_size_config.is_some(),
+                ) {
+                    (true, true) | (false, false) => {}
+                    (true, false) => {
+                        self.data_display_options.row_size_config = Some(Default::default())
+                    }
+                    (false, true) => self.data_display_options.row_size_config = None,
+                }
+
+                if let Some(row_size) = self.data_display_options.row_size_config.as_mut() {
+                    ui.separator();
+                    ui.label("Field Name: ");
+                    ui.text_edit_singleline(&mut row_size.field_name);
+                    ui.separator();
+                    egui::ComboBox::from_label("Row Size Unit")
+                        .selected_text(row_size.units)
+                        .show_ui(ui, |ui| {
+                            ui.selectable_value(
+                                &mut row_size.units,
+                                SizeUnits::Bytes,
+                                SizeUnits::Bytes,
+                            );
+                            ui.selectable_value(&mut row_size.units, SizeUnits::KB, SizeUnits::KB);
+                            ui.selectable_value(&mut row_size.units, SizeUnits::MB, SizeUnits::MB);
+                            ui.selectable_value(&mut row_size.units, SizeUnits::GB, SizeUnits::GB);
+                            ui.selectable_value(&mut row_size.units, SizeUnits::TB, SizeUnits::TB);
+                            ui.selectable_value(
+                                &mut row_size.units,
+                                SizeUnits::Auto,
+                                SizeUnits::Auto,
+                            );
+                        });
+                }
+            });
         });
     }
 
@@ -431,12 +471,11 @@ impl LogViewerApp {
 
     fn ui_help(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Help", |ui| {
-            ui.horizontal(|ui| {
                 ui.label(
-                    "Text is selectable just hover over it for a short time if you want to copy",
+                    "- Text is selectable just hover over it for a short time if you want to copy",
                 );
+                ui.label("- Most display settings are only applied on load and will require the data to be reloaded")
             });
-        });
     }
 
     #[cfg(not(target_arch = "wasm32"))]

@@ -60,7 +60,7 @@ pub struct LevelConversion {
     pub convert_map: BTreeMap<i64, String>,
 }
 
-#[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
 #[serde(default)]
 pub struct RowSizeConfig {
     pub field_name: String,
@@ -192,10 +192,7 @@ impl Default for DataDisplayOptions {
             .collect(),
             emphasize_if_matching_field_idx: Some(4),
             row_idx_field_name: Some("row#".to_string()),
-            row_size_config: Some(RowSizeConfig {
-                field_name: "row_size".to_string(),
-                units: SizeUnits::KB,
-            }),
+            row_size_config: Some(Default::default()),
             row_parse_error_handling: Default::default(),
             level_conversion: Some(Default::default()),
             colored_fields: [(
@@ -258,5 +255,14 @@ impl Display for SizeUnits {
 impl From<SizeUnits> for WidgetText {
     fn from(value: SizeUnits) -> Self {
         value.as_str().into()
+    }
+}
+
+impl Default for RowSizeConfig {
+    fn default() -> Self {
+        Self {
+            field_name: "row_size".to_string(),
+            units: SizeUnits::KB,
+        }
     }
 }
