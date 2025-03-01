@@ -168,7 +168,7 @@ impl Default for DataDisplayOptions {
             row_idx_field_name: Some("row#".to_string()),
             row_size_config: Some(RowSizeConfig {
                 field_name: "row_size".to_string(),
-                units: SizeUnits::Auto,
+                units: SizeUnits::KB,
             }),
             row_parse_error_handling: Default::default(),
             level_conversion: Some(Default::default()),
