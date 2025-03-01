@@ -21,8 +21,8 @@ impl Default for Shortcuts {
         Self {
             prev: KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowUp),
             next: KeyboardShortcut::new(Modifiers::NONE, egui::Key::ArrowDown),
-            first: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Home),
-            last: KeyboardShortcut::new(Modifiers::NONE, egui::Key::End),
+            first: KeyboardShortcut::new(Modifiers::CTRL, egui::Key::Home),
+            last: KeyboardShortcut::new(Modifiers::CTRL, egui::Key::End),
             unfilter: KeyboardShortcut::new(Modifiers::NONE, egui::Key::Escape),
             open: KeyboardShortcut::new(Modifiers::CTRL, egui::Key::O),
             reload: KeyboardShortcut::new(Modifiers::NONE, egui::Key::F5),
