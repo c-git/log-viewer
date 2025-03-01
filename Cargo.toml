@@ -5,15 +5,15 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.95"
-eframe = { version = "0.30", default-features = false, features = [ #
+eframe = { version = "0.31", default-features = false, features = [ #
   "accesskit", # Make egui compatible with screen readers. NOTE: adds a lot of dependencies.
   "default_fonts", # Embed the default egui fonts.
   "glow", # Use the glow rendering backend. Alternative: "wgpu".
   "persistence", # Enable restoring app state when restarting the app.
   "wayland", # To support Linux (and CI)
   "x11",] }
-egui = "0.30"
-egui_extras = "0.30"
+egui = "0.31"
+egui_extras = "0.31"
 futures = "0.3.31"
 rfd = { version = "0.15.2", default-features = false, features = ["gtk3", "tokio"] }
 ron = "0.8.1"
@@ -29,7 +29,7 @@ tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
-log = "0.4.24"
+log = "0.4.26"
 poll-promise = { version = "0.3.0", features = ["web"] }
 wasm-bindgen-futures = "0.4.49"
 web-sys = "0.3.76"
@@ -48,4 +48,4 @@ insta = { version = "1.42", features = ["ron", "glob", "yaml"] }
 pretty_assertions = "1.4.1"
 ron = "0.8.1"
 rstest = "0.24"
-strum = { version = "0.26.3", features = ["derive"] }
+strum = { version = "0.27.1", features = ["derive"] }
