@@ -313,6 +313,9 @@ impl Data {
     }
 
     pub(crate) fn row_heights(&self, text_height: f32) -> impl Iterator<Item = f32> {
+        #[cfg(feature = "profiling")]
+        puffin::profile_scope!("calculate row heights");
+        // TODO 5: See if this is taking too long and cache value instead of recalculating each frame
         self.rows_iter()
             .map(|x| {
                 // TODO 4: Remove hard coded "msg"
