@@ -4,7 +4,7 @@
 command = [
   "sh",
   "-c",
-  "trash ~/.local/share/logviewer/app.ron; cargo run",
+  "echo 'Deleting settings!!!'; trash ~/.local/share/logviewer/app.ron; cargo run",
 ]
 need_stdout = true
 allow_warnings = true
