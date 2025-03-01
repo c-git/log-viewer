@@ -26,6 +26,9 @@ tracing = "0.1.41"
 poll-promise = { version = "0.3.0", features = ["tokio"] }
 tokio = { version = "1.43", default-features = false } # I suspect features are brought in with poll-promise (not able to separate out to see what we need)
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
+puffin = { version = "0.19", optional = true }
+puffin_http = { version = "0.16", optional = true }
+profiling = { version = "1", features = ["profile-with-puffin"], optional = true }
 
 # web:
 [target.'cfg(target_arch = "wasm32")'.dependencies]
@@ -41,11 +44,12 @@ opt-level = 2 # fast and small wasm
 [profile.dev.package."*"]
 opt-level = 2
 
-[patch.crates-io]
-
 [dev-dependencies]
 insta = { version = "1.42", features = ["ron", "glob", "yaml"] }
 pretty_assertions = "1.4.1"
 ron = "0.8.1"
 rstest = "0.24"
 strum = { version = "0.27.1", features = ["derive"] }
+
+[features]
+profiling = ["dep:profiling", "dep:puffin_http", "dep:puffin"]

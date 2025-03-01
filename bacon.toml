@@ -12,5 +12,9 @@ background = false
 on_change_strategy = "kill_then_restart"
 kill = ["pkill", "-TERM", "-P"]
 
+[jobs.run-profiling]
+command = ["cargo", "run", "--features=profiling"]
+
 [keybindings]
 ctrl-d = "job:reset-settings-and-run"
+ctrl-r = "job:run-profiling"

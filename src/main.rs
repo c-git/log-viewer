@@ -32,6 +32,9 @@ async fn main() -> eframe::Result<()> {
             ),
         ..Default::default()
     };
+    #[cfg(feature = "profiling")]
+    start_puffin_server();
+
     eframe::run_native(
         "Log Viewer",
         native_options,
@@ -84,4 +87,31 @@ fn main() {
             }
         }
     });
+}
+
+#[cfg(feature = "profiling")]
+fn start_puffin_server() {
+    puffin::set_scopes_on(true); // tell puffin to collect data
+
+    match puffin_http::Server::new("127.0.0.1:8585") {
+        Ok(puffin_server) => {
+            tracing::info!(
+                "Run:  cargo install puffin_viewer && puffin_viewer --url 127.0.0.1:8585"
+            );
+
+            std::process::Command::new("puffin_viewer")
+                .arg("--url")
+                .arg("127.0.0.1:8585")
+                .spawn()
+                .ok();
+
+            // We can store the server if we want, but in this case we just want
+            // it to keep running. Dropping it closes the server, so let's not drop it!
+            #[allow(clippy::mem_forget)]
+            std::mem::forget(puffin_server);
+        }
+        Err(err) => {
+            tracing::error!("Failed to start puffin server: {err}");
+        }
+    };
 }
