@@ -317,7 +317,7 @@ impl Data {
     }
 
     pub(crate) fn row_heights(&self, text_height: f32) -> impl Iterator<Item = f32> {
-        #[cfg(all(not(target_arch = "wasm32"),feature = "profiling"))]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("calculate row heights");
         // TODO 5: See if this is taking too long and cache value instead of recalculating each frame
         self.rows_iter()
