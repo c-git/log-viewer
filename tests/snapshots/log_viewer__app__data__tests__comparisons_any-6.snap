@@ -24,4 +24,4 @@ applied_filter:
   filter_on: Any
   is_case_sensitive: false
   comparator: NotEqual
-file_size: ""
+file_size_as_bytes: 0

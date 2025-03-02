@@ -2220,5 +2220,5 @@ Data(
   ],
   filtered_rows: None,
   applied_filter: None,
-  file_size: "51.2959 KB",
+  file_size_as_bytes: 52527,
 )

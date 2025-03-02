@@ -43,5 +43,5 @@ Data(
   ],
   filtered_rows: None,
   applied_filter: None,
-  file_size: "516.0000 Bytes",
+  file_size_as_bytes: 516,
 )
