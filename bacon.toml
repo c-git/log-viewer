@@ -4,7 +4,7 @@
 command = [
   "sh",
   "-c",
-  "trash ~/.local/share/logviewer/app.ron; cargo run",
+  "echo 'Deleting settings!!!'; trash ~/.local/share/logviewer/app.ron; cargo run",
 ]
 need_stdout = true
 allow_warnings = true
@@ -12,5 +12,13 @@ background = false
 on_change_strategy = "kill_then_restart"
 kill = ["pkill", "-TERM", "-P"]
 
+[jobs.run-profiling]
+command = ["cargo", "run", "--features=profiling"]
+kill = ["pkill", "-TERM", "-P"]
+on_change_strategy = "kill_then_restart"
+env.RUST_LOG = "zbus=warn,log_viewer=debug,info"
+# TODO 5: Look into getting both the profiler and the app to stop
+
 [keybindings]
 ctrl-d = "job:reset-settings-and-run"
+ctrl-r = "job:run-profiling"

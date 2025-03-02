@@ -2,6 +2,7 @@ use self::{data::Data, data_display_options::DataDisplayOptions};
 #[cfg(not(target_arch = "wasm32"))]
 use anyhow::{bail, Context};
 use data::filter::{Comparator, FieldSpecifier, FilterConfig, FilterOn};
+use data_display_options::SizeUnits;
 use egui::{
     text::{CCursor, CCursorRange},
     Align, KeyboardShortcut, Label,
@@ -32,6 +33,8 @@ pub struct LogViewerApp {
     should_scroll_to_end_on_load: bool,
     /// Allows the user to dim the warning by clicking on it
     should_highlight_field_warning: bool,
+    /// Max size in bytes of data before saving is disabled
+    max_data_save_size: Option<usize>,
 
     #[serde(skip)]
     should_focus_search: bool,
@@ -59,6 +62,7 @@ impl Default for LogViewerApp {
             should_scroll: Default::default(),
             show_last_filename: true,
             last_save_hash: Default::default(),
+            max_data_save_size: Some(Self::DEFAULT_MAX_DATA_SAVE_SIZE),
         }
     }
 }
@@ -73,6 +77,8 @@ pub enum LoadingStatus {
 }
 
 impl LogViewerApp {
+    const DEFAULT_MAX_DATA_SAVE_SIZE: usize = 2 * 1024 * 1024; // 2MB
+
     /// Called once before the first frame.
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // This is also where you can customize the look and feel of egui using
@@ -92,6 +98,8 @@ impl LogViewerApp {
     }
 
     fn show_log_lines(&mut self, ui: &mut egui::Ui) {
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+        puffin::profile_scope!("show_log_lines");
         let text_height = egui::TextStyle::Body
             .resolve(ui.style())
             .size
@@ -141,16 +149,9 @@ impl LogViewerApp {
 
         if let Some(data) = &mut self.data {
             table.body(|body| {
-                // TODO 4: Figure out if calculating these values only once is worth it.
-                // TODO 4: Remove hard coded "msg"
-                let heights: Vec<f32> = data
-                    .rows_iter()
-                    .map(|x| {
-                        (1f32).max(x.field_value("msg").display().lines().count() as f32)
-                            * text_height
-                    })
-                    .collect();
-                body.heterogeneous_rows(heights.into_iter(), |mut row| {
+                let heights = data.row_heights(text_height);
+
+                body.heterogeneous_rows(heights, |mut row| {
                     let row_index = row.index();
                     let log_row = &data
                         .rows_iter()
@@ -226,6 +227,8 @@ impl LogViewerApp {
     }
 
     fn show_log_details(&mut self, ui: &mut egui::Ui) {
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+        puffin::profile_scope!("show_log_details");
         let Some(data) = self.data.as_mut() else {
             ui.label("No data");
             return;
@@ -321,6 +324,8 @@ impl LogViewerApp {
                 self.loading_status = match Data::try_from((&self.data_display_options, &data[..]))
                 {
                     Ok(mut data) => {
+                        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+                        puffin::profile_scope!("swap_data_after_load");
                         if let Some(old_data) = self.data.as_mut() {
                             // Preserve settings across loads of the data
                             data.take_config(old_data, self.data_display_options.common_fields());
@@ -398,6 +403,74 @@ impl LogViewerApp {
                     .radio_value(&mut self.track_item_align, None, "None (Bring into view)")
                     .clicked();
             });
+            ui.horizontal(|ui| {
+                let mut show_row_size = self.data_display_options.row_size_config.is_some();
+                ui.checkbox(&mut show_row_size, "Show row size");
+                match (
+                    show_row_size,
+                    self.data_display_options.row_size_config.is_some(),
+                ) {
+                    (true, true) | (false, false) => {}
+                    (true, false) => {
+                        self.data_display_options.row_size_config = Some(Default::default())
+                    }
+                    (false, true) => self.data_display_options.row_size_config = None,
+                }
+
+                if let Some(row_size) = self.data_display_options.row_size_config.as_mut() {
+                    ui.separator();
+                    ui.label("Field Name: ");
+                    ui.text_edit_singleline(&mut row_size.field_name);
+                    ui.separator();
+                    egui::ComboBox::from_label("Row Size Unit")
+                        .selected_text(row_size.units)
+                        .show_ui(ui, |ui| {
+                            ui.selectable_value(
+                                &mut row_size.units,
+                                SizeUnits::Bytes,
+                                SizeUnits::Bytes,
+                            );
+                            ui.selectable_value(&mut row_size.units, SizeUnits::KB, SizeUnits::KB);
+                            ui.selectable_value(&mut row_size.units, SizeUnits::MB, SizeUnits::MB);
+                            ui.selectable_value(&mut row_size.units, SizeUnits::GB, SizeUnits::GB);
+                            ui.selectable_value(&mut row_size.units, SizeUnits::TB, SizeUnits::TB);
+                            ui.selectable_value(
+                                &mut row_size.units,
+                                SizeUnits::Auto,
+                                SizeUnits::Auto,
+                            );
+                        });
+                }
+            });
+
+            ui.horizontal(|ui| {
+                let mut has_max_data_size_for_save = self.max_data_save_size.is_some();
+                ui.checkbox(
+                    &mut has_max_data_size_for_save,
+                    "Enable Max Data Size To Save",
+                );
+                match (
+                    has_max_data_size_for_save,
+                    self.max_data_save_size.is_some(),
+                ) {
+                    (true, true) | (false, false) => {}
+                    (true, false) => {
+                        self.max_data_save_size = Some(Self::DEFAULT_MAX_DATA_SAVE_SIZE)
+                    }
+                    (false, true) => self.max_data_save_size = None,
+                }
+
+                if let Some(max_data_save_size) = self.max_data_save_size.as_mut() {
+                    ui.label(format!(
+                        "Allowed Size: {}",
+                        SizeUnits::Auto.convert_trimmed(*max_data_save_size)
+                    ));
+                    ui.add(
+                        egui::Slider::new(max_data_save_size, 0..=100 * 1024 * 1024)
+                            .step_by(1024.0),
+                    );
+                }
+            });
         });
     }
 
@@ -431,17 +504,19 @@ impl LogViewerApp {
 
     fn ui_help(&mut self, ui: &mut egui::Ui) {
         ui.collapsing("Help", |ui| {
-            ui.horizontal(|ui| {
                 ui.label(
-                    "Text is selectable just hover over it for a short time if you want to copy",
+                    "- Text is selectable just hover over it for a short time if you want to copy",
                 );
+                ui.label("- Most display settings are only applied on load and will require the data to be reloaded")
             });
-        });
     }
 
     #[cfg(not(target_arch = "wasm32"))]
     /// Attempts to read the contents of the last loaded file and return it in a loading status otherwise returns an error loading status
     fn reload_file(&self) -> LoadingStatus {
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+        puffin::profile_scope!("reload_file");
+        // TODO 5: Determine if this should spawn a task to do the load
         let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
             return LoadingStatus::Failed("no staring folder available".into());
         };
@@ -457,6 +532,9 @@ impl LogViewerApp {
 
     #[cfg(not(target_arch = "wasm32"))]
     fn load_most_recent_file(&self) -> LoadingStatus {
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+        puffin::profile_scope!("load_most_recent_file");
+        // TODO 5: Determine if this should spawn a task to do the load (might be able to reuse the normal load)
         let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
             return LoadingStatus::Failed("unable to find starting folder".into());
         };
@@ -681,7 +759,13 @@ impl LogViewerApp {
                         (false, _, total_len) => as_string_with_separators(total_len),
                     };
                 ui.label(format!("# Rows: {row_count_text}"));
-                ui.label(format!("Size: {}", data.file_size));
+                let size_text = format!("Size: {}", data.file_size_display());
+                if self.does_data_exceeded_max_size() {
+                    ui.colored_label(ui.visuals().warn_fg_color, size_text)
+                        .on_hover_text("Save disabled because data size is over max set");
+                } else {
+                    ui.label(size_text);
+                }
             }
         });
     }
@@ -707,6 +791,8 @@ impl LogViewerApp {
     }
 
     fn is_changed_since_last_save(&mut self) -> bool {
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+        puffin::profile_scope!("is_changed_since_last_save");
         let as_ron = match ron::to_string(&self) {
             Ok(s) => s,
             Err(err_msg) => {
@@ -724,6 +810,19 @@ impl LogViewerApp {
         }
         self.last_save_hash = Some(new_hash);
         true
+    }
+
+    fn should_save(&mut self) -> bool {
+        !self.does_data_exceeded_max_size() && self.is_changed_since_last_save()
+    }
+
+    fn does_data_exceeded_max_size(&self) -> bool {
+        if let (Some(data), Some(max_size)) = (self.data.as_ref(), self.max_data_save_size.as_ref())
+        {
+            &data.file_size_as_bytes > max_size
+        } else {
+            false
+        }
     }
 }
 
@@ -772,18 +871,26 @@ fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static>(
 impl eframe::App for LogViewerApp {
     /// Called by the frame work to save state before shutdown.
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
-        if self.is_changed_since_last_save() {
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+        puffin::profile_scope!("eframe::App::save");
+        if self.should_save() {
             info!("Saving data");
+            #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+            puffin::profile_scope!("Saving App State");
             eframe::set_value(storage, eframe::APP_KEY, self);
         } else {
-            debug!("Save skipped, no change detected");
+            debug!("Save skipped");
         }
     }
 
     /// Called each time the UI needs repainting, which may be many times per second.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+        puffin::profile_scope!("update_loop");
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             // The top panel is often a good place for a menu bar:
+            #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+            puffin::profile_scope!("top_panel");
 
             self.check_global_shortcuts(ui);
 
@@ -805,6 +912,8 @@ impl eframe::App for LogViewerApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
+            #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+            puffin::profile_scope!("outer_central_panel");
             static HEADING: LazyLock<&'static str> =
                 LazyLock::new(|| format!("Log Viewer {}", env!("CARGO_PKG_VERSION")).leak());
             ui.heading(*HEADING);
@@ -825,6 +934,8 @@ impl eframe::App for LogViewerApp {
                 .max_height(max_details_height)
                 .min_height(60.)
                 .show_inside(ui, |ui| {
+                    #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+                    puffin::profile_scope!("bottom_panel");
                     ui.vertical_centered(|ui| {
                         ui.heading("Details");
                     });
@@ -839,6 +950,8 @@ impl eframe::App for LogViewerApp {
                 });
 
             egui::CentralPanel::default().show_inside(ui, |ui| {
+                #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
+                puffin::profile_scope!("inner_central_panel");
                 egui::ScrollArea::horizontal()
                     .id_salt("log lines")
                     .show(ui, |ui| {

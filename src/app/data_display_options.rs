@@ -1,6 +1,8 @@
-use std::collections::{BTreeMap, BTreeSet};
-
-use egui::Color32;
+use egui::{Color32, WidgetText};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt::Display,
+};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
 #[serde(default)] // if we add new fields, give them default values when deserializing old state
@@ -58,14 +60,14 @@ pub struct LevelConversion {
     pub convert_map: BTreeMap<i64, String>,
 }
 
-#[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
 #[serde(default)]
 pub struct RowSizeConfig {
     pub field_name: String,
     pub units: SizeUnits,
 }
 
-#[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq)]
+#[derive(Default, serde::Deserialize, serde::Serialize, Debug, PartialEq, Eq, Clone, Copy)]
 pub enum SizeUnits {
     Bytes,
     KB,
@@ -73,40 +75,69 @@ pub enum SizeUnits {
     GB,
     TB,
     #[default]
-    /// Is output as a String because it includes the unit and is the largest unit where the output value is >= 1
     Auto,
 }
+
 impl SizeUnits {
-    pub(crate) fn convert(&self, row_size_in_bytes: usize) -> serde_json::Value {
-        let scalar = match self {
+    fn to_concrete(self, row_size_in_bytes: usize) -> Self {
+        if !matches!(self, Self::Auto) {
+            // Easy case where type is specified
+            return self;
+        }
+
+        // Determine which unit to use when using auto
+        let units = [Self::Bytes, Self::KB, Self::MB, Self::GB, Self::TB];
+        let mut last_index = 0;
+        let row_size_in_bytes = row_size_in_bytes as f64;
+        for (i, unit) in units.iter().enumerate().skip(1) {
+            if (row_size_in_bytes / unit.scalar()) >= 1.0 {
+                last_index = i;
+            } else {
+                // Last was as correct unit
+                break;
+            }
+        }
+        units[last_index]
+    }
+
+    /// Returns the scalar for that unit
+    ///
+    /// Panics: if unit is [`Self::Auto`]
+    fn scalar(&self) -> f64 {
+        match self {
             SizeUnits::Bytes => 1.0,
             SizeUnits::KB => 1024.0,
             SizeUnits::MB => 1024.0 * 1024.0,
             SizeUnits::GB => 1024.0 * 1024.0 * 1024.0,
             SizeUnits::TB => 1024.0 * 1024.0 * 1024.0 * 1024.0,
             SizeUnits::Auto => {
-                // TODO 5: Rewrite with shifts for performance
-                // Special handling see doc string for explanation
-                let units = ["Bytes", "KB", "MB", "GB", "TB"];
-                let mut last_index = 0;
-                let mut scalar = 1.0f64;
-                let row_size_in_bytes = row_size_in_bytes as f64;
-                for i in 1..units.len() {
-                    let new_scalar = scalar * 1024.0;
-                    if (row_size_in_bytes / new_scalar) >= 1.0 {
-                        last_index = i;
-                        scalar = new_scalar;
-                    } else {
-                        // Last was as correct unit
-                        break;
-                    }
-                }
-                let result = row_size_in_bytes / scalar;
-                return format!("{result:0>9.4} {}", units[last_index]).into();
+                unreachable!("precondition violated: Auto does not have a scalar")
             }
-        };
+        }
+    }
+
+    pub(crate) fn convert(&self, row_size_in_bytes: usize) -> String {
+        let concrete_unit = self.to_concrete(row_size_in_bytes);
+        let scalar = concrete_unit.scalar();
         let result = row_size_in_bytes as f64 / scalar;
-        result.into()
+        format!("{result:0>9.4} {concrete_unit}")
+    }
+
+    pub fn convert_trimmed(&self, row_size_in_bytes: usize) -> String {
+        self.convert(row_size_in_bytes)
+            .trim_matches('0')
+            .to_string()
+    }
+
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            SizeUnits::Bytes => "Bytes",
+            SizeUnits::KB => "KB",
+            SizeUnits::MB => "MB",
+            SizeUnits::GB => "GB",
+            SizeUnits::TB => "TB",
+            SizeUnits::Auto => "Auto",
+        }
     }
 }
 
@@ -166,10 +197,7 @@ impl Default for DataDisplayOptions {
             .collect(),
             emphasize_if_matching_field_idx: Some(4),
             row_idx_field_name: Some("row#".to_string()),
-            row_size_config: Some(RowSizeConfig {
-                field_name: "row_size".to_string(),
-                units: SizeUnits::Auto,
-            }),
+            row_size_config: Some(Default::default()),
             row_parse_error_handling: Default::default(),
             level_conversion: Some(Default::default()),
             colored_fields: [(
@@ -219,6 +247,27 @@ impl Default for LevelConversion {
             display_field_name: "level_str".into(),
             source_field_name: "level".into(),
             convert_map,
+        }
+    }
+}
+
+impl Display for SizeUnits {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.as_str())
+    }
+}
+
+impl From<SizeUnits> for WidgetText {
+    fn from(value: SizeUnits) -> Self {
+        value.as_str().into()
+    }
+}
+
+impl Default for RowSizeConfig {
+    fn default() -> Self {
+        Self {
+            field_name: "row_size".to_string(),
+            units: SizeUnits::KB,
         }
     }
 }
