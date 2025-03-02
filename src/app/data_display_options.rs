@@ -116,12 +116,17 @@ impl SizeUnits {
         }
     }
 
-    /// Output as a string because includes the unit
-    pub(crate) fn convert(&self, row_size_in_bytes: usize) -> serde_json::Value {
+    pub(crate) fn convert(&self, row_size_in_bytes: usize) -> String {
         let concrete_unit = self.to_concrete(row_size_in_bytes);
         let scalar = concrete_unit.scalar();
         let result = row_size_in_bytes as f64 / scalar;
-        format!("{result:0>9.4} {concrete_unit}").into()
+        format!("{result:0>9.4} {concrete_unit}")
+    }
+
+    pub fn convert_trimmed(&self, row_size_in_bytes: usize) -> String {
+        self.convert(row_size_in_bytes)
+            .trim_matches('0')
+            .to_string()
     }
 
     pub fn as_str(&self) -> &'static str {

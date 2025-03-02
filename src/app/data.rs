@@ -25,7 +25,7 @@ pub struct Data {
     rows: Vec<LogRow>,
     filtered_rows: Option<Vec<usize>>,
     applied_filter: Option<FilterConfig>,
-    pub file_size: String,
+    pub file_size_as_bytes: usize,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Default, Debug, PartialEq, Eq, Clone)]
@@ -136,6 +136,10 @@ impl LogRow {
 }
 
 impl Data {
+    pub fn file_size_display(&self) -> String {
+        SizeUnits::Auto.convert_trimmed(self.file_size_as_bytes)
+    }
+
     pub fn rows_iter(&self) -> impl Iterator<Item = &'_ LogRow> {
         DataIter::new(self)
     }
@@ -415,7 +419,7 @@ impl TryFrom<(&DataDisplayOptions, usize, &str)> for LogRow {
         if let Some(config) = data_display_options.row_size_config.as_ref() {
             result.or_insert(
                 config.field_name.clone(),
-                config.units.convert(row_size_in_bytes),
+                config.units.convert(row_size_in_bytes).into(),
             );
         }
         Ok(result)
@@ -465,15 +469,8 @@ impl TryFrom<(&DataDisplayOptions, &str)> for Data {
     fn try_from(
         (data_display_options, value): (&DataDisplayOptions, &str),
     ) -> Result<Self, Self::Error> {
-        let file_size = SizeUnits::Auto.convert(value.len());
-        let file_size = file_size
-            .as_str()
-            .map(|x| x.to_string())
-            .unwrap_or_else(|| file_size.to_string())
-            .trim_matches('0')
-            .to_string();
         let mut result = Data {
-            file_size,
+            file_size_as_bytes: value.len(),
             ..Default::default()
         };
         for (i, line) in value.lines().enumerate() {
