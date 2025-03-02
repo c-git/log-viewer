@@ -728,7 +728,13 @@ impl LogViewerApp {
                         (false, _, total_len) => as_string_with_separators(total_len),
                     };
                 ui.label(format!("# Rows: {row_count_text}"));
-                ui.label(format!("Size: {}", data.file_size_display()));
+                let size_text = format!("Size: {}", data.file_size_display());
+                if self.does_data_exceeded_max_size() {
+                    ui.colored_label(ui.visuals().warn_fg_color, size_text)
+                        .on_hover_text("Save disabled because data size is over max set");
+                } else {
+                    ui.label(size_text);
+                }
             }
         });
     }
@@ -776,17 +782,16 @@ impl LogViewerApp {
     }
 
     fn should_save(&mut self) -> bool {
-        // Check if size of data allows saving
-        if let (Some(data), Some(max_data_size)) =
-            (self.data.as_ref(), self.max_data_save_size.as_ref())
-        {
-            if &data.file_size_as_bytes > max_data_size {
-                return false;
-            }
-        }
+        !self.does_data_exceeded_max_size() && self.is_changed_since_last_save()
+    }
 
-        // Size of data does not prevent saving, check if there are changes to be saved
-        self.is_changed_since_last_save()
+    fn does_data_exceeded_max_size(&self) -> bool {
+        if let (Some(data), Some(max_size)) = (self.data.as_ref(), self.max_data_save_size.as_ref())
+        {
+            &data.file_size_as_bytes > max_size
+        } else {
+            false
+        }
     }
 }
 
