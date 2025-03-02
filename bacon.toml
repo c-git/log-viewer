@@ -15,6 +15,7 @@ kill = ["pkill", "-TERM", "-P"]
 [jobs.run-profiling]
 command = ["cargo", "run", "--features=profiling"]
 kill = ["pkill", "-TERM", "-P"]
+env.RUST_LOG = "zbus=warn,log_viewer=debug,info"
 
 [keybindings]
 ctrl-d = "job:reset-settings-and-run"
