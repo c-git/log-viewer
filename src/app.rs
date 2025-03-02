@@ -98,7 +98,7 @@ impl LogViewerApp {
     }
 
     fn show_log_lines(&mut self, ui: &mut egui::Ui) {
-        #[cfg(feature = "profiling")]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("show_log_lines");
         let text_height = egui::TextStyle::Body
             .resolve(ui.style())
@@ -227,7 +227,7 @@ impl LogViewerApp {
     }
 
     fn show_log_details(&mut self, ui: &mut egui::Ui) {
-        #[cfg(feature = "profiling")]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("show_log_details");
         let Some(data) = self.data.as_mut() else {
             ui.label("No data");
@@ -324,7 +324,7 @@ impl LogViewerApp {
                 self.loading_status = match Data::try_from((&self.data_display_options, &data[..]))
                 {
                     Ok(mut data) => {
-                        #[cfg(feature = "profiling")]
+                        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
                         puffin::profile_scope!("swap_data_after_load");
                         if let Some(old_data) = self.data.as_mut() {
                             // Preserve settings across loads of the data
@@ -514,7 +514,7 @@ impl LogViewerApp {
     #[cfg(not(target_arch = "wasm32"))]
     /// Attempts to read the contents of the last loaded file and return it in a loading status otherwise returns an error loading status
     fn reload_file(&self) -> LoadingStatus {
-        #[cfg(feature = "profiling")]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("reload_file");
         // TODO 5: Determine if this should spawn a task to do the load
         let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
@@ -532,7 +532,7 @@ impl LogViewerApp {
 
     #[cfg(not(target_arch = "wasm32"))]
     fn load_most_recent_file(&self) -> LoadingStatus {
-        #[cfg(feature = "profiling")]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("load_most_recent_file");
         // TODO 5: Determine if this should spawn a task to do the load (might be able to reuse the normal load)
         let Some(folder) = self.start_open_path.lock().unwrap().clone() else {
@@ -791,7 +791,7 @@ impl LogViewerApp {
     }
 
     fn is_changed_since_last_save(&mut self) -> bool {
-        #[cfg(feature = "profiling")]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("is_changed_since_last_save");
         let as_ron = match ron::to_string(&self) {
             Ok(s) => s,
@@ -871,11 +871,11 @@ fn execute<F: std::future::Future<Output = Box<LoadingStatus>> + 'static>(
 impl eframe::App for LogViewerApp {
     /// Called by the frame work to save state before shutdown.
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
-        #[cfg(feature = "profiling")]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("eframe::App::save");
         if self.should_save() {
             info!("Saving data");
-            #[cfg(feature = "profiling")]
+            #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
             puffin::profile_scope!("Saving App State");
             eframe::set_value(storage, eframe::APP_KEY, self);
         } else {
@@ -885,11 +885,11 @@ impl eframe::App for LogViewerApp {
 
     /// Called each time the UI needs repainting, which may be many times per second.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        #[cfg(feature = "profiling")]
+        #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
         puffin::profile_scope!("update_loop");
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             // The top panel is often a good place for a menu bar:
-            #[cfg(feature = "profiling")]
+            #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
             puffin::profile_scope!("top_panel");
 
             self.check_global_shortcuts(ui);
@@ -912,7 +912,7 @@ impl eframe::App for LogViewerApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             // The central panel the region left after adding TopPanel's and SidePanel's
-            #[cfg(feature = "profiling")]
+            #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
             puffin::profile_scope!("outer_central_panel");
             static HEADING: LazyLock<&'static str> =
                 LazyLock::new(|| format!("Log Viewer {}", env!("CARGO_PKG_VERSION")).leak());
@@ -934,7 +934,7 @@ impl eframe::App for LogViewerApp {
                 .max_height(max_details_height)
                 .min_height(60.)
                 .show_inside(ui, |ui| {
-                    #[cfg(feature = "profiling")]
+                    #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
                     puffin::profile_scope!("bottom_panel");
                     ui.vertical_centered(|ui| {
                         ui.heading("Details");
@@ -950,7 +950,7 @@ impl eframe::App for LogViewerApp {
                 });
 
             egui::CentralPanel::default().show_inside(ui, |ui| {
-                #[cfg(feature = "profiling")]
+                #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
                 puffin::profile_scope!("inner_central_panel");
                 egui::ScrollArea::horizontal()
                     .id_salt("log lines")

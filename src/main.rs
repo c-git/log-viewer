@@ -32,7 +32,7 @@ async fn main() -> eframe::Result<()> {
             ),
         ..Default::default()
     };
-    #[cfg(feature = "profiling")]
+    #[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
     start_puffin_server();
 
     eframe::run_native(
@@ -89,7 +89,7 @@ fn main() {
     });
 }
 
-#[cfg(feature = "profiling")]
+#[cfg(all(not(target_arch = "wasm32"), feature = "profiling"))]
 fn start_puffin_server() {
     puffin::set_scopes_on(true); // tell puffin to collect data
 
