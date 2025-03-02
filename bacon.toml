@@ -15,7 +15,9 @@ kill = ["pkill", "-TERM", "-P"]
 [jobs.run-profiling]
 command = ["cargo", "run", "--features=profiling"]
 kill = ["pkill", "-TERM", "-P"]
+on_change_strategy = "kill_then_restart"
 env.RUST_LOG = "zbus=warn,log_viewer=debug,info"
+# TODO 5: Look into getting both the profiler and the app to stop
 
 [keybindings]
 ctrl-d = "job:reset-settings-and-run"
