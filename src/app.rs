@@ -33,6 +33,8 @@ pub struct LogViewerApp {
     should_scroll_to_end_on_load: bool,
     /// Allows the user to dim the warning by clicking on it
     should_highlight_field_warning: bool,
+    /// Max size in bytes of data before saving is disabled
+    max_data_save_size: Option<usize>,
 
     #[serde(skip)]
     should_focus_search: bool,
@@ -60,6 +62,7 @@ impl Default for LogViewerApp {
             should_scroll: Default::default(),
             show_last_filename: true,
             last_save_hash: Default::default(),
+            max_data_save_size: Some(2 * 1024 * 1024), // 2 MB
         }
     }
 }
@@ -771,6 +774,20 @@ impl LogViewerApp {
         self.last_save_hash = Some(new_hash);
         true
     }
+
+    fn should_save(&mut self) -> bool {
+        // Check if size of data allows saving
+        if let (Some(data), Some(max_data_size)) =
+            (self.data.as_ref(), self.max_data_save_size.as_ref())
+        {
+            if &data.file_size_as_bytes > max_data_size {
+                return false;
+            }
+        }
+
+        // Size of data does not prevent saving, check if there are changes to be saved
+        self.is_changed_since_last_save()
+    }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
@@ -820,13 +837,13 @@ impl eframe::App for LogViewerApp {
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
         #[cfg(feature = "profiling")]
         puffin::profile_scope!("eframe::App::save");
-        if self.is_changed_since_last_save() {
+        if self.should_save() {
             info!("Saving data");
             #[cfg(feature = "profiling")]
             puffin::profile_scope!("Saving App State");
             eframe::set_value(storage, eframe::APP_KEY, self);
         } else {
-            debug!("Save skipped, no change detected");
+            debug!("Save skipped");
         }
     }
 
