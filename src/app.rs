@@ -62,7 +62,7 @@ impl Default for LogViewerApp {
             should_scroll: Default::default(),
             show_last_filename: true,
             last_save_hash: Default::default(),
-            max_data_save_size: Some(2 * 1024 * 1024), // 2 MB
+            max_data_save_size: Some(Self::DEFAULT_MAX_DATA_SAVE_SIZE),
         }
     }
 }
@@ -77,6 +77,8 @@ pub enum LoadingStatus {
 }
 
 impl LogViewerApp {
+    const DEFAULT_MAX_DATA_SAVE_SIZE: usize = 2 * 1024 * 1024; // 2MB
+
     /// Called once before the first frame.
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // This is also where you can customize the look and feel of egui using
@@ -438,6 +440,35 @@ impl LogViewerApp {
                                 SizeUnits::Auto,
                             );
                         });
+                }
+            });
+
+            ui.horizontal(|ui| {
+                let mut has_max_data_size_for_save = self.max_data_save_size.is_some();
+                ui.checkbox(
+                    &mut has_max_data_size_for_save,
+                    "Enable Max Data Size To Save",
+                );
+                match (
+                    has_max_data_size_for_save,
+                    self.max_data_save_size.is_some(),
+                ) {
+                    (true, true) | (false, false) => {}
+                    (true, false) => {
+                        self.max_data_save_size = Some(Self::DEFAULT_MAX_DATA_SAVE_SIZE)
+                    }
+                    (false, true) => self.max_data_save_size = None,
+                }
+
+                if let Some(max_data_save_size) = self.max_data_save_size.as_mut() {
+                    ui.label(format!(
+                        "Allowed Size: {}",
+                        SizeUnits::Auto.convert_trimmed(*max_data_save_size)
+                    ));
+                    ui.add(
+                        egui::Slider::new(max_data_save_size, 0..=100 * 1024 * 1024)
+                            .step_by(1024.0),
+                    );
                 }
             });
         });
